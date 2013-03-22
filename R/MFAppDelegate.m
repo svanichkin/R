@@ -8,6 +8,13 @@
 
 #import "MFAppDelegate.h"
 
+@interface MFAppDelegate()
+{
+    BOOL _connectionProgress;
+}
+
+@end
+
 @implementation MFAppDelegate
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
@@ -120,10 +127,15 @@
     return [[self managedObjectContext] undoManager];
 }
 
-// Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
-- (IBAction)saveAction:(id)sender
+- (IBAction)connectAction:(id)sender
 {
-    NSError *error = nil;
+    if (_login.stringValue && _password.stringValue && _apikey.stringValue && !_connectionProgress)
+    {
+        _connectionProgress = YES;
+        
+    }
+    
+    /*NSError *error = nil;
     
     if (![[self managedObjectContext] commitEditing]) {
         NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
@@ -131,7 +143,7 @@
     
     if (![[self managedObjectContext] save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
-    }
+    }*/
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
