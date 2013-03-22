@@ -1,0 +1,6 @@
+//
+// Prefix header for all source files of the 'RImporter' target in the 'RImporter' project
+//
+
+#ifdef __OBJC__
+#endif
