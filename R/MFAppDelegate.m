@@ -7,10 +7,13 @@
 //
 
 #import "MFAppDelegate.h"
+#import "MFConnector.h"
+#import "RKIssue.h"
 
 @interface MFAppDelegate()
 {
-    BOOL _connectionProgress;
+    NSArray *_projects;
+    NSArray *_issues;
 }
 
 @end
@@ -24,6 +27,63 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(connectionComplete:)
+                                                 name:CONNECT_COMPLETE
+                                               object:nil];
+    
+    // Автоконнект, если есть данные в дефолтах
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults objectForKey:@"serverAddress"] &&
+        [defaults objectForKey:@"username"] &&
+        [defaults objectForKey:@"password"] &&
+        [defaults objectForKey:@"apikey"])
+    {
+        [[MFConnector sharedInstance] connectWithLogin:[defaults objectForKey:@"username"]
+                                              password:[defaults objectForKey:@"password"]
+                                                server:[defaults objectForKey:@"serverAddress"]
+                                             andApikey:[defaults objectForKey:@"apikey"]];
+        
+    }
+}
+
+- (void) connectionComplete:(NSNotification *) notification
+{
+    if ([notification.object boolValue])
+    {
+        // Генерация выпадающего меню
+        _projects = [[MFConnector sharedInstance].redmine projects];
+
+        if (_projects)
+        {
+            NSMenuItem *selectedItem;
+            [_projectsSelector.menu removeAllItems];
+            for (int i = 0; i < _projects.count; i ++)
+            {
+                RKProject *d = [_projects objectAtIndex:i];
+                NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:d.name
+                                                              action:@selector (projectSelected:)
+                                                       keyEquivalent:@""];
+                item.tag = i;
+                [_projectsSelector.menu addItem:item];
+                
+                if (i == 0)
+                {
+                    selectedItem = item;
+                }
+            }
+            
+            [self projectSelected:selectedItem];
+        }
+    }
+}
+
+- (void) projectSelected:(NSMenuItem *)item
+{
+    // Загрузка задач по проекту
+    RKProject *projects = [_projects objectAtIndex:item.tag];
+    _issues = projects.issues;
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ru.macflash.R" in the user's Application Support directory.
@@ -125,25 +185,6 @@
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
 {
     return [[self managedObjectContext] undoManager];
-}
-
-- (IBAction)connectAction:(id)sender
-{
-    if (_login.stringValue && _password.stringValue && _apikey.stringValue && !_connectionProgress)
-    {
-        _connectionProgress = YES;
-        
-    }
-    
-    /*NSError *error = nil;
-    
-    if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
-    }
-    
-    if (![[self managedObjectContext] save:&error]) {
-        [[NSApplication sharedApplication] presentError:error];
-    }*/
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender

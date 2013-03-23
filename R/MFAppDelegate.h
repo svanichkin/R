@@ -7,24 +7,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MFPreferencesPanel.h"
 
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 
 #pragma mark - Login
 
-@property (assign) IBOutlet NSTextField *login;
-@property (assign) IBOutlet NSSecureTextField *password;
-@property (assign) IBOutlet NSTextField *apikey;
-@property (assign) IBOutlet NSProgressIndicator *progressIndicator;
-@property (assign) IBOutlet NSTextField *progressText;
-@property (assign) IBOutlet NSButton *connect;
-
-- (IBAction)connectAction:(id)sender;
+@property (assign) IBOutlet MFPreferencesPanel *preferencesPanel;
 
 #pragma mark - Main
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSSplitView *splitView;
+@property (assign) IBOutlet NSPopUpButton *projectsSelector;
 
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

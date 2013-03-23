@@ -9,7 +9,6 @@
 #import "RKRedmine.h"
 #import "RKParseHelper.h"
 #import "TFHpple.h"
-#import "SBJSON.h"
 
 @interface RKRedmine ()
 - (NSString *)authKey;
@@ -79,9 +78,17 @@
     [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     if (error) {
         NSLog(@"Error logging in: %@", [error localizedDescription]);
+        if (_delegate && [_delegate respondsToSelector:@selector(connectionComplete:)])
+        {
+            [_delegate performSelector:@selector(connectionComplete:) withObject:@(NO)];
+        }
     } else {
         if (self.apiKey == nil) [self fetchApiKey];
         self.loggedIn = YES;
+        if (_delegate && [_delegate respondsToSelector:@selector(connectionComplete:)])
+        {
+            [_delegate performSelector:@selector(connectionComplete:) withObject:@(YES)];
+        }
     }
 }
 
@@ -132,11 +139,12 @@
     if ([self isLastPage]) {
         return;
     }
-    NSString *urlString         = [NSString stringWithFormat:@"%@/projects.json?page=%d&key=%@", self.serverAddress, projectPage++, self.apiKey];
+    NSString *urlString         = [NSString stringWithFormat:@"%@/projects.json?page=%ld&key=%@", self.serverAddress, (unsigned long)projectPage++, self.apiKey];
     NSURL *url                  = [NSURL URLWithString:urlString];
     NSError *error              = nil;
     NSString *responseString    = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-    NSDictionary *jsonDict      = [responseString JSONValue];
+    NSError *err = nil;
+    NSDictionary *jsonDict  = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
     totalProjects               = [[jsonDict objectForKey:@"total_count"] intValue];
     pageOffset                  = [[jsonDict objectForKey:@"offset"] intValue];
     NSArray *projectsDict = [jsonDict objectForKey:@"projects"];
@@ -169,7 +177,9 @@
         NSURL *url              = [NSURL URLWithString:urlString];
         NSError *error          = nil;
         NSString *responseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-        NSDictionary *jsonDict  = [responseString JSONValue];
+        NSError *err = nil;
+        NSDictionary *jsonDict  = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
+        
         NSDictionary *projectDict = [jsonDict objectForKey:@"project"];
         RKProject *aProject       = [RKProject projectForProjectDict:projectDict];
         aProject.redmine        = self;
@@ -201,7 +211,8 @@
     NSError *error              = nil;
     NSString *responseString    = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
     if (!error) {
-        NSDictionary *jsonDict  = [responseString JSONValue];
+        NSError *err = nil;
+        NSDictionary *jsonDict  = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
         NSDictionary *issueDict = [jsonDict objectForKey:@"issue"];
         RKIssue *anIssue        = [RKIssue issueForIssueDict:issueDict];
         anIssue.project         = [self projectForIndex:[[issueDict objectForKey:@"project"] objectForKey:@"id"]];
@@ -226,9 +237,9 @@
 {
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:[project projectDict] forKey:@"project"];
-    NSString *jsonString = [jsonDict JSONRepresentation];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"new project json string: %@", jsonString);
+    NSError *err = nil;
+    NSData *jsonData  = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&err];
+    NSLog(@"new project json string: %@", jsonDict);
     NSString *urlString = [NSString stringWithFormat:@"%@/projects.json?key=%@", self.serverAddress, self.apiKey];
     NSURL *url          = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

@@ -8,7 +8,6 @@
 
 #import "RKIssue.h"
 #import "RKRedmine.h"
-#import "SBJSON.h"
 #import "RKIssueOptions.h"
 #import "TFHpple.h"
 #import "RKParseHelper.h"
@@ -66,7 +65,8 @@
     NSString *responseString    = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
     _journals                   = [[NSMutableArray alloc] init];
     if (!error) {
-        NSDictionary *jsonDict  = [responseString JSONValue];
+        NSError *err = nil;
+        NSDictionary *jsonDict  = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
         NSDictionary *issueDict = [jsonDict objectForKey:@"issue"];
         NSArray *journalsDict   = [issueDict objectForKey:@"journals"];
         for (NSDictionary *journalDict in journalsDict) {
@@ -124,7 +124,7 @@
         options.assignableUsers = [RKParseHelper arrayForElementsOfDoc:doc onXPath:@"//select[@id='issue_assigned_to_id']/option"];
         options.activities  = [RKParseHelper arrayForElementsOfDoc:doc onXPath:@"//select[@id='time_entry_activity_id']/option"];
     } else {
-        NSLog(@"Error fetching issue update options: %@ (HTTP status code: %d)", [error localizedDescription], [response statusCode]);
+        NSLog(@"Error fetching issue update options: %@ (HTTP status code: %ld)", [error localizedDescription], (long)[response statusCode]);
     }
     
     return options;
@@ -135,8 +135,8 @@
     NSMutableDictionary *jsonDict = [NSMutableDictionary dictionary];
     NSMutableDictionary *issueDict = [self issueDictWithNotes:notes];
     [jsonDict setObject:issueDict forKey:@"issue"];
-    NSString *jsonString = [jsonDict JSONRepresentation];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err = nil;
+    NSData *jsonData  = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&err];
     NSString *urlString = [NSString stringWithFormat:@"%@/issues/%@.json?key=%@", self.project.redmine.serverAddress, self.index, self.project.redmine.apiKey];
     NSURL *url          = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -148,7 +148,7 @@
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]; 
     if (error) {
-        NSLog(@"%d: Error updating issue: %@\n%@", [response statusCode], [error localizedDescription], responseString);
+        NSLog(@"%ld: Error updating issue: %@\n%@", (long)[response statusCode], [error localizedDescription], responseString);
         return NO;
     } else {
         return YES;
@@ -168,9 +168,8 @@
         if (entry.comments)         [entryDict setObject:entry.comments forKey:@"comments"];
     }
     [jsonDict setObject:entryDict forKey:@"time_entry"];
-    NSString *jsonString = [jsonDict JSONRepresentation];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlString = [NSString stringWithFormat:@"%@/time_entries.json?key=%@", self.project.redmine.serverAddress, self.project.redmine.apiKey];
+    NSError *err = nil;
+    NSData *jsonData  = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&err];    NSString *urlString = [NSString stringWithFormat:@"%@/time_entries.json?key=%@", self.project.redmine.serverAddress, self.project.redmine.apiKey];
     NSURL *url          = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -181,7 +180,7 @@
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]; 
     if (error) {
-        NSLog(@"%d: Error posting time entry: %@\n%@", [response statusCode], [error localizedDescription], responseString);
+        NSLog(@"%ld: Error posting time entry: %@\n%@", (long)[response statusCode], [error localizedDescription], responseString);
         return NO;
     } else {
         return YES;

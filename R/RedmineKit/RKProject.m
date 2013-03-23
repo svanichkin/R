@@ -8,7 +8,6 @@
 
 #import "RKProject.h"
 #import "RKRedmine.h"
-#import "SBJSON.h"
 #import "TFHpple.h"
 #import "RKParseHelper.h"
 #import "RKRedmine.h"
@@ -104,12 +103,13 @@
     NSString *order = [self.orderIssuesDesc boolValue] ? @":desc" : @"";
     NSString *sortBy = [self stringForSortBySelection];
     NSString *sort = [NSString stringWithFormat:@"sort=%@%@", sortBy, order];
-    NSString *urlString     = [NSString stringWithFormat:@"%@/projects/%@/issues.json?page=%d&key=%@&%@", self.redmine.serverAddress, self.index, issuesPageCount++, self.redmine.apiKey, sort];
+    NSString *urlString     = [NSString stringWithFormat:@"%@/projects/%@/issues.json?page=%ld&key=%@&%@", self.redmine.serverAddress, self.index, issuesPageCount++, self.redmine.apiKey, sort];
     NSURL *url              = [NSURL URLWithString:urlString];
     NSError *error          = nil;
     NSString *responseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
     if (!error) {
-        NSDictionary *jsonDict  = [responseString JSONValue];
+        NSError *err = nil;
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
         NSArray *issuesDict = [jsonDict objectForKey:@"issues"];
         totalIssues = [[jsonDict objectForKey:@"total_count"] intValue];
         pageOffset  = [[jsonDict objectForKey:@"offset"] intValue];
@@ -157,7 +157,7 @@
         newIssueOptions.versions    = [RKParseHelper arrayForElementsOfDoc:doc onXPath:@"//select[@id='issue_fixed_version_id']/option"];
         newIssueOptions.assignableUsers = [RKParseHelper arrayForElementsOfDoc:doc onXPath:@"//select[@id='issue_assigned_to_id']/option"];
     } else {
-            NSLog(@"Error fetching new issue options: %@ (HTTP status code: %d)", [error localizedDescription], [response statusCode]);
+            NSLog(@"Error fetching new issue options: %@ (HTTP status code: %ld)", [error localizedDescription], (long)[response statusCode]);
     }
         
     return newIssueOptions;
@@ -177,7 +177,8 @@
         NSError *error          = nil;
         NSString *responseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
         if (!error) {
-            NSDictionary *jsonDict  = [responseString JSONValue];
+            NSError *err = nil;
+            NSDictionary *jsonDict  = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &err];
             NSDictionary *issueDict = [jsonDict objectForKey:@"issue"];
             RKIssue *anIssue    = [RKIssue issueForIssueDict:issueDict];
             anIssue.project     = self;
@@ -195,8 +196,8 @@
     NSMutableDictionary *issueDict = [issue issueDictWithNotes:nil];
     [issueDict setObject:self.index forKey:@"project_id"];
     [jsonDict setObject:issueDict forKey:@"issue"];
-    NSString *jsonString = [jsonDict JSONRepresentation];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err = nil;
+    NSData *jsonData  = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&err];
     NSString *urlString = [NSString stringWithFormat:@"%@/issues.json?key=%@", self.redmine.serverAddress, self.redmine.apiKey];
     NSURL *url          = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -217,8 +218,8 @@
 - (BOOL)postProjectUpdate {
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:[self projectDict] forKey:@"project"];
-    NSString *jsonString = [jsonDict JSONRepresentation];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err = nil;
+    NSData *jsonData  = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&err];
     NSString *urlString = [NSString stringWithFormat:@"%@/projects/%@.json?key=%@", self.redmine.serverAddress, self.index, self.redmine.apiKey];
     NSURL *url          = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) NSString *apiKey;
 @property (strong, nonatomic) NSString *serverAddress;
+@property (assign, nonatomic) id delegate;
 @property BOOL loggedIn;
 
 - (void)login;
