@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		930BBBF91702D32100B664C2 /* MFFiltersControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBBF81702D32100B664C2 /* MFFiltersControl.m */; };
+		930BBBFC1702E0A000B664C2 /* MFSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBBFB1702E0A000B664C2 /* MFSettings.m */; };
 		936EED7816FF421700379492 /* background_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7716FF421700379492 /* background_small.png */; };
 		936EED7B16FF5F2D00379492 /* p1.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7916FF5F2D00379492 /* p1.png */; };
 		936EED7C16FF5F2D00379492 /* p2.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7A16FF5F2D00379492 /* p2.png */; };
@@ -63,6 +65,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		930BBBF71702D32100B664C2 /* MFFiltersControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFFiltersControl.h; sourceTree = "<group>"; };
+		930BBBF81702D32100B664C2 /* MFFiltersControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFFiltersControl.m; sourceTree = "<group>"; };
+		930BBBFA1702E09F00B664C2 /* MFSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSettings.h; sourceTree = "<group>"; };
+		930BBBFB1702E0A000B664C2 /* MFSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSettings.m; sourceTree = "<group>"; };
 		936EED7716FF421700379492 /* background_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_small.png; sourceTree = "<group>"; };
 		936EED7916FF5F2D00379492 /* p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p1.png; sourceTree = "<group>"; };
 		936EED7A16FF5F2D00379492 /* p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p2.png; sourceTree = "<group>"; };
@@ -161,6 +167,8 @@
 		930BBBF51702D03600B664C2 /* Main Window */ = {
 			isa = PBXGroup;
 			children = (
+				930BBBF71702D32100B664C2 /* MFFiltersControl.h */,
+				930BBBF81702D32100B664C2 /* MFFiltersControl.m */,
 			);
 			name = "Main Window";
 			sourceTree = "<group>";
@@ -226,6 +234,8 @@
 				930BBBF51702D03600B664C2 /* Main Window */,
 				9390E71716FCD1A900D68182 /* MFAppDelegate.h */,
 				9390E71816FCD1A900D68182 /* MFAppDelegate.m */,
+				930BBBFA1702E09F00B664C2 /* MFSettings.h */,
+				930BBBFB1702E0A000B664C2 /* MFSettings.m */,
 				9390E71A16FCD1A900D68182 /* MainMenu.xib */,
 				9390E71D16FCD1A900D68182 /* R.xcdatamodeld */,
 				9390E70C16FCD1A800D68182 /* Supporting Files */,
@@ -473,6 +483,8 @@
 				9390E78816FCF90D00D68182 /* RKValue.m in Sources */,
 				9390E79916FCFF9500D68182 /* MFPreferencesPanel.m in Sources */,
 				9390E79D16FD0BD200D68182 /* MFConnector.m in Sources */,
+				930BBBF91702D32100B664C2 /* MFFiltersControl.m in Sources */,
+				930BBBFC1702E0A000B664C2 /* MFSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,12 @@
 @property (nonatomic, assign) BOOL connectionProgress;
 @property (nonatomic, readonly) RKRedmine *redmine;
 
++ (MFConnector *) sharedInstance;
 
-+ (MFConnector *)sharedInstance;
-- (void)connectWithLogin:(NSString *)login password:(NSString *)password server:(NSString *)server;
+- (void) connect;
+- (void) connectWithLogin:(NSString *)login password:(NSString *)password andServer:(NSString *)server;
+
+- (void) loadFilters;
+
+
 @end

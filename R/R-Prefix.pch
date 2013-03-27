@@ -6,7 +6,8 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
-#define CONNECT_COMPLETE @"connectComplete"
+#define CONNECT_COMPLETE    @"connectComplete"
+#define FILTERS_LOADED      @"filtersLoaded"
 
 #define STATUS_NEW          1
 #define STATUS_IN_PROGRESS  2

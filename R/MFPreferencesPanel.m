@@ -40,7 +40,7 @@
         
         [[MFConnector sharedInstance] connectWithLogin:_login.stringValue
                                               password:_password.stringValue
-                                                server:_serverAddress.stringValue];
+                                                andServer:_serverAddress.stringValue];
         
     }
 }

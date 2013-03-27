@@ -9,6 +9,7 @@
 #import "MFAppDelegate.h"
 #import "MFConnector.h"
 #import "RKIssue.h"
+#import "MFSettings.h"
 
 @implementation MFAppDelegate
 {
@@ -16,6 +17,7 @@
     NSMenuItem *_projectSelected;
     NSArray *_issues;
     NSTableCellView *_oldCellSelected;
+    MFSettings *_settings;
 }
 
 @synthesize persistentStoreCoordinator =    _persistentStoreCoordinator;
@@ -29,29 +31,11 @@
                                                  name:CONNECT_COMPLETE
                                                object:nil];
     
-    // Автоконнект, если есть данные в дефолтах
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    _settings = [MFSettings sharedInstance];
     
-    if ([defaults objectForKey:@"serverAddress"] &&
-        [defaults objectForKey:@"username"] &&
-        [defaults objectForKey:@"password"] &&
-        [defaults objectForKey:@"apikey"])
+    if (_settings.credentials)
     {
-        [[MFConnector sharedInstance] connectWithLogin:[defaults objectForKey:@"username"]
-                                              password:[defaults objectForKey:@"password"]
-                                                server:[defaults objectForKey:@"serverAddress"]];
-        
-    }
-
-    NSMutableArray *states = [defaults objectForKey:@"filterControl"];
-    if (states.count)
-    {
-        // Восстановим значения сегментов, если они были
-        NSInteger count = _filterControl.segmentCount;
-        for (int i = 0; i < count; i ++)
-        {
-            [_filterControl setSelected:[[states objectAtIndex:i] boolValue] forSegment:i];
-        }
+        [[MFConnector sharedInstance] connect];
     }
     
     [_issuesTable setAction:@selector(issuesCellSelected:)];
@@ -61,6 +45,7 @@
 {
     if ([notification.object boolValue])
     {
+        
         // Генерация выпадающего меню
         _projects = [[MFConnector sharedInstance].redmine projects];
 
@@ -129,10 +114,10 @@
         
         for (RKIssue *i in _issues)
         {
-            if ([self checkFilterWithIssue:i])
+            if ([_filtersControl checkIssueWithStatusIndex:[i.status.index intValue]
+                                             priorityIndex:[i.priority.index intValue]
+                                           andTrackerIndex:[i.tracker.index intValue]])
             {
-            
-                //NSString *s = [NSString stringWithFormat:@"%@ #%@ (%@): %@\n author: %@\n assigned to: %@\n due: %@", self.tracker.name, self.index, self.status.name, self.subject, self.author.name, self.assignedTo, self.dueDate]
             
                 NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
                 
@@ -146,30 +131,9 @@
     }
 }
 
-// Проверяем, проходит ли задача через фильтр или нет
-- (BOOL) checkFilterWithIssue:(RKIssue *)issue
-{
-    BOOL statusSegmentPressed =   [_filterControl isSelectedForSegment:[issue.status.index intValue] - 1];
-    BOOL trackerSegmentPressed =  [_filterControl isSelectedForSegment:4 + [issue.tracker.index intValue]];
-   // BOOL prioritySegmentPressed = [_filterControl isSelectedForSegment:11 + [issue.priority.index intValue]];
-    
-    return (statusSegmentPressed && trackerSegmentPressed );//&& prioritySegmentPressed);
-}
-
 // Если выбрали фильтр
 - (IBAction) filterControlChanged:(id)sender
 {
-    // Сохраним значения сегментов, что бы восстановить при следующем входе
-    NSInteger count = _filterControl.segmentCount;
-    NSMutableArray *states = [NSMutableArray array];
-    for (int i = 0; i < count; i ++)
-    {
-        [states addObject:@([_filterControl isSelectedForSegment:i])];
-    }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:states forKey:@"filterControl"];
-    [defaults synchronize];
-    
     [self projectSelected:_projectSelected];
 }
 

@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MFPreferencesPanel.h"
+#import "MFFiltersControl.h"
 
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 
@@ -21,7 +22,7 @@
 @property (assign) IBOutlet NSPopUpButton *projectsSelector;
 @property (assign) IBOutlet NSTableView *issuesTable;
 @property (assign) IBOutlet NSArrayController *issuesArrayController;
-@property (assign) IBOutlet NSSegmentedControl *filterControl;
+@property (assign) IBOutlet MFFiltersControl *filtersControl;
 @property (assign) IBOutlet NSScrollView *mainPageScroll;
 
 #pragma mark - Main page
