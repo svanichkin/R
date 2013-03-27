@@ -16,5 +16,5 @@
 
 
 + (MFConnector *)sharedInstance;
-- (void)connectWithLogin:(NSString *)login password:(NSString *)password server:(NSString *)server andApikey:(NSString *)apikey;
+- (void)connectWithLogin:(NSString *)login password:(NSString *)password server:(NSString *)server;
 @end

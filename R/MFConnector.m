@@ -8,11 +8,6 @@
 
 #import "MFConnector.h"
 
-@interface MFConnector ()
-{
-}
-@end
-
 @implementation MFConnector
 
 + (MFConnector *)sharedInstance
@@ -28,16 +23,17 @@
     return shared;
 }
 
-- (void)connectWithLogin:(NSString *)login password:(NSString *)password server:(NSString *)server andApikey:(NSString *)apikey
+- (void)connectWithLogin:(NSString *)login password:(NSString *)password server:(NSString *)server
 {
     _connectionProgress = YES;
     
     _redmine = [[RKRedmine alloc] init];
+    
     _redmine.serverAddress = server;
     _redmine.username = login;
     _redmine.password = password;
-    _redmine.apiKey = apikey;
     _redmine.delegate = self;
+
     [_redmine login];
 }
 

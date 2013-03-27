@@ -13,7 +13,6 @@
 @property (assign) IBOutlet NSTextField *login;
 @property (assign) IBOutlet NSSecureTextField *password;
 @property (assign) IBOutlet NSTextField *serverAddress;
-@property (assign) IBOutlet NSTextField *apikey;
 @property (assign) IBOutlet NSProgressIndicator *progressIndicator;
 @property (assign) IBOutlet NSTextField *progressText;
 @property (assign) IBOutlet NSButton *connect;

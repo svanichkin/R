@@ -7,3 +7,9 @@
 #endif
 
 #define CONNECT_COMPLETE @"connectComplete"
+
+#define STATUS_NEW          1
+#define STATUS_IN_PROGRESS  2
+#define STATUS_RESOLVED     3
+#define STATUS_FEEDBACK     4
+#define STATUS_CLOSED       5

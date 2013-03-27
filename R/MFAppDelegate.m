@@ -10,23 +10,20 @@
 #import "MFConnector.h"
 #import "RKIssue.h"
 
-@interface MFAppDelegate()
+@implementation MFAppDelegate
 {
     NSArray *_projects;
+    NSMenuItem *_projectSelected;
     NSArray *_issues;
+    NSTableCellView *_oldCellSelected;
 }
 
-@end
-
-@implementation MFAppDelegate
-
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize managedObjectContext = _managedObjectContext;
+@synthesize persistentStoreCoordinator =    _persistentStoreCoordinator;
+@synthesize managedObjectModel =            _managedObjectModel;
+@synthesize managedObjectContext =          _managedObjectContext;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(connectionComplete:)
                                                  name:CONNECT_COMPLETE
@@ -42,10 +39,22 @@
     {
         [[MFConnector sharedInstance] connectWithLogin:[defaults objectForKey:@"username"]
                                               password:[defaults objectForKey:@"password"]
-                                                server:[defaults objectForKey:@"serverAddress"]
-                                             andApikey:[defaults objectForKey:@"apikey"]];
+                                                server:[defaults objectForKey:@"serverAddress"]];
         
     }
+
+    NSMutableArray *states = [defaults objectForKey:@"filterControl"];
+    if (states.count)
+    {
+        // Восстановим значения сегментов, если они были
+        NSInteger count = _filterControl.segmentCount;
+        for (int i = 0; i < count; i ++)
+        {
+            [_filterControl setSelected:[[states objectAtIndex:i] boolValue] forSegment:i];
+        }
+    }
+    
+    [_issuesTable setAction:@selector(issuesCellSelected:)];
 }
 
 - (void) connectionComplete:(NSNotification *) notification
@@ -59,6 +68,13 @@
         {
             NSMenuItem *selectedItem;
             [_projectsSelector.menu removeAllItems];
+            
+            /*NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"All Projects"
+                                                          action:@selector (projectSelected:)
+                                                   keyEquivalent:@""];
+            item.tag = -1;
+            [_projectsSelector.menu addItem:item];*/
+            
             for (int i = 0; i < _projects.count; i ++)
             {
                 RKProject *d = [_projects objectAtIndex:i];
@@ -79,11 +95,131 @@
     }
 }
 
+// Выбрали один из проектов
 - (void) projectSelected:(NSMenuItem *)item
 {
-    // Загрузка задач по проекту
-    RKProject *projects = [_projects objectAtIndex:item.tag];
-    _issues = projects.issues;
+    // Скрываем правый фрейм
+    [_mainPageScroll setHidden:YES];
+    
+    // Скрываем нажатую ячейку
+    if (_oldCellSelected)
+    {
+        [[_oldCellSelected viewWithTag:1] setHidden:NO];
+        [[_oldCellSelected viewWithTag:2] setHidden:YES];
+    }
+    
+    _projectSelected = item;
+    
+    // Если тег -1, значит показываем все проекты (пока не сделано)
+    if (item.tag < 0)
+    {
+        for (RKProject *project in _projects)
+        {
+            
+        }
+    }
+    else
+    {
+        // Загрузка задач по проекту
+        RKProject *projects = [_projects objectAtIndex:item.tag];
+        _issues = projects.issues;
+        
+        NSUInteger count = [_issuesArrayController.arrangedObjects count];
+        [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,count)]];
+        
+        for (RKIssue *i in _issues)
+        {
+            if ([self checkFilterWithIssue:i])
+            {
+            
+                //NSString *s = [NSString stringWithFormat:@"%@ #%@ (%@): %@\n author: %@\n assigned to: %@\n due: %@", self.tracker.name, self.index, self.status.name, self.subject, self.author.name, self.assignedTo, self.dueDate]
+            
+                NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
+                
+                [_issuesArrayController addObject:@{@"text":[NSString stringWithFormat:@"%@", i.subject],
+                                                    @"type":type,
+                                                  @"number":[NSString stringWithFormat:@"#%@", i.index]}];
+            }
+        }
+        [_issuesTable reloadData];
+        [_issuesTable deselectAll:nil];
+    }
+}
+
+// Проверяем, проходит ли задача через фильтр или нет
+- (BOOL) checkFilterWithIssue:(RKIssue *)issue
+{
+    BOOL statusSegmentPressed =   [_filterControl isSelectedForSegment:[issue.status.index intValue] - 1];
+    BOOL trackerSegmentPressed =  [_filterControl isSelectedForSegment:4 + [issue.tracker.index intValue]];
+   // BOOL prioritySegmentPressed = [_filterControl isSelectedForSegment:11 + [issue.priority.index intValue]];
+    
+    return (statusSegmentPressed && trackerSegmentPressed );//&& prioritySegmentPressed);
+}
+
+// Если выбрали фильтр
+- (IBAction) filterControlChanged:(id)sender
+{
+    // Сохраним значения сегментов, что бы восстановить при следующем входе
+    NSInteger count = _filterControl.segmentCount;
+    NSMutableArray *states = [NSMutableArray array];
+    for (int i = 0; i < count; i ++)
+    {
+        [states addObject:@([_filterControl isSelectedForSegment:i])];
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:states forKey:@"filterControl"];
+    [defaults synchronize];
+    
+    [self projectSelected:_projectSelected];
+}
+
+#pragma mark - Table view callbacks
+
+// Если выбрали задачу в левом окне
+- (void) issuesCellSelected:(NSTableView *)sender
+{
+    if (_oldCellSelected)
+    {
+        [[_oldCellSelected viewWithTag:1] setHidden:NO];
+        [[_oldCellSelected viewWithTag:2] setHidden:YES];
+    }
+    
+    NSInteger row = [_issuesTable clickedRow];
+    
+    if (row != -1)
+    {
+        NSTableCellView *cellView = [_issuesTable viewAtColumn:0 row:row makeIfNecessary:YES];
+        [[cellView viewWithTag:1] setHidden:YES];
+        [[cellView viewWithTag:2] setHidden:NO];
+        [_mainPageScroll setHidden:NO];
+        _oldCellSelected = cellView;
+        
+        RKIssue *issue = [_issues objectAtIndex:row];
+        
+        NSString *smallHeader = [NSString stringWithFormat:@"#%@ – %@ %@", issue.index, [issue.priority.name lowercaseString], [issue.tracker.name lowercaseString]];
+        
+        if (issue.fixedVersion.name)
+        {
+            smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@.", smallHeader, issue.fixedVersion.name, [issue.status.name lowercaseString]];
+        }
+        else
+        {
+            smallHeader = [NSString stringWithFormat:@"%@, %@.", smallHeader, [issue.status.name lowercaseString]];
+        }
+        
+        RKValue *h = issue.spentHours;
+        if (issue.spentHours)
+        {
+            smallHeader = [NSString stringWithFormat:@"%@ Spent time %@ hour.", smallHeader, issue.spentHours.value];
+        }
+        _smallHeader.stringValue = smallHeader;
+        
+        //#30000 – immediate question for version 2.4.11, in progress 50%. Spent time 0.9 hour.
+    }
+    else
+    {
+        [_mainPageScroll setHidden:YES];
+    }
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ru.macflash.R" in the user's Application Support directory.
@@ -231,6 +367,20 @@
     }
 
     return NSTerminateNow;
+}
+
+// Если окно закрыли, покажем обратно при нажатии на иконку программы
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    if (flag)
+    {
+        return NO;
+    }
+    else
+    {
+        [_window makeKeyAndOrderFront:self];
+        return YES;
+    }
 }
 
 @end
