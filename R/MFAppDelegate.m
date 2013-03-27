@@ -51,38 +51,6 @@
         
         // Загрузка списка проектов
         [[MFConnector sharedInstance] loadAllProjects];
-        
-        // Генерация выпадающего меню
-        /*_projects = [[MFConnector sharedInstance].redmine projects];
-
-        if (_projects)
-        {
-            NSMenuItem *selectedItem;
-            [_projectsSelector.menu removeAllItems];
-            
-            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"All Projects"
-                                                          action:@selector (projectSelected:)
-                                                   keyEquivalent:@""];
-            item.tag = -1;
-            [_projectsSelector.menu addItem:item];
-            
-            for (int i = 0; i < _projects.count; i ++)
-            {
-                RKProject *d = [_projects objectAtIndex:i];
-                NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:d.name
-                                                              action:@selector (projectSelected:)
-                                                       keyEquivalent:@""];
-                item.tag = i;
-                [_projectsSelector.menu addItem:item];
-                
-                if (i == 0)
-                {
-                    selectedItem = item;
-                }
-            }
-            
-            [self projectSelected:selectedItem];
-        }*/
     }
 }
 

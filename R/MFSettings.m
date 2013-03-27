@@ -16,6 +16,7 @@
 #define KEY_TRACKERS        @"trackers"
 #define KEY_STATUSES        @"statuses"
 #define KEY_STATES          @"states"
+#define KEY_SEL_PROJ_ID     @"selectedProjectId"
 
 @implementation MFSettings
 {
@@ -181,6 +182,26 @@
 - (NSArray *)filtersStates
 {
     return [_defaults objectForKey:KEY_STATES];
+}
+
+#pragma mark - Projects
+
+- (void)setSelectedProjectId:(NSNumber *)selectedProjectId
+{
+    if (selectedProjectId)
+    {
+        [_defaults setObject:selectedProjectId forKey:KEY_SEL_PROJ_ID];
+        [_defaults synchronize];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:KEY_SEL_PROJ_ID];
+    }
+}
+
+- (NSNumber *)selectedProjectId
+{
+    return [_defaults objectForKey:KEY_SEL_PROJ_ID];
 }
 
 @end

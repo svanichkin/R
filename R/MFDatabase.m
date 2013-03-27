@@ -9,9 +9,11 @@
 #import "MFDatabase.h"
 #import "MFAppDelegate.h"
 
+#define PROJECT_ENTITY      @"Project"
+
 @implementation MFDatabase
 {
-    NSManagedObjectContext *_contextCoreData;
+    NSManagedObjectContext *_managedObjectContext;
 }
 
 + (MFDatabase *)sharedInstance
@@ -29,22 +31,24 @@
     if ((self = [super init]) != nil)
     {
         MFAppDelegate *app = [[NSApplication sharedApplication] delegate];
-        _contextCoreData = [app managedObjectContext];
+        _managedObjectContext = [app managedObjectContext];
     }
     return self;
 }
 
+#pragma mark - Work With All Objects
+
 - (id) newObjectByName:(NSString *)name
 {
    return [NSEntityDescription insertNewObjectForEntityForName:name
-                                        inManagedObjectContext:_contextCoreData];
+                                        inManagedObjectContext:_managedObjectContext];
 }
 
 - (id) objectByName:(NSString *)name
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
-                                               inManagedObjectContext:_contextCoreData];
+                                               inManagedObjectContext:_managedObjectContext];
     
     [fetchRequest setEntity:project];
     
@@ -53,12 +57,37 @@
 //    [fetchRequest setPredicate:predicate];
     
     NSError *error = nil;
-    return [_contextCoreData executeFetchRequest:fetchRequest error:&error];
+    return [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+}
+
+- (BOOL) deleteAllObjects:(NSString *) entityDescription
+{
+    NSArray *items = [self objectByName:entityDescription];    
+    
+    for (NSManagedObject *managedObject in items)
+    {
+    	[_managedObjectContext deleteObject:managedObject];
+    }
+    
+    return [self save];
 }
 
 - (BOOL) save
 {
     NSError *error = nil;
-    return [_contextCoreData save:&error];
+    return [_managedObjectContext save:&error];
 }
+
+#pragma mark - Work With Objects
+
+- (Project *) project
+{
+    return [self newObjectByName:PROJECT_ENTITY];
+}
+
+- (NSArray *) projects
+{
+    return [self objectByName:PROJECT_ENTITY];
+}
+
 @end

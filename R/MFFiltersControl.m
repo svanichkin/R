@@ -32,11 +32,6 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-    [super drawRect:dirtyRect];
-}
-
 - (void) filtersLoaded:(NSNotification *) notification
 {
     if ([notification.object boolValue])

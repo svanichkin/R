@@ -43,7 +43,7 @@
 
 - (void) sendEvent:(NSString *)event success:(BOOL)boolean
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:FILTERS_LOADED object:@(boolean)];
+    [[NSNotificationCenter defaultCenter] postNotificationName:event object:@(boolean)];
 }
 
 #pragma mark - Connection
@@ -120,12 +120,9 @@
 
 - (void) loadAllProjects
 {
+    //[_database deleteAllObjects:@"Project"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self loadProjectsWithOffset:0];
-    
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:FILTERS_LOADED success:YES];
-        });
     });
 }
 
@@ -140,7 +137,7 @@
     if (error)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:FILTERS_LOADED success:NO];
+            [self sendEvent:PROJECTS_LOADED success:NO];
         });
         return;
     }
@@ -152,33 +149,63 @@
     if (error)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:FILTERS_LOADED success:NO];
+            [self sendEvent:PROJECTS_LOADED success:NO];
         });
         return;
     }
     
-    NSArray *projects = [result objectForKey:@"projects"];
-    
-    for (NSDictionary *p in projects)
+    // Проверим, возможно такие проекты уже существуют
+    NSMutableArray *projects = [result objectForKey:@"projects"];
+    NSArray *oldProjects = [_database projects];
+    for (int i = 0; i < projects.count; i ++)
     {
-        Project *project = [_database newObjectByName:@"Project"];
-        project.name   = [p objectForKey:@"name"];
-        project.text   = [p objectForKey:@"description"];
-        project.pid    = [p objectForKey:@"id"];
-        project.create = [self dateFromString:[p objectForKey:@"created_on"]];
-        project.update = [self dateFromString:[p objectForKey:@"updated_on"]];
+        NSNumber *pid = [[projects objectAtIndex:i] objectForKey:@"id"];
+        for (Project *op in oldProjects)
+        {
+            if ([pid isEqualToNumber:op.pid])
+            {
+                // Проверка на предмет изменений полей, если такое случилось, требуется обновить объект
+                project.name   = [p objectForKey:@"name"];
+                project.text   = [p objectForKey:@"description"];
+                project.pid    = [p objectForKey:@"id"];
+                project.create = [self dateFromString:[p objectForKey:@"created_on"]];
+                project.update = [self dateFromString:[p objectForKey:@"updated_on"]];
+                
+                // Если никакие поля не изменились, удаляем объект
+                [projects removeObjectAtIndex:i --];
+                break;
+            }
+        }
+        continue;
     }
     
-    if (![_database save])
+    if (projects.count)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:FILTERS_LOADED success:NO];
-        });
-        return;
+        for (NSDictionary *p in projects)
+        {
+            Project *project = [_database project];
+            project.name   = [p objectForKey:@"name"];
+            project.text   = [p objectForKey:@"description"];
+            project.pid    = [p objectForKey:@"id"];
+            project.create = [self dateFromString:[p objectForKey:@"created_on"]];
+            project.update = [self dateFromString:[p objectForKey:@"updated_on"]];
+        }
+        
+        if (![_database save])
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self sendEvent:PROJECTS_LOADED success:NO];
+            });
+            return;
+        }
     }
     
     if (offset < [[result objectForKey:@"total_count"] intValue])
     {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sendEvent:PROJECTS_LOADED success:YES];
+        });
+        
         offset += 100;
         [self loadProjectsWithOffset:offset];
     }

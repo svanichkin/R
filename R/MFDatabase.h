@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Project.h"
 
 @interface MFDatabase : NSObject
 
 + (MFDatabase *)sharedInstance;
 
-- (id) newObjectByName:(NSString *)name;
-- (id) objectByName:(NSString *)name;
+- (BOOL) deleteAllObjects:(NSString *) entityDescription;
 - (BOOL) save;
+
+- (Project *) project;
+- (NSArray *) projects;
 
 @end

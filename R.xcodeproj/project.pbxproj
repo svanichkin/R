@@ -12,6 +12,7 @@
 		930BBC0C17034BC400B664C2 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC0B17034BC400B664C2 /* Issue.m */; };
 		930BBC0F17034BC500B664C2 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC0E17034BC500B664C2 /* Project.m */; };
 		930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC1117036EA700B664C2 /* MFDatabase.m */; };
+		930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC141703814600B664C2 /* MFProjectSelector.m */; };
 		936EED7816FF421700379492 /* background_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7716FF421700379492 /* background_small.png */; };
 		936EED7B16FF5F2D00379492 /* p1.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7916FF5F2D00379492 /* p1.png */; };
 		936EED7C16FF5F2D00379492 /* p2.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7A16FF5F2D00379492 /* p2.png */; };
@@ -78,6 +79,8 @@
 		930BBC0E17034BC500B664C2 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
 		930BBC1017036EA700B664C2 /* MFDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDatabase.h; sourceTree = "<group>"; };
 		930BBC1117036EA700B664C2 /* MFDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDatabase.m; sourceTree = "<group>"; };
+		930BBC131703814600B664C2 /* MFProjectSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFProjectSelector.h; sourceTree = "<group>"; };
+		930BBC141703814600B664C2 /* MFProjectSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFProjectSelector.m; sourceTree = "<group>"; };
 		936EED7716FF421700379492 /* background_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_small.png; sourceTree = "<group>"; };
 		936EED7916FF5F2D00379492 /* p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p1.png; sourceTree = "<group>"; };
 		936EED7A16FF5F2D00379492 /* p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p2.png; sourceTree = "<group>"; };
@@ -178,6 +181,8 @@
 			children = (
 				930BBBF71702D32100B664C2 /* MFFiltersControl.h */,
 				930BBBF81702D32100B664C2 /* MFFiltersControl.m */,
+				930BBC131703814600B664C2 /* MFProjectSelector.h */,
+				930BBC141703814600B664C2 /* MFProjectSelector.m */,
 			);
 			name = "Main Window";
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 				930BBC0C17034BC400B664C2 /* Issue.m in Sources */,
 				930BBC0F17034BC500B664C2 /* Project.m in Sources */,
 				930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */,
+				930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

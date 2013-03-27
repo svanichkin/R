@@ -21,6 +21,8 @@
 @property (nonatomic, readonly) BOOL filters;
 @property (nonatomic, weak) NSArray *filtersStates;
 
+@property (nonatomic, weak) NSNumber *selectedProjectId;
+
 + (MFSettings *)sharedInstance;
 
 @end

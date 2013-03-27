@@ -901,7 +901,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="277382908">
-									<int key="NSCellFlags">-2080374720</int>
+									<int key="NSCellFlags">-1543503808</int>
 									<int key="NSCellFlags2">2048</int>
 									<reference key="NSSupport" ref="800357623"/>
 									<string key="NSCellIdentifier">_NS:9</string>
@@ -945,7 +945,7 @@
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{59, 28}</string>
 							<string key="NSToolbarItemMaxSize">{280, 40}</string>
-							<bool key="NSToolbarItemEnabled">YES</bool>
+							<bool key="NSToolbarItemEnabled">NO</bool>
 							<bool key="NSToolbarItemAutovalidates">YES</bool>
 							<int key="NSToolbarItemTag">0</int>
 							<bool key="NSToolbarIsUserRemovable">YES</bool>
@@ -4847,7 +4847,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="792297068"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="706467105">
+										<object class="NSColor" key="NSShadowColor" id="545319505">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -4921,7 +4921,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="438149332"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="697385019">
+										<object class="NSColor" key="NSShadowColor" id="160746765">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -12907,7 +12907,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1704.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1704.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1704.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1704.IBViewIntegration.shadowColor" ref="706467105"/>
+				<reference key="1704.IBViewIntegration.shadowColor" ref="545319505"/>
 				<real value="1" key="1704.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1704.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1705.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -12918,7 +12918,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1890.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1890.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1890.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1890.IBViewIntegration.shadowColor" ref="697385019"/>
+				<reference key="1890.IBViewIntegration.shadowColor" ref="160746765"/>
 				<real value="1" key="1890.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1890.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1891.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -13839,6 +13839,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="783.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="784.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="787.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="843.CustomClassName">MFProjectSelector</string>
 				<string key="843.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="844.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="845.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -14017,6 +14018,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MFPreferencesPanel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MFProjectSelector</string>
+					<string key="superclassName">NSPopUpButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/MFProjectSelector.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
