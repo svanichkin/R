@@ -33,6 +33,7 @@
     
     _settings = [MFSettings sharedInstance];
     
+    // Если есть креды, делаем автоконнект к серверу
     if (_settings.credentials)
     {
         [[MFConnector sharedInstance] connect];
@@ -45,20 +46,25 @@
 {
     if ([notification.object boolValue])
     {
+        // Загрузка значений с сервера для генерации количества и названий сегментов
+        [[MFConnector sharedInstance] loadFilters];
+        
+        // Загрузка списка проектов
+        [[MFConnector sharedInstance] loadAllProjects];
         
         // Генерация выпадающего меню
-        _projects = [[MFConnector sharedInstance].redmine projects];
+        /*_projects = [[MFConnector sharedInstance].redmine projects];
 
         if (_projects)
         {
             NSMenuItem *selectedItem;
             [_projectsSelector.menu removeAllItems];
             
-            /*NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"All Projects"
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"All Projects"
                                                           action:@selector (projectSelected:)
                                                    keyEquivalent:@""];
             item.tag = -1;
-            [_projectsSelector.menu addItem:item];*/
+            [_projectsSelector.menu addItem:item];
             
             for (int i = 0; i < _projects.count; i ++)
             {
@@ -76,7 +82,7 @@
             }
             
             [self projectSelected:selectedItem];
-        }
+        }*/
     }
 }
 
@@ -164,11 +170,20 @@
         
         if (issue.fixedVersion.name)
         {
-            smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@.", smallHeader, issue.fixedVersion.name, [issue.status.name lowercaseString]];
+            smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@", smallHeader, issue.fixedVersion.name, [issue.status.name lowercaseString]];
         }
         else
         {
-            smallHeader = [NSString stringWithFormat:@"%@, %@.", smallHeader, [issue.status.name lowercaseString]];
+            smallHeader = [NSString stringWithFormat:@"%@, %@", smallHeader, [issue.status.name lowercaseString]];
+        }
+        
+        if ([issue.doneRatio intValue] > 0)
+        {
+            smallHeader = [NSString stringWithFormat:@"%@ %@%%.", smallHeader, issue.doneRatio];
+        }
+        else
+        {
+            smallHeader = [NSString stringWithFormat:@"%@.", smallHeader];
         }
         
         RKValue *h = issue.spentHours;

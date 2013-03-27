@@ -21,5 +21,9 @@
 
 - (void) loadFilters;
 
+- (void) loadAllProjects;
+
+- (void) loadTimeEntries;
+
 
 @end

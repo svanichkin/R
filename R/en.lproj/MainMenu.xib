@@ -751,9 +751,12 @@
 							<string key="NSToolbarItemPaletteLabel">Search</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSearchField" key="NSToolbarItemView" id="777590267">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {96, 22}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSearchFieldCell" key="NSCell" id="1038317519">
@@ -842,9 +845,12 @@
 							<string key="NSToolbarItemPaletteLabel">Add Issue</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSButton" key="NSToolbarItemView" id="447929788">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{4, 14}, {52, 50}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:1574</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="618921458">
@@ -886,9 +892,12 @@
 							<string key="NSToolbarItemPaletteLabel">Project</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSPopUpButton" key="NSToolbarItemView" id="206853979">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {280, 40}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="277382908">
@@ -1688,7 +1697,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 							<string key="NSFrame">{{-1, 481}, {881, 5}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="1070612530"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSOffsets">{0, 0}</string>
 							<object class="NSTextFieldCell" key="NSTitleCell">
@@ -1734,7 +1743,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 						</object>
 						<object class="NSSegmentedControl" id="183638698">
 							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">268</int>
+							<int key="NSvFlags">-2147483380</int>
 							<string key="NSFrame">{{-1, 482}, {239, 19}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
@@ -4838,7 +4847,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="792297068"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<reference key="NSShadowColor" ref="798712132"/>
+										<object class="NSColor" key="NSShadowColor" id="706467105">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MSAwLjgAA</bytes>
+										</object>
 									</object>
 									<string key="NSReuseIdentifierKey">_NS:20</string>
 									<string key="NSAntiCompressionPriority">{250, 750}</string>
@@ -4907,6 +4919,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<string key="NSFrame">{{7, 5}, {273, 34}}</string>
 									<reference key="NSSuperview" ref="255514237"/>
 									<reference key="NSNextKeyView" ref="438149332"/>
+									<object class="NSShadow" key="NSViewShadow">
+										<double key="NSShadowVert">1</double>
+										<object class="NSColor" key="NSShadowColor" id="697385019">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MSAwLjgAA</bytes>
+										</object>
+									</object>
 									<string key="NSReuseIdentifierKey">_NS:1535</string>
 									<int key="NSTag">5</int>
 									<bool key="NSEnabled">YES</bool>
@@ -12888,7 +12907,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1704.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1704.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1704.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1704.IBViewIntegration.shadowColor" ref="798712132"/>
+				<reference key="1704.IBViewIntegration.shadowColor" ref="706467105"/>
 				<real value="1" key="1704.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1704.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1705.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -12899,7 +12918,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1890.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1890.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1890.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1890.IBViewIntegration.shadowColor" ref="798712132"/>
+				<reference key="1890.IBViewIntegration.shadowColor" ref="697385019"/>
 				<real value="1" key="1890.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1890.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1891.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -12910,7 +12929,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</array>
 				<boolean value="NO" key="1941.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1941.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<reference key="1941.IBViewIntegration.shadowColor" ref="798712132"/>
+				<object class="NSColor" key="1941.IBViewIntegration.shadowColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MSAwLjgAA</bytes>
+				</object>
 				<real value="1" key="1941.IBViewIntegration.shadowOffsetHeight"/>
 				<string key="1944.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="195.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -13866,7 +13888,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6740</int>
+			<int key="maxID">6751</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

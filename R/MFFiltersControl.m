@@ -23,8 +23,8 @@
 	if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(connectionComplete:)
-                                                     name:CONNECT_COMPLETE
+                                                 selector:@selector(filtersLoaded:)
+                                                     name:FILTERS_LOADED
                                                    object:nil];
         
         _settings = [MFSettings sharedInstance];
@@ -37,15 +37,14 @@
     [super drawRect:dirtyRect];
 }
 
-- (void) connectionComplete:(NSNotification *) notification
+- (void) filtersLoaded:(NSNotification *) notification
 {
     if ([notification.object boolValue])
     {
-        // Загрузка значений с сервера для генерации количества и названий сегментов
-        [[MFConnector sharedInstance] loadFilters];
-        
         if (_settings.filters)
         {
+            self.hidden = NO;
+            
             _mainAction = self.action;
             _mainTarget = self.target;
             
@@ -86,6 +85,18 @@
                     [self setSelected:[[states objectAtIndex:i] boolValue] forSegment:i];
                 }
             }
+            // Если у нас приложение запущено первый раз, то выключим все фильтры
+            else
+            {
+                for (int i = 0; i < segmentsCount; i ++)
+                {
+                    [self setSelected:YES forSegment:i];
+                }
+            }
+        }
+        else
+        {
+            self.hidden = YES;
         }
     }
 }
