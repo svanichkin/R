@@ -39,10 +39,6 @@
         if (_settings.filters)
         {
             self.hidden = NO;
-            
-            _mainAction = self.action;
-            _mainTarget = self.target;
-            
             self.target = self;
             [self setAction:@selector(segmentChanged:)];
             
@@ -121,14 +117,7 @@
     }
     _settings.filtersStates = states;
     
-    // Передаем дальше событие
-    if (_mainTarget && _mainAction)
-    {
-        if ([_mainTarget respondsToSelector:_mainAction])
-        {
-            [_mainTarget performSelector:_mainAction withObject:sender afterDelay:0];
-        }
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:FILTERS_CHANGED object:nil];
 }
 
 @end

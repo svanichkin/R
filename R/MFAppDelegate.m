@@ -55,10 +55,10 @@
 }
 
 // Выбрали один из проектов
-- (void) projectSelected:(NSMenuItem *)item
+- (IBAction) projectSelected:(MFProjectSelector *)selector
 {
     // Скрываем правый фрейм
-    [_mainPageScroll setHidden:YES];
+    /*[_mainPageScroll setHidden:YES];
     
     // Скрываем нажатую ячейку
     if (_oldCellSelected)
@@ -69,46 +69,30 @@
     
     _projectSelected = item;
     
-    // Если тег -1, значит показываем все проекты (пока не сделано)
-    if (item.tag < 0)
+    // Загрузка задач по проекту
+    RKProject *projects = [_projects objectAtIndex:item.tag];
+    _issues = projects.issues;
+    
+    NSUInteger count = [_issuesArrayController.arrangedObjects count];
+    [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,count)]];
+    
+    for (RKIssue *i in _issues)
     {
-        for (RKProject *project in _projects)
+        if ([_filtersControl checkIssueWithStatusIndex:[i.status.index intValue]
+                                         priorityIndex:[i.priority.index intValue]
+                                       andTrackerIndex:[i.tracker.index intValue]])
         {
+        
+            NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
             
+            [_issuesArrayController addObject:@{@"text":[NSString stringWithFormat:@"%@", i.subject],
+                                                @"type":type,
+                                              @"number":[NSString stringWithFormat:@"#%@", i.index]}];
         }
     }
-    else
-    {
-        // Загрузка задач по проекту
-        RKProject *projects = [_projects objectAtIndex:item.tag];
-        _issues = projects.issues;
-        
-        NSUInteger count = [_issuesArrayController.arrangedObjects count];
-        [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,count)]];
-        
-        for (RKIssue *i in _issues)
-        {
-            if ([_filtersControl checkIssueWithStatusIndex:[i.status.index intValue]
-                                             priorityIndex:[i.priority.index intValue]
-                                           andTrackerIndex:[i.tracker.index intValue]])
-            {
-            
-                NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
-                
-                [_issuesArrayController addObject:@{@"text":[NSString stringWithFormat:@"%@", i.subject],
-                                                    @"type":type,
-                                                  @"number":[NSString stringWithFormat:@"#%@", i.index]}];
-            }
-        }
-        [_issuesTable reloadData];
-        [_issuesTable deselectAll:nil];
-    }
-}
-
-// Если выбрали фильтр
-- (IBAction) filterControlChanged:(id)sender
-{
-    [self projectSelected:_projectSelected];
+    [_issuesTable reloadData];
+    [_issuesTable deselectAll:nil];
+    */
 }
 
 #pragma mark - Table view callbacks

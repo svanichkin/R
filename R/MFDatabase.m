@@ -44,13 +44,20 @@
                                         inManagedObjectContext:_managedObjectContext];
 }
 
-- (id) objectByName:(NSString *)name
+- (id) objectByName:(NSString *)name sortingField:(NSString *)field
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
                                                inManagedObjectContext:_managedObjectContext];
     
     [fetchRequest setEntity:project];
+    
+    if(field)
+    {
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:field ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+    }
     
     
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pid > 1000"];
@@ -62,9 +69,27 @@
 
 - (BOOL) deleteAllObjects:(NSString *) entityDescription
 {
-    NSArray *items = [self objectByName:entityDescription];    
+    NSArray *items = [self objectByName:entityDescription sortingField:nil];
     
     for (NSManagedObject *managedObject in items)
+    {
+    	[_managedObjectContext deleteObject:managedObject];
+    }
+    
+    return [self save];
+}
+
+- (BOOL) deleteObject:(NSManagedObject *)object
+{
+    [_managedObjectContext deleteObject:object];
+    
+    return [self save];
+}
+
+
+- (BOOL) deleteObjects:(NSArray *)objects
+{
+    for (NSManagedObject *managedObject in objects)
     {
     	[_managedObjectContext deleteObject:managedObject];
     }
@@ -87,7 +112,7 @@
 
 - (NSArray *) projects
 {
-    return [self objectByName:PROJECT_ENTITY];
+    return [self objectByName:PROJECT_ENTITY sortingField:@"name"];
 }
 
 @end

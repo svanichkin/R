@@ -7,6 +7,13 @@
     #import <CoreData/CoreData.h>
 #endif
 
+// MFConnector
 #define CONNECT_COMPLETE    @"connectComplete"
 #define FILTERS_LOADED      @"filtersLoaded"
 #define PROJECTS_LOADED     @"projectsLoaded"
+
+// MFProjectSelector
+#define PROJECT_SELECTED    @"projectsSelected"
+
+// MFFiltersControl
+#define FILTERS_CHANGED     @"filtersChanged"

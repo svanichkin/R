@@ -40,19 +40,17 @@
         {
             [self.menu removeAllItems];
             
-            for (int i = 0; i < projects.count; i ++)
+            for (Project *p in projects)
             {
-                Project *p = [projects objectAtIndex:i];
-                
-                // !!!!!!!!! проверить, есть ли событие у самого селектора и подрубить его через интерфейс билдер
                 NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:p.name
                                                               action:@selector (projectSelected:)
                                                        keyEquivalent:@""];
+                item.target = self;
                 item.tag = [p.pid intValue];
                 [self.menu addItem:item];
             }
             
-            //!!!!!!!!!! проверить, если ноль и айдиеник значит не найден
+            // Сетим выбранный проект
             [self selectItemWithTag:[_settings.selectedProjectId intValue]];
         }
     
@@ -64,15 +62,8 @@
 {
     // Сохраним значения сегментов, что бы восстановить при следующем входе
     _settings.selectedProjectId = @(sender.tag);
-
-    // Передаем дальше событие
-    /*if (_mainTarget && _mainAction)
-    {
-        if ([_mainTarget respondsToSelector:_mainAction])
-        {
-            [_mainTarget performSelector:_mainAction withObject:sender afterDelay:0];
-        }
-    }*/
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
 }
 
 @end

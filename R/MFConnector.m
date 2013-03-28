@@ -16,6 +16,8 @@
 {
     MFSettings *_settings;
     MFDatabase *_database;
+
+    NSMutableArray *_newProjects;
 }
 
 + (MFConnector *)sharedInstance
@@ -85,6 +87,8 @@
 
 - (void) loadFilters
 {
+    [self sendEvent:FILTERS_LOADED success:YES];
+    
     _settings.filtersStatuses =   [[self loadFilterByPath:@"issue_statuses.json"] objectForKey:@"issue_statuses"];
     _settings.filtersTrackers =   [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
     _settings.filtersPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
@@ -120,14 +124,54 @@
 
 - (void) loadAllProjects
 {
+    [self sendEvent:PROJECTS_LOADED success:YES];
+
     //[_database deleteAllObjects:@"Project"];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self loadProjectsWithOffset:0];
+
+        // В этом массиве будут абсолютно все загруженные проекты
+        _newProjects = [NSMutableArray array];
+        
+        // Начинаем рекурсивную загрузку, если она успешна продолжим
+        if ([self loadProjectsWithOffset:0])
+        {
+            // Если длина массива хранимых значений больше чем длина пришедших данных,
+            // значит, у нас какие то значения нужно удалить (проекты были удалены)
+            NSMutableArray *oldProjects = [NSMutableArray arrayWithArray:[_database projects]];
+            if (oldProjects.count > _newProjects.count)
+            {
+                for (int i = 0; i < oldProjects.count; i ++)
+                {
+                    Project *op = [oldProjects objectAtIndex:i];
+                    for (int j = 0; j < _newProjects.count; j ++)
+                    {
+                        NSDictionary *np = [_newProjects objectAtIndex:j];
+                        if ([[np objectForKey:@"id"] isEqualToNumber:op.pid])
+                        {
+                            // Затем удаляем объект новых
+                            [_newProjects removeObjectAtIndex:j --];
+                            [oldProjects removeObjectAtIndex:i --];
+                            break;
+                        }
+                    }
+                    continue;
+                }
+                
+                // Удаляем из базы проекты которые были удалены на серваке
+                if (oldProjects.count)
+                {
+                    [_database deleteObjects:oldProjects];
+                    [self sendEvent:PROJECTS_LOADED success:YES];
+                }
+            }
+        }
     });
 }
 
-- (void) loadProjectsWithOffset:(int)offset
+- (BOOL) loadProjectsWithOffset:(int)offset
 {
+    // Грузим проекты рекурсивно
     NSError *error = nil;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
     NSData *jsonData = [NSData dataWithContentsOfURL:url
@@ -139,7 +183,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self sendEvent:PROJECTS_LOADED success:NO];
         });
-        return;
+        return NO;
     }
     
     error = nil;
@@ -151,37 +195,46 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self sendEvent:PROJECTS_LOADED success:NO];
         });
-        return;
+        return NO;
     }
     
-    // Проверим, возможно такие проекты уже существуют
-    NSMutableArray *projects = [result objectForKey:@"projects"];
+    // Добавляем все новые проекты в один массив, что бы потом про сравнении двух массивов понять, какие из проектов были удалены
+    [_newProjects addObjectsFromArray:[result objectForKey:@"projects"]];
+    
+    // Проверим, возможно такие проекты уже существуют, если существуют выкинем их, а если существуют и изменялись на сервере, то обновим
+    BOOL changed = NO;
+    NSMutableArray *newProjects = [result objectForKey:@"projects"];
     NSArray *oldProjects = [_database projects];
-    for (int i = 0; i < projects.count; i ++)
+    for (int i = 0; i < newProjects.count; i ++)
     {
-        NSNumber *pid = [[projects objectAtIndex:i] objectForKey:@"id"];
+        NSDictionary *p = [newProjects objectAtIndex:i];
+        NSNumber *pid = [p objectForKey:@"id"];
         for (Project *op in oldProjects)
         {
             if ([pid isEqualToNumber:op.pid])
             {
-                // Проверка на предмет изменений полей, если такое случилось, требуется обновить объект
-                project.name   = [p objectForKey:@"name"];
-                project.text   = [p objectForKey:@"description"];
-                project.pid    = [p objectForKey:@"id"];
-                project.create = [self dateFromString:[p objectForKey:@"created_on"]];
-                project.update = [self dateFromString:[p objectForKey:@"updated_on"]];
+                // Проверям если пришел измененный объект, то обновим
+                NSDate *tmpd = [self dateFromString:[p objectForKey:@"updated_on"]];
+                if(!([op.update compare:tmpd] == NSOrderedSame))
+                {
+                    op.text = [p objectForKey:@"description"];
+                    op.name = [p objectForKey:@"name"];
+                    op.update = tmpd;
+                    changed = YES;
+                }
                 
-                // Если никакие поля не изменились, удаляем объект
-                [projects removeObjectAtIndex:i --];
+                // Затем удаляем объект из новых, т.к. он нам теперь не нужен
+                [newProjects removeObjectAtIndex:i --];
                 break;
             }
         }
         continue;
     }
     
-    if (projects.count)
+    // Сохраняем в базу новые объекты
+    if (newProjects.count)
     {
-        for (NSDictionary *p in projects)
+        for (NSDictionary *p in newProjects)
         {
             Project *project = [_database project];
             project.name   = [p objectForKey:@"name"];
@@ -190,16 +243,21 @@
             project.create = [self dateFromString:[p objectForKey:@"created_on"]];
             project.update = [self dateFromString:[p objectForKey:@"updated_on"]];
         }
-        
+    }
+    
+    // Save
+    if (newProjects.count || changed)
+    {
         if (![_database save])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self sendEvent:PROJECTS_LOADED success:NO];
             });
-            return;
+            return NO;
         }
     }
     
+    // Если у нас total меньше чем offsef, то делаем рекурсивно вызов на загрузку сл. offseta
     if (offset < [[result objectForKey:@"total_count"] intValue])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -207,8 +265,10 @@
         });
         
         offset += 100;
-        [self loadProjectsWithOffset:offset];
+        return [self loadProjectsWithOffset:offset];
     }
+    
+    return YES;
 }
 
 - (NSDate *) dateFromString:(NSString *)dateString

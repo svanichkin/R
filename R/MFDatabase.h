@@ -14,6 +14,8 @@
 + (MFDatabase *)sharedInstance;
 
 - (BOOL) deleteAllObjects:(NSString *) entityDescription;
+- (BOOL) deleteObject:(NSManagedObject *)object;
+- (BOOL) deleteObjects:(NSArray *)objects;
 - (BOOL) save;
 
 - (Project *) project;

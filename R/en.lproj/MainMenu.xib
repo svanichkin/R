@@ -755,7 +755,6 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {96, 22}}</string>
 								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
@@ -849,7 +848,6 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{4, 14}, {52, 50}}</string>
 								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:1574</string>
 								<bool key="NSEnabled">YES</bool>
@@ -896,7 +894,6 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {280, 40}}</string>
 								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
@@ -1798,7 +1795,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="964887300"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 800}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{880, 582}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<int key="NSWindowAnimationBehavior">3</int>
@@ -2199,7 +2196,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 					<reference key="NSNextKeyView" ref="177013382"/>
 					<string key="NSReuseIdentifierKey">_NS:21</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 800}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{282, 351}</string>
 				<string key="NSMaxSize">{282, 351}</string>
 				<int key="NSWindowAnimationBehavior">4</int>
@@ -4598,14 +4595,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">projectsSelector</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="206853979"/>
-					</object>
-					<int key="connectionID">1669</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">issuesTable</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="768160300"/>
@@ -4619,14 +4608,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="destination" ref="233434062"/>
 					</object>
 					<int key="connectionID">1675</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">filterControlChanged:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="183638698"/>
-					</object>
-					<int key="connectionID">6692</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4643,14 +4624,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="destination" ref="343745084"/>
 					</object>
 					<int key="connectionID">6695</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">filtersControl</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="183638698"/>
-					</object>
-					<int key="connectionID">6736</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4847,7 +4820,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="792297068"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="545319505">
+										<object class="NSColor" key="NSShadowColor" id="743197208">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -4921,7 +4894,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="438149332"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="160746765">
+										<object class="NSColor" key="NSShadowColor" id="536900320">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -12907,7 +12880,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1704.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1704.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1704.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1704.IBViewIntegration.shadowColor" ref="545319505"/>
+				<reference key="1704.IBViewIntegration.shadowColor" ref="743197208"/>
 				<real value="1" key="1704.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1704.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1705.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -12918,7 +12891,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1890.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1890.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1890.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1890.IBViewIntegration.shadowColor" ref="160746765"/>
+				<reference key="1890.IBViewIntegration.shadowColor" ref="536900320"/>
 				<real value="1" key="1890.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1890.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1891.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -13889,7 +13862,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6751</int>
+			<int key="maxID">6752</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -13897,13 +13870,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string key="className">MFAppDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="filterControlChanged:">id</string>
+						<string key="filterControlChanged:">MFFiltersControl</string>
 						<string key="issuesCellSelected:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="filterControlChanged:">
 							<string key="name">filterControlChanged:</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">MFFiltersControl</string>
 						</object>
 						<object class="IBActionInfo" key="issuesCellSelected:">
 							<string key="name">issuesCellSelected:</string>
@@ -13916,7 +13889,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<string key="issuesTable">NSTableView</string>
 						<string key="mainPageScroll">NSScrollView</string>
 						<string key="preferencesPanel">MFPreferencesPanel</string>
-						<string key="projectsSelector">NSPopUpButton</string>
 						<string key="smallHeader">NSTextField</string>
 						<string key="window">NSWindow</string>
 					</dictionary>
@@ -13940,10 +13912,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<object class="IBToOneOutletInfo" key="preferencesPanel">
 							<string key="name">preferencesPanel</string>
 							<string key="candidateClassName">MFPreferencesPanel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="projectsSelector">
-							<string key="name">projectsSelector</string>
-							<string key="candidateClassName">NSPopUpButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="smallHeader">
 							<string key="name">smallHeader</string>
