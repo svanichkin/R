@@ -1794,7 +1794,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="964887300"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 800}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{880, 582}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<int key="NSWindowAnimationBehavior">3</int>
@@ -1966,7 +1966,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 											<object class="NSTextFieldCell" key="NSCell" id="254764406">
 												<int key="NSCellFlags">-1804599231</int>
 												<int key="NSCellFlags2">272630784</int>
-												<string key="NSContents"/>
+												<string key="NSContents">test_user_account</string>
 												<reference key="NSSupport" ref="800357623"/>
 												<string key="NSCellIdentifier">_NS:9</string>
 												<reference key="NSControlView" ref="339479830"/>
@@ -2035,7 +2035,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 											<object class="NSSecureTextFieldCell" key="NSCell" id="390063255">
 												<int key="NSCellFlags">342884416</int>
 												<int key="NSCellFlags2">272630848</int>
-												<string key="NSContents"/>
+												<string key="NSContents">test_user_account</string>
 												<reference key="NSSupport" ref="800357623"/>
 												<string key="NSCellIdentifier">_NS:9</string>
 												<reference key="NSControlView" ref="625693183"/>
@@ -2081,7 +2081,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 											<object class="NSTextFieldCell" key="NSCell" id="279738061">
 												<int key="NSCellFlags">-1804599231</int>
 												<int key="NSCellFlags2">272630784</int>
-												<string key="NSContents"/>
+												<string key="NSContents">http://demo.redmine.org</string>
 												<reference key="NSSupport" ref="800357623"/>
 												<string key="NSCellIdentifier">_NS:9</string>
 												<reference key="NSControlView" ref="687516213"/>
@@ -2186,7 +2186,7 @@ c3MgNTAlLiBTcGVudCB0aW1lIDAuOSBob3VyLg</string>
 					<reference key="NSNextKeyView" ref="177013382"/>
 					<string key="NSReuseIdentifierKey">_NS:21</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 800}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{282, 351}</string>
 				<string key="NSMaxSize">{282, 351}</string>
 				<int key="NSWindowAnimationBehavior">4</int>
@@ -4746,7 +4746,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="792297068"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="1024472524">
+										<object class="NSColor" key="NSShadowColor" id="715123048">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -4820,7 +4820,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 									<reference key="NSNextKeyView" ref="438149332"/>
 									<object class="NSShadow" key="NSViewShadow">
 										<double key="NSShadowVert">1</double>
-										<object class="NSColor" key="NSShadowColor" id="227242715">
+										<object class="NSColor" key="NSShadowColor" id="564393360">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwLjgAA</bytes>
 										</object>
@@ -12804,7 +12804,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1704.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1704.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1704.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1704.IBViewIntegration.shadowColor" ref="1024472524"/>
+				<reference key="1704.IBViewIntegration.shadowColor" ref="715123048"/>
 				<real value="1" key="1704.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1704.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1705.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -12815,7 +12815,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<boolean value="NO" key="1890.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="1890.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="0.0" key="1890.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="1890.IBViewIntegration.shadowColor" ref="227242715"/>
+				<reference key="1890.IBViewIntegration.shadowColor" ref="564393360"/>
 				<real value="1" key="1890.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="0.0" key="1890.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="1891.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -13793,17 +13793,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<object class="IBPartialClassDescription">
 					<string key="className">MFAppDelegate</string>
 					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">issuesCellSelected:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">issuesCellSelected:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">issuesCellSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="mainPageScroll">NSScrollView</string>
 						<string key="preferencesPanel">MFPreferencesPanel</string>

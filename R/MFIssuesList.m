@@ -38,7 +38,7 @@
 {
     if ([notification.object boolValue])
     {
-        NSArray *projects = [[MFDatabase sharedInstance] projects];
+        /*NSArray *projects = [[MFDatabase sharedInstance] projects];
         
         // Генерация таблицы
         if (projects)
@@ -59,12 +59,12 @@
             [self selectItemWithTag:[_settings.selectedProjectId intValue]];
         }
         
-        [self setEnabled:projects.count];
+        [self setEnabled:projects.count];*/
     }
 }
 
 // Выбрали один из проектов
-- (IBAction) projectSelected:(MFProjectSelector *)selector
+- (void) projectSelected:(NSNotification *) notification
 {
     // Скрываем правый фрейм
     /*[_mainPageScroll setHidden:YES];
@@ -109,5 +109,15 @@
     
 }
 
+- (void) issueSelected:(NSMenuItem *)sender
+{
+    /*if ([_settings.selectedProjectId intValue] != sender.tag)
+    {
+        // Сохраним значения сегментов, что бы восстановить при следующем входе
+        _settings.selectedProjectId = @(sender.tag);
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
+    }*/
+}
 
 @end

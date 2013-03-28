@@ -60,10 +60,13 @@
 
 - (void) projectSelected:(NSMenuItem *)sender
 {
-    // Сохраним значения сегментов, что бы восстановить при следующем входе
-    _settings.selectedProjectId = @(sender.tag);
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
+    if ([_settings.selectedProjectId intValue] != sender.tag)
+    {
+        // Сохраним значения сегментов, что бы восстановить при следующем входе
+        _settings.selectedProjectId = @(sender.tag);
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
+    }
 }
 
 @end

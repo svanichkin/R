@@ -61,8 +61,8 @@
     {
         _connectionProgress = YES;
         
-        _redmine.username = login;
-        _redmine.password = password;
+        _redmine.username      = login;
+        _redmine.password      = password;
         _redmine.serverAddress = server;
         
         [_redmine login];
@@ -75,8 +75,8 @@
     
     if ([success boolValue])
     {
-        [MFSettings sharedInstance].server = _redmine.serverAddress;
-        [MFSettings sharedInstance].login = _redmine.username;
+        [MFSettings sharedInstance].server   = _redmine.serverAddress;
+        [MFSettings sharedInstance].login    = _redmine.username;
         [MFSettings sharedInstance].password = _redmine.password;
     }
     
@@ -87,13 +87,57 @@
 
 - (void) loadFilters
 {
-    [self sendEvent:FILTERS_LOADED success:YES];
+    if (_settings.filtersLastUpdate)
+    {
+        [self sendEvent:FILTERS_LOADED success:YES];
+    }
     
-    _settings.filtersStatuses =   [[self loadFilterByPath:@"issue_statuses.json"] objectForKey:@"issue_statuses"];
-    _settings.filtersTrackers =   [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
-    _settings.filtersPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
+    _settings.projectsLastUpdate = [NSDate date];
     
-    [self sendEvent:FILTERS_LOADED success:_settings.filters];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        NSArray *newStatuses   = [[self loadFilterByPath:@"issue_statuses.json"] objectForKey:@"issue_statuses"];
+        NSArray *newTrackers   = [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
+        NSArray *newPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
+        
+        [_database deleteAllObjects:@"Status"];
+        [_database deleteAllObjects:@"Tracker"];
+        [_database deleteAllObjects:@"Priority"];
+        
+        if (newStatuses && newTrackers && newPriorities)
+        {
+            for (NSDictionary *ns in newStatuses)
+            {
+                Status *status = _database.status;
+                status.name = [ns objectForKey:@"name"];
+                status.sid  = [ns objectForKey:@"id"];
+            }
+            
+            for (NSDictionary *t in newTrackers)
+            {
+                Tracker *tracker = _database.tracker;
+                tracker.name = [t objectForKey:@"name"];
+                tracker.tid  = [t objectForKey:@"id"];
+            }
+            for (NSDictionary *p in newPriorities)
+            {
+                Priority *priority = _database.priority;
+                priority.name = [p objectForKey:@"name"];
+                priority.pid  = [p objectForKey:@"id"];
+            }
+            
+            if ([_database save])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self sendEvent:FILTERS_LOADED success:YES];
+                });
+                return;
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sendEvent:FILTERS_LOADED success:NO];
+        });
+    });
 }
 
 - (NSDictionary *) loadFilterByPath:(NSString *)path
@@ -131,7 +175,7 @@
 
     _settings.projectsLastUpdate = [NSDate date];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 
         // В этом массиве будут абсолютно все загруженные проекты
         _newProjects = [NSMutableArray array];
@@ -220,9 +264,11 @@
                 NSDate *tmpd = [self dateFromString:[p objectForKey:@"updated_on"]];
                 if(!([op.update compare:tmpd] == NSOrderedSame))
                 {
-                    op.text = [p objectForKey:@"description"];
-                    op.name = [p objectForKey:@"name"];
+                    op.sid    = [p objectForKey:@"identifier"];
+                    op.text   = [p objectForKey:@"description"];
+                    op.name   = [p objectForKey:@"name"];
                     op.update = tmpd;
+                    
                     changed = YES;
                 }
                 
@@ -241,6 +287,7 @@
         {
             Project *project = [_database project];
             project.name   = [p objectForKey:@"name"];
+            project.sid    = [p objectForKey:@"identifier"];
             project.text   = [p objectForKey:@"description"];
             project.pid    = [p objectForKey:@"id"];
             project.create = [self dateFromString:[p objectForKey:@"created_on"]];
@@ -297,6 +344,46 @@
     }
     
     _settings.projectsLastUpdate = [NSDate date];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        // В этом массиве будут абсолютно все загруженные проекты
+        _newProjects = [NSMutableArray array];
+        
+        // Начинаем рекурсивную загрузку, если она успешна продолжим
+        if ([self loadProjectsWithOffset:0])
+        {
+            // Если длина массива хранимых значений больше чем длина пришедших данных,
+            // значит, у нас какие то значения нужно удалить (проекты были удалены)
+            NSMutableArray *oldProjects = [NSMutableArray arrayWithArray:[_database projects]];
+            if (oldProjects.count > _newProjects.count)
+            {
+                for (int i = 0; i < oldProjects.count; i ++)
+                {
+                    Project *op = [oldProjects objectAtIndex:i];
+                    for (int j = 0; j < _newProjects.count; j ++)
+                    {
+                        NSDictionary *np = [_newProjects objectAtIndex:j];
+                        if ([[np objectForKey:@"id"] isEqualToNumber:op.pid])
+                        {
+                            // Затем удаляем объект новых
+                            [_newProjects removeObjectAtIndex:j --];
+                            [oldProjects removeObjectAtIndex:i --];
+                            break;
+                        }
+                    }
+                    continue;
+                }
+                
+                // Удаляем из базы проекты которые были удалены на серваке
+                if (oldProjects.count)
+                {
+                    [_database deleteObjects:oldProjects];
+                    [self sendEvent:PROJECTS_LOADED success:YES];
+                }
+            }
+        }
+    });
     
 }
 

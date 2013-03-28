@@ -9,12 +9,15 @@
 #import "MFFiltersControl.h"
 #import "MFConnector.h"
 #import "MFSettings.h"
+#import "MFDatabase.h"
 
 @implementation MFFiltersControl
 {
     MFSettings *_settings;
     SEL _mainAction;
     id _mainTarget;
+    NSInteger _statusesCount;
+    NSInteger _trackersCount;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -36,35 +39,39 @@
 {
     if ([notification.object boolValue])
     {
-        if (_settings.filters)
+        if (_settings.filtersLastUpdate)
         {
             self.hidden = NO;
             self.target = self;
             [self setAction:@selector(segmentChanged:)];
             
+            MFDatabase *database = [MFDatabase sharedInstance];
+            
             // Генерация кнопок с названиями фильтров
-            NSArray *statuses = _settings.filtersStatuses;
-            NSArray *trackers = _settings.filtersTrackers;
-            NSArray *priorities = _settings.filtersPriorities;
+            NSArray *statuses   = database.statuses;
+            NSArray *trackers   = database.trackers;
+            NSArray *priorities = database.priorities;
+            
+            _statusesCount = statuses.count;
+            _trackersCount = trackers.count;
             
             NSInteger segmentsCount = statuses.count + trackers.count + priorities.count;
             [self setSegmentCount:segmentsCount];
             
             int i = 0;
-            for (NSDictionary *status in statuses)
+            for (Status *status in statuses)
             {
-                
-                [self setLabel:[status objectForKey:@"name"] forSegment:i ++];
+                [self setLabel:status.name forSegment:i ++];
             }
             
-            for (NSDictionary *tracker in trackers)
+            for (Tracker *tracker in trackers)
             {
-                [self setLabel:[tracker objectForKey:@"name"] forSegment:i ++];
+                [self setLabel:tracker.name forSegment:i ++];
             }
             
-            for (NSDictionary *prioritie in priorities)
+            for (Priority *priority in priorities)
             {
-                [self setLabel:[prioritie objectForKey:@"name"] forSegment:i ++];
+                [self setLabel:priority.name forSegment:i ++];
             }
 
             // Загрузка сохраненных значений, если имеются и подходят
@@ -95,8 +102,8 @@
 // Проверяем, проходит ли задача через фильтр или нет
 - (BOOL) checkIssueWithStatusIndex:(int)status priorityIndex:(int)priority andTrackerIndex:(int)tracker
 {
-    NSInteger statusesCount = _settings.filtersStatuses.count - 1;
-    NSInteger trackersCount = _settings.filtersTrackers.count - 1;
+    NSInteger statusesCount = _statusesCount - 1;
+    NSInteger trackersCount = _trackersCount - 1;
     
     BOOL statusSegmentPressed =   [self isSelectedForSegment:status - 1];
     BOOL trackerSegmentPressed =  [self isSelectedForSegment:statusesCount + tracker];

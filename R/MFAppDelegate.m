@@ -39,7 +39,7 @@
         [[MFConnector sharedInstance] connect];
     }
     
-    [_issuesTable setAction:@selector(issuesCellSelected:)];
+    //[_issuesTable setAction:@selector(issuesCellSelected:)];
 }
 
 - (void) connectionComplete:(NSNotification *) notification
@@ -53,7 +53,7 @@
         [[MFConnector sharedInstance] loadProjects];
         
         // Загрузка списка задач
-        [[MFConnector sharedInstance] loadIssues];
+        //[[MFConnector sharedInstance] loadIssues];
     }
 }
 
@@ -62,7 +62,7 @@
 // Если выбрали задачу в левом окне
 - (void) issuesCellSelected:(NSTableView *)sender
 {
-    if (_oldCellSelected)
+    /*if (_oldCellSelected)
     {
         [[_oldCellSelected viewWithTag:1] setHidden:NO];
         [[_oldCellSelected viewWithTag:2] setHidden:YES];
@@ -112,7 +112,7 @@
     else
     {
         [_mainPageScroll setHidden:YES];
-    }
+    }*/
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ru.macflash.R" in the user's Application Support directory.

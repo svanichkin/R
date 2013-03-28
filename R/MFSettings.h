@@ -15,10 +15,7 @@
 @property (nonatomic, weak) NSString *password;
 @property (nonatomic, readonly) BOOL credentials;
 
-@property (nonatomic, weak) NSArray *filtersPriorities;
-@property (nonatomic, weak) NSArray *filtersStatuses;
-@property (nonatomic, weak) NSArray *filtersTrackers;
-@property (nonatomic, readonly) BOOL filters;
+@property (nonatomic, weak) NSDate *filtersLastUpdate;
 @property (nonatomic, weak) NSArray *filtersStates;
 
 @property (nonatomic, weak) NSNumber *selectedProjectId;

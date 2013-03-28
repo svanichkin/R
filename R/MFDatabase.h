@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "Project.h"
+
+#import "Tracker.h"
+#import "Status.h"
+#import "Priority.h"
 
 @interface MFDatabase : NSObject
 
@@ -20,5 +25,12 @@
 
 - (Project *) project;
 - (NSArray *) projects;
+
+- (Tracker *) tracker;
+- (NSArray *) trackers;
+- (Status *) status;
+- (NSArray *) statuses;
+- (Priority *) priority;
+- (NSArray *) priorities;
 
 @end

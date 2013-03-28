@@ -12,10 +12,8 @@
 #define KEY_LOGIN           @"login"
 #define KEY_PASSWORD        @"password"
 
-#define KEY_PRIORITIES      @"priorities"
-#define KEY_TRACKERS        @"trackers"
-#define KEY_STATUSES        @"statuses"
 #define KEY_STATES          @"states"
+#define KEY_FILT_LAST_UPD   @"filtersLastUpdate"
 
 #define KEY_SEL_PROJ_ID     @"selectedProjectId"
 #define KEY_PROJ_LAST_UPD   @"projectsLastUpdate"
@@ -113,63 +111,22 @@
 
 #pragma mark - Filters
 
-- (void)setFiltersPriorities:(NSArray *)filtersPriorities
+- (void) setFiltersLastUpdate:(NSDate *) filtersLastUpdate
 {
-    if (filtersPriorities)
+    if (filtersLastUpdate)
     {
-        [_defaults setObject:filtersPriorities forKey:KEY_PRIORITIES];
+        [_defaults setObject:filtersLastUpdate forKey:KEY_FILT_LAST_UPD];
         [_defaults synchronize];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_PRIORITIES];
+        [_defaults removeObjectForKey:KEY_FILT_LAST_UPD];
     }
 }
 
-- (NSArray *)filtersPriorities
+- (NSDate *) filtersLastUpdate
 {
-    return [_defaults objectForKey:KEY_PRIORITIES];
-}
-
-- (void)setFiltersStatuses:(NSArray *)filtersStatuses
-{
-    if (filtersStatuses)
-    {
-        [_defaults setObject:filtersStatuses forKey:KEY_STATUSES];
-        [_defaults synchronize];
-    }
-    else
-    {
-        [_defaults removeObjectForKey:KEY_STATUSES];
-    }
-}
-
-- (NSArray *)filtersStatuses
-{
-    return [_defaults objectForKey:KEY_STATUSES];
-}
-
-- (void)setFiltersTrackers:(NSArray *)filtersTrackers
-{
-    if (filtersTrackers)
-    {
-        [_defaults setObject:filtersTrackers forKey:KEY_TRACKERS];
-        [_defaults synchronize];
-    }
-    else
-    {
-        [_defaults removeObjectForKey:KEY_TRACKERS];
-    }
-}
-
-- (NSArray *)filtersTrackers
-{
-    return [_defaults objectForKey:KEY_TRACKERS];
-}
-
-- (BOOL) filters
-{
-    return (self.filtersPriorities && self.filtersStatuses && self.filtersTrackers);
+    return [_defaults objectForKey:KEY_PROJ_LAST_UPD];
 }
 
 - (void)setFiltersStates:(NSArray *)filtersStates
@@ -185,14 +142,14 @@
     }
 }
 
-- (NSArray *)filtersStates
+- (NSArray *) filtersStates
 {
     return [_defaults objectForKey:KEY_STATES];
 }
 
 #pragma mark - Projects
 
-- (void)setSelectedProjectId:(NSNumber *)selectedProjectId
+- (void) setSelectedProjectId:(NSNumber *)selectedProjectId
 {
     if (selectedProjectId)
     {
@@ -205,12 +162,12 @@
     }
 }
 
-- (NSNumber *)selectedProjectId
+- (NSNumber *) selectedProjectId
 {
     return [_defaults objectForKey:KEY_SEL_PROJ_ID];
 }
 
-- (void)setProjectsLastUpdate:(NSDate *)projectsLastUpdate
+- (void) setProjectsLastUpdate:(NSDate *)projectsLastUpdate
 {
     if (projectsLastUpdate)
     {
@@ -223,14 +180,14 @@
     }
 }
 
-- (NSDate *)projectsLastUpdate
+- (NSDate *) projectsLastUpdate
 {
     return [_defaults objectForKey:KEY_PROJ_LAST_UPD];
 }
 
 #pragma mark - Issues
 
-- (void)setSelectedIssueId:(NSNumber *)selectedIssueId
+- (void) setSelectedIssueId:(NSNumber *)selectedIssueId
 {
     if (selectedIssueId)
     {
@@ -243,12 +200,12 @@
     }
 }
 
-- (NSNumber *)selectedIssueId
+- (NSNumber *) selectedIssueId
 {
     return [_defaults objectForKey:KEY_SEL_ISSUE_ID];
 }
 
-- (void)setIssuesLastUpdate:(NSDate *)issuesLastUpdate
+- (void) setIssuesLastUpdate:(NSDate *)issuesLastUpdate
 {
     if (issuesLastUpdate)
     {
@@ -261,7 +218,7 @@
     }
 }
 
-- (NSDate *)issuesLastUpdate
+- (NSDate *) issuesLastUpdate
 {
     return [_defaults objectForKey:KEY_ISSUES_LAST_UPD];
 }

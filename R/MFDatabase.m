@@ -11,6 +11,10 @@
 
 #define PROJECT_ENTITY      @"Project"
 
+#define TRACKER_ENTITY      @"Tracker"
+#define STATUS_ENTITY       @"Status"
+#define PRIORITY_ENTITY     @"Priority"
+
 @implementation MFDatabase
 {
     NSManagedObjectContext *_managedObjectContext;
@@ -113,6 +117,38 @@
 - (NSArray *) projects
 {
     return [self objectByName:PROJECT_ENTITY sortingField:@"name"];
+}
+
+#pragma mark - Filters
+
+- (Tracker *) tracker
+{
+    return [self newObjectByName:TRACKER_ENTITY];
+}
+
+- (NSArray *) trackers
+{
+    return [self objectByName:TRACKER_ENTITY sortingField:@"tid"];
+}
+
+- (Status *) status
+{
+    return [self newObjectByName:STATUS_ENTITY];
+}
+
+- (NSArray *) statuses
+{
+    return [self objectByName:STATUS_ENTITY sortingField:@"sid"];
+}
+
+- (Priority *) priority
+{
+    return [self newObjectByName:PRIORITY_ENTITY];
+}
+
+- (NSArray *) priorities
+{
+    return [self objectByName:PRIORITY_ENTITY sortingField:@"pid"];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  Project.h
 //  R
 //
-//  Created by Сергей Ваничкин on 27.03.13.
+//  Created by Сергей Ваничкин on 28.03.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSNumber * pid;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSDate * update;
+@property (nonatomic, retain) NSString * sid;
 @property (nonatomic, retain) NSSet *issue;
 @end
 

@@ -1,21 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Issue" representedClassName="Issue" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="done" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="estimated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="finish" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="iid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="spent" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="start" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="assigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" syncable="YES"/>
         <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="issue" inverseEntity="Project" syncable="YES"/>
+        <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" syncable="YES"/>
+        <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" syncable="YES"/>
+        <relationship name="version" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Version" syncable="YES"/>
+    </entity>
+    <entity name="Priority" representedClassName="Priority" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Project" representedClassName="Project" syncable="YES">
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="pid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="issue" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="project" inverseEntity="Issue" syncable="YES"/>
-        <fetchedProperty name="from1000" optional="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="Project" predicateString="pid > 1000"/>
-        </fetchedProperty>
+    </entity>
+    <entity name="Status" representedClassName="Status" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Tracker" representedClassName="Tracker" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Version" representedClassName="Version" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="vid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Project" positionX="160" positionY="192" width="128" height="161"/>
-        <element name="Issue" positionX="333" positionY="198" width="128" height="58"/>
+        <element name="Project" positionX="160" positionY="192" width="128" height="148"/>
+        <element name="Issue" positionX="333" positionY="198" width="128" height="298"/>
+        <element name="Tracker" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Status" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Priority" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="User" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Version" positionX="160" positionY="192" width="128" height="75"/>
     </elements>
 </model>
