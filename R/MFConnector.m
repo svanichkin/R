@@ -122,11 +122,14 @@
 
 #pragma mark - Load Projects
 
-- (void) loadAllProjects
+- (void) loadProjects
 {
-    [self sendEvent:PROJECTS_LOADED success:YES];
+    if (_settings.projectsLastUpdate)
+    {
+        [self sendEvent:PROJECTS_LOADED success:YES];
+    }
 
-    //[_database deleteAllObjects:@"Project"];
+    _settings.projectsLastUpdate = [NSDate date];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 
@@ -282,6 +285,19 @@
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
     return [dateFormat dateFromString:dateString];
+}
+
+#pragma mark - Load Issues
+
+- (void) loadIssues
+{
+    if (_settings.projectsLastUpdate)
+    {
+        [self sendEvent:ISSUES_LOADED success:YES];
+    }
+    
+    _settings.projectsLastUpdate = [NSDate date];
+    
 }
 
 #pragma mark - Load Time Entries

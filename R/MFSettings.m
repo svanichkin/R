@@ -16,7 +16,13 @@
 #define KEY_TRACKERS        @"trackers"
 #define KEY_STATUSES        @"statuses"
 #define KEY_STATES          @"states"
+
 #define KEY_SEL_PROJ_ID     @"selectedProjectId"
+#define KEY_PROJ_LAST_UPD   @"projectsLastUpdate"
+
+#define KEY_SEL_ISSUE_ID    @"selectedIssueId"
+#define KEY_ISSUES_LAST_UPD @"issuesLastUpdate"
+
 
 @implementation MFSettings
 {
@@ -202,6 +208,62 @@
 - (NSNumber *)selectedProjectId
 {
     return [_defaults objectForKey:KEY_SEL_PROJ_ID];
+}
+
+- (void)setProjectsLastUpdate:(NSDate *)projectsLastUpdate
+{
+    if (projectsLastUpdate)
+    {
+        [_defaults setObject:projectsLastUpdate forKey:KEY_PROJ_LAST_UPD];
+        [_defaults synchronize];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:KEY_PROJ_LAST_UPD];
+    }
+}
+
+- (NSDate *)projectsLastUpdate
+{
+    return [_defaults objectForKey:KEY_PROJ_LAST_UPD];
+}
+
+#pragma mark - Issues
+
+- (void)setSelectedIssueId:(NSNumber *)selectedIssueId
+{
+    if (selectedIssueId)
+    {
+        [_defaults setObject:selectedIssueId forKey:KEY_SEL_ISSUE_ID];
+        [_defaults synchronize];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:KEY_SEL_ISSUE_ID];
+    }
+}
+
+- (NSNumber *)selectedIssueId
+{
+    return [_defaults objectForKey:KEY_SEL_ISSUE_ID];
+}
+
+- (void)setIssuesLastUpdate:(NSDate *)issuesLastUpdate
+{
+    if (issuesLastUpdate)
+    {
+        [_defaults setObject:issuesLastUpdate forKey:KEY_ISSUES_LAST_UPD];
+        [_defaults synchronize];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:KEY_ISSUES_LAST_UPD];
+    }
+}
+
+- (NSDate *)issuesLastUpdate
+{
+    return [_defaults objectForKey:KEY_ISSUES_LAST_UPD];
 }
 
 @end

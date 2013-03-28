@@ -50,49 +50,11 @@
         [[MFConnector sharedInstance] loadFilters];
         
         // Загрузка списка проектов
-        [[MFConnector sharedInstance] loadAllProjects];
-    }
-}
-
-// Выбрали один из проектов
-- (IBAction) projectSelected:(MFProjectSelector *)selector
-{
-    // Скрываем правый фрейм
-    /*[_mainPageScroll setHidden:YES];
-    
-    // Скрываем нажатую ячейку
-    if (_oldCellSelected)
-    {
-        [[_oldCellSelected viewWithTag:1] setHidden:NO];
-        [[_oldCellSelected viewWithTag:2] setHidden:YES];
-    }
-    
-    _projectSelected = item;
-    
-    // Загрузка задач по проекту
-    RKProject *projects = [_projects objectAtIndex:item.tag];
-    _issues = projects.issues;
-    
-    NSUInteger count = [_issuesArrayController.arrangedObjects count];
-    [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,count)]];
-    
-    for (RKIssue *i in _issues)
-    {
-        if ([_filtersControl checkIssueWithStatusIndex:[i.status.index intValue]
-                                         priorityIndex:[i.priority.index intValue]
-                                       andTrackerIndex:[i.tracker.index intValue]])
-        {
+        [[MFConnector sharedInstance] loadProjects];
         
-            NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
-            
-            [_issuesArrayController addObject:@{@"text":[NSString stringWithFormat:@"%@", i.subject],
-                                                @"type":type,
-                                              @"number":[NSString stringWithFormat:@"#%@", i.index]}];
-        }
+        // Загрузка списка задач
+        [[MFConnector sharedInstance] loadIssues];
     }
-    [_issuesTable reloadData];
-    [_issuesTable deselectAll:nil];
-    */
 }
 
 #pragma mark - Table view callbacks

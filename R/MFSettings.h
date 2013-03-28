@@ -22,6 +22,10 @@
 @property (nonatomic, weak) NSArray *filtersStates;
 
 @property (nonatomic, weak) NSNumber *selectedProjectId;
+@property (nonatomic, weak) NSDate *projectsLastUpdate;
+
+@property (nonatomic, weak) NSNumber *selectedIssueId;
+@property (nonatomic, weak) NSDate *issuesLastUpdate;
 
 + (MFSettings *)sharedInstance;
 

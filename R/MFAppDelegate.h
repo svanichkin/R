@@ -13,15 +13,11 @@
 
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 
-#pragma mark - Login
-
+#pragma mark - Preferences
 @property (assign) IBOutlet MFPreferencesPanel *preferencesPanel;
 
 #pragma mark - Main
-
 @property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSTableView *issuesTable;
-@property (assign) IBOutlet NSArrayController *issuesArrayController;
 @property (assign) IBOutlet NSScrollView *mainPageScroll;
 
 #pragma mark - Main page
@@ -30,8 +26,5 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-- (IBAction) issuesCellSelected:(id)sender;
-
 
 @end

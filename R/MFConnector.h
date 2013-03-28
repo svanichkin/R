@@ -21,7 +21,9 @@
 
 - (void) loadFilters;
 
-- (void) loadAllProjects;
+- (void) loadProjects;
+
+- (void) loadIssues;
 
 - (void) loadTimeEntries;
 

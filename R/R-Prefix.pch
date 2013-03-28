@@ -11,6 +11,7 @@
 #define CONNECT_COMPLETE    @"connectComplete"
 #define FILTERS_LOADED      @"filtersLoaded"
 #define PROJECTS_LOADED     @"projectsLoaded"
+#define ISSUES_LOADED       @"issuesLoaded"
 
 // MFProjectSelector
 #define PROJECT_SELECTED    @"projectsSelected"
