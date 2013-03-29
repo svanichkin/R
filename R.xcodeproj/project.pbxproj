@@ -62,6 +62,8 @@
 		93EEA9D816FF9F350066ECC7 /* add3.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D316FF9F350066ECC7 /* add3.png */; };
 		93EEA9D916FF9F350066ECC7 /* add2.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D416FF9F350066ECC7 /* add2.png */; };
 		93EEA9DA16FF9F350066ECC7 /* add1.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D516FF9F350066ECC7 /* add1.png */; };
+		93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */; };
+		93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +169,10 @@
 		93EEA9D316FF9F350066ECC7 /* add3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add3.png; sourceTree = "<group>"; };
 		93EEA9D416FF9F350066ECC7 /* add2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add2.png; sourceTree = "<group>"; };
 		93EEA9D516FF9F350066ECC7 /* add1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add1.png; sourceTree = "<group>"; };
+		93FCDF801705F26300B8A3EF /* IZBackgroundFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IZBackgroundFetchOperation.h; sourceTree = "<group>"; };
+		93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZBackgroundFetchOperation.m; sourceTree = "<group>"; };
+		93FCDF821705F26300B8A3EF /* IZManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IZManagedObjectContext.h; sourceTree = "<group>"; };
+		93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZManagedObjectContext.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +216,7 @@
 		930BBBF61702D06100B664C2 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				93FCDF7F1705F25000B8A3EF /* ManagerContext */,
 				9390E74716FCF90D00D68182 /* Dependencies */,
 				9390E74F16FCF90D00D68182 /* RedmineKit */,
 			);
@@ -420,6 +427,17 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
+		93FCDF7F1705F25000B8A3EF /* ManagerContext */ = {
+			isa = PBXGroup;
+			children = (
+				93FCDF801705F26300B8A3EF /* IZBackgroundFetchOperation.h */,
+				93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */,
+				93FCDF821705F26300B8A3EF /* IZManagedObjectContext.h */,
+				93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */,
+			);
+			name = ManagerContext;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -553,6 +571,8 @@
 				930BBC901704B0B900B664C2 /* Version.m in Sources */,
 				930BBC931704B0B900B664C2 /* User.m in Sources */,
 				930BBC961704B0BA00B664C2 /* Priority.m in Sources */,
+				93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */,
+				93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

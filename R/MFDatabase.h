@@ -20,7 +20,7 @@
 
 @interface MFDatabase : NSObject
 
-+ (MFDatabase *)sharedInstance;
++ (MFDatabase *) sharedInstance;
 
 - (BOOL) deleteAllObjects:(NSString *) entityDescription;
 - (BOOL) deleteObject:(NSManagedObject *)object;

@@ -20,7 +20,7 @@
 
 @implementation MFDatabase
 {
-    NSManagedObjectContext *_managedObjectContext;
+    IZManagedObjectContext *_managedObjectContext;
 }
 
 + (MFDatabase *)sharedInstance
@@ -38,12 +38,7 @@
     if ((self = [super init]) != nil)
     {
         MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
-        //_managedObjectContext = [app managedObjectContext];
-        
-        NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
-        [ctx setUndoManager:nil];
-        [ctx setPersistentStoreCoordinator: [appController persistentStoreCoordinator]];
-        
+        _managedObjectContext = [appController managedObjectContext];
     }
     return self;
 }
@@ -71,12 +66,8 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
     }
     
-    [_managedObjectContext lock];
-    
     NSError *error = nil;
     id result = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    [_managedObjectContext unlock];
     
     return result;
 }
@@ -93,12 +84,12 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"nid == %@", nid];
     [fetchRequest setPredicate:predicate];
     
-    [_managedObjectContext lock];
-    
+    __block id *result;
     NSError *error = nil;
-    id result = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    [_managedObjectContext unlock];
+    [_managedObjectContext executeFetchRequestAsynchronously:fetchRequest delegate:^()
+    {
+        result =
+    }];
     
     return result;
 }
@@ -107,25 +98,17 @@
 {
     NSArray *items = [self objectsByName:entityDescription sortingField:nil];
     
-    [_managedObjectContext lock];
-    
     for (NSManagedObject *managedObject in items)
     {
         [_managedObjectContext deleteObject:managedObject];
     }
-    
-    [_managedObjectContext unlock];
     
     return [self save];
 }
 
 - (BOOL) deleteObject:(NSManagedObject *)object
 {
-    [_managedObjectContext lock];
-    
     [_managedObjectContext deleteObject:object];
-    
-    [_managedObjectContext unlock];
         
     return [self save];
 }
@@ -133,26 +116,18 @@
 
 - (BOOL) deleteObjects:(NSArray *)objects
 {
-    [_managedObjectContext lock];
-    
     for (NSManagedObject *managedObject in objects)
     {
         [_managedObjectContext deleteObject:managedObject];
     }
-    
-    [_managedObjectContext unlock];
     
     return [self save];
 }
 
 - (BOOL) save
 {
-    [_managedObjectContext lock];
-    
     NSError *error = nil;
     BOOL result = [_managedObjectContext save:&error];
-    
-    [_managedObjectContext unlock];
     
     return result;
 }

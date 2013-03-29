@@ -13,6 +13,7 @@
 #import "Version.h"
 #import "User.h"
 #import "MFDatabase.h"
+#import "MFAppDelegate.h"
 
 @implementation MFConnector
 {
@@ -136,41 +137,43 @@
         NSArray *newTrackers   = [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
         NSArray *newPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
         
-        dispatch_async(dispatch_get_main_queue(), ^
+        [_database deleteAllObjects:@"Status"];
+        [_database deleteAllObjects:@"Tracker"];
+        [_database deleteAllObjects:@"Priority"];
+        
+        if (newStatuses && newTrackers && newPriorities)
         {
-            [_database deleteAllObjects:@"Status"];
-            [_database deleteAllObjects:@"Tracker"];
-            [_database deleteAllObjects:@"Priority"];
-            
-            if (newStatuses && newTrackers && newPriorities)
+            for (NSDictionary *ns in newStatuses)
             {
-                for (NSDictionary *ns in newStatuses)
-                {
-                    Status *status = _database.status;
-                    status.name = [ns objectForKey:@"name"];
-                    status.nid  = [ns objectForKey:@"id"];
-                }
-                
-                for (NSDictionary *t in newTrackers)
-                {
-                    Tracker *tracker = _database.tracker;
-                    tracker.name = [t objectForKey:@"name"];
-                    tracker.nid  = [t objectForKey:@"id"];
-                }
-                for (NSDictionary *p in newPriorities)
-                {
-                    Priority *priority = _database.priority;
-                    priority.name = [p objectForKey:@"name"];
-                    priority.nid  = [p objectForKey:@"id"];
-                }
-                
-                if ([_database save])
+                Status *status = _database.status;
+                status.name = [ns objectForKey:@"name"];
+                status.nid  = [ns objectForKey:@"id"];
+            }
+            
+            for (NSDictionary *t in newTrackers)
+            {
+                Tracker *tracker = _database.tracker;
+                tracker.name = [t objectForKey:@"name"];
+                tracker.nid  = [t objectForKey:@"id"];
+            }
+            for (NSDictionary *p in newPriorities)
+            {
+                Priority *priority = _database.priority;
+                priority.name = [p objectForKey:@"name"];
+                priority.nid  = [p objectForKey:@"id"];
+            }
+            
+            if ([_database save])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^
                 {
                     [self sendEvent:FILTERS_LOADED success:YES];
-                    return;
-                }
+                });
+                return;
             }
-        
+        }
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             [self sendEvent:FILTERS_LOADED success:NO];
         });
     });

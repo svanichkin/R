@@ -10,6 +10,7 @@
 #import "MFPreferencesPanel.h"
 #import "MFFiltersControl.h"
 #import "MFProjectSelector.h"
+#import "IZManagedObjectContext.h"
 
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 
@@ -25,6 +26,6 @@
 
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) IZManagedObjectContext *managedObjectContext;
 
 @end
