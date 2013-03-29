@@ -13,6 +13,6 @@
 @interface User : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * uid;
+@property (nonatomic, retain) NSNumber * nid;
 
 @end

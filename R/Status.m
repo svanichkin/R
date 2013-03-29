@@ -11,7 +11,7 @@
 
 @implementation Status
 
-@dynamic sid;
+@dynamic nid;
 @dynamic name;
 
 @end

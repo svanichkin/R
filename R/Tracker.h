@@ -12,7 +12,7 @@
 
 @interface Tracker : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * tid;
+@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
 
 @end

@@ -12,7 +12,7 @@
 
 @interface Priority : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * pid;
+@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
 
 @end

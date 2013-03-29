@@ -11,7 +11,7 @@
 
 @implementation Version
 
-@dynamic vid;
+@dynamic nid;
 @dynamic name;
 
 @end

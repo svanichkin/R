@@ -11,7 +11,7 @@
 
 @implementation Priority
 
-@dynamic pid;
+@dynamic nid;
 @dynamic name;
 
 @end

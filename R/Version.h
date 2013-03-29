@@ -12,7 +12,7 @@
 
 @interface Version : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * vid;
+@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
 
 @end

@@ -14,10 +14,10 @@
 
 @dynamic create;
 @dynamic text;
-@dynamic pid;
+@dynamic nid;
 @dynamic name;
 @dynamic update;
 @dynamic sid;
-@dynamic issue;
+@dynamic issues;
 
 @end

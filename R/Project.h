@@ -15,18 +15,18 @@
 
 @property (nonatomic, retain) NSDate * create;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSNumber * pid;
+@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSDate * update;
 @property (nonatomic, retain) NSString * sid;
-@property (nonatomic, retain) NSSet *issue;
+@property (nonatomic, retain) NSSet *issues;
 @end
 
 @interface Project (CoreDataGeneratedAccessors)
 
-- (void)addIssueObject:(Issue *)value;
-- (void)removeIssueObject:(Issue *)value;
-- (void)addIssue:(NSSet *)values;
-- (void)removeIssue:(NSSet *)values;
+- (void)addIssuesObject:(Issue *)value;
+- (void)removeIssuesObject:(Issue *)value;
+- (void)addIssues:(NSSet *)values;
+- (void)removeIssues:(NSSet *)values;
 
 @end

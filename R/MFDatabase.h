@@ -10,6 +10,10 @@
 
 #import "Project.h"
 
+#import "Issue.h"
+#import "Version.h"
+#import "User.h"
+
 #import "Tracker.h"
 #import "Status.h"
 #import "Priority.h"
@@ -23,13 +27,24 @@
 - (BOOL) deleteObjects:(NSArray *)objects;
 - (BOOL) save;
 
+- (Project *) projectById:(NSNumber *)nid;
 - (Project *) project;
 - (NSArray *) projects;
 
+- (Issue *) issueById:(NSNumber *)nid;
+- (Issue *) issue;
+- (NSArray *) issues;
+- (Version *) versionById:(NSNumber *)nid;
+- (NSArray *) versions;
+- (User *) userById:(NSNumber *)nid;
+
+- (Tracker *) trackerById:(NSNumber *)nid;
 - (Tracker *) tracker;
 - (NSArray *) trackers;
+- (Status *) statusById:(NSNumber *)nid;
 - (Status *) status;
 - (NSArray *) statuses;
+- (Priority *) priorityById:(NSNumber *)nid;
 - (Priority *) priority;
 - (NSArray *) priorities;
 

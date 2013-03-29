@@ -10,6 +10,9 @@
 #import "MFAppDelegate.h"
 
 #define PROJECT_ENTITY      @"Project"
+#define ISSUE_ENTITY        @"Issue"
+#define VERSION_ENTITY      @"Version"
+#define USER_ENTITY         @"User"
 
 #define TRACKER_ENTITY      @"Tracker"
 #define STATUS_ENTITY       @"Status"
@@ -34,8 +37,13 @@
 {
     if ((self = [super init]) != nil)
     {
-        MFAppDelegate *app = [[NSApplication sharedApplication] delegate];
-        _managedObjectContext = [app managedObjectContext];
+        MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+        //_managedObjectContext = [app managedObjectContext];
+        
+        NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
+        [ctx setUndoManager:nil];
+        [ctx setPersistentStoreCoordinator: [appController persistentStoreCoordinator]];
+        
     }
     return self;
 }
@@ -48,7 +56,7 @@
                                         inManagedObjectContext:_managedObjectContext];
 }
 
-- (id) objectByName:(NSString *)name sortingField:(NSString *)field
+- (id) objectsByName:(NSString *)name sortingField:(NSString *)field
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
@@ -63,51 +71,108 @@
         [fetchRequest setSortDescriptors:sortDescriptors];
     }
     
-    
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pid > 1000"];
-//    [fetchRequest setPredicate:predicate];
+    [_managedObjectContext lock];
     
     NSError *error = nil;
-    return [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    id result = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    [_managedObjectContext unlock];
+    
+    return result;
+}
+
+- (id) objectsByName:(NSString *)name andId:(NSNumber *)nid
+{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *project = [NSEntityDescription entityForName:name
+                                               inManagedObjectContext:_managedObjectContext];
+    
+    [fetchRequest setEntity:project];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"nid == %@", nid];
+    [fetchRequest setPredicate:predicate];
+    
+    [_managedObjectContext lock];
+    
+    NSError *error = nil;
+    id result = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    [_managedObjectContext unlock];
+    
+    return result;
 }
 
 - (BOOL) deleteAllObjects:(NSString *) entityDescription
 {
-    NSArray *items = [self objectByName:entityDescription sortingField:nil];
+    NSArray *items = [self objectsByName:entityDescription sortingField:nil];
+    
+    [_managedObjectContext lock];
     
     for (NSManagedObject *managedObject in items)
     {
-    	[_managedObjectContext deleteObject:managedObject];
+        [_managedObjectContext deleteObject:managedObject];
     }
+    
+    [_managedObjectContext unlock];
     
     return [self save];
 }
 
 - (BOOL) deleteObject:(NSManagedObject *)object
 {
+    [_managedObjectContext lock];
+    
     [_managedObjectContext deleteObject:object];
     
+    [_managedObjectContext unlock];
+        
     return [self save];
 }
 
 
 - (BOOL) deleteObjects:(NSArray *)objects
 {
+    [_managedObjectContext lock];
+    
     for (NSManagedObject *managedObject in objects)
     {
-    	[_managedObjectContext deleteObject:managedObject];
+        [_managedObjectContext deleteObject:managedObject];
     }
+    
+    [_managedObjectContext unlock];
     
     return [self save];
 }
 
 - (BOOL) save
 {
+    [_managedObjectContext lock];
+    
     NSError *error = nil;
-    return [_managedObjectContext save:&error];
+    BOOL result = [_managedObjectContext save:&error];
+    
+    [_managedObjectContext unlock];
+    
+    return result;
 }
 
-#pragma mark - Work With Objects
+#pragma mark - Project
+
+- (Project *) projectById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:PROJECT_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Project *object = [self newObjectByName:PROJECT_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
 
 - (Project *) project
 {
@@ -116,10 +181,87 @@
 
 - (NSArray *) projects
 {
-    return [self objectByName:PROJECT_ENTITY sortingField:@"name"];
+    return [self objectsByName:PROJECT_ENTITY sortingField:@"name"];
+}
+
+#pragma mark - Issue
+
+- (Issue *) issueById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:ISSUE_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Issue *object = [self newObjectByName:ISSUE_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
+
+- (Issue *) issue
+{
+    return [self newObjectByName:ISSUE_ENTITY];
+}
+
+- (NSArray *) issues
+{
+    return [self objectsByName:ISSUE_ENTITY sortingField:@"name"];
+}
+
+- (Version *) versionById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:VERSION_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Version *object = [self newObjectByName:VERSION_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
+
+- (NSArray *) versions
+{
+    return [self objectsByName:VERSION_ENTITY sortingField:@"name"];
+}
+
+- (User *) userById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:USER_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        User *object = [self newObjectByName:USER_ENTITY];
+        object.nid = nid;
+        return object;
+    }
 }
 
 #pragma mark - Filters
+
+- (Tracker *) trackerById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:TRACKER_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Tracker *object = [self newObjectByName:TRACKER_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
 
 - (Tracker *) tracker
 {
@@ -128,7 +270,22 @@
 
 - (NSArray *) trackers
 {
-    return [self objectByName:TRACKER_ENTITY sortingField:@"tid"];
+    return [self objectsByName:TRACKER_ENTITY sortingField:@"nid"];
+}
+
+- (Status *) statusById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:STATUS_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Status *object = [self newObjectByName:STATUS_ENTITY];
+        object.nid = nid;
+        return object;
+    }
 }
 
 - (Status *) status
@@ -138,7 +295,22 @@
 
 - (NSArray *) statuses
 {
-    return [self objectByName:STATUS_ENTITY sortingField:@"sid"];
+    return [self objectsByName:STATUS_ENTITY sortingField:@"nid"];
+}
+
+- (Priority *) priorityById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:PRIORITY_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Priority *object = [self newObjectByName:PRIORITY_ENTITY];
+        object.nid = nid;
+        return object;
+    }
 }
 
 - (Priority *) priority
@@ -148,7 +320,7 @@
 
 - (NSArray *) priorities
 {
-    return [self objectByName:PRIORITY_ENTITY sortingField:@"pid"];
+    return [self objectsByName:PRIORITY_ENTITY sortingField:@"nid"];
 }
 
 @end

@@ -12,6 +12,6 @@
 @implementation User
 
 @dynamic name;
-@dynamic uid;
+@dynamic nid;
 
 @end

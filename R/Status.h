@@ -12,7 +12,7 @@
 
 @interface Status : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * sid;
+@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
 
 @end

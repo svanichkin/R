@@ -46,6 +46,37 @@
 {
     if ([notification.object boolValue])
     {
+        /*NSArray *operationsArray = @[
+        [NSBlockOperation blockOperationWithBlock:^
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                // Загрузка значений с сервера для генерации количества и названий сегментов
+                [[MFConnector sharedInstance] loadFilters];
+            });
+        }],
+    
+        [NSBlockOperation blockOperationWithBlock:^
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                // Загрузка списка проектов
+                [[MFConnector sharedInstance] loadProjects];
+            });
+        }],
+        
+        [NSBlockOperation blockOperationWithBlock:^
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                // Загрузка списка задач
+                [[MFConnector sharedInstance] loadIssues];
+            });
+        }]];
+        
+        NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+        [operationQueue addOperations:operationsArray waitUntilFinished:YES];*/
+        
         // Загрузка значений с сервера для генерации количества и названий сегментов
         [[MFConnector sharedInstance] loadFilters];
         
@@ -53,7 +84,7 @@
         [[MFConnector sharedInstance] loadProjects];
         
         // Загрузка списка задач
-        //[[MFConnector sharedInstance] loadIssues];
+        [[MFConnector sharedInstance] loadIssues];
     }
 }
 

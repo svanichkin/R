@@ -11,7 +11,7 @@
 
 @implementation Tracker
 
-@dynamic tid;
+@dynamic nid;
 @dynamic name;
 
 @end

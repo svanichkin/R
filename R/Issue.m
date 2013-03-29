@@ -7,6 +7,7 @@
 //
 
 #import "Issue.h"
+#import "Issue.h"
 #import "Priority.h"
 #import "Project.h"
 #import "Status.h"
@@ -18,7 +19,7 @@
 @implementation Issue
 
 @dynamic name;
-@dynamic iid;
+@dynamic nid;
 @dynamic text;
 @dynamic start;
 @dynamic finish;
@@ -34,5 +35,7 @@
 @dynamic creator;
 @dynamic assigner;
 @dynamic version;
+@dynamic parent;
+@dynamic children;
 
 @end

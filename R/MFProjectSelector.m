@@ -46,7 +46,7 @@
                                                               action:@selector (projectSelected:)
                                                        keyEquivalent:@""];
                 item.target = self;
-                item.tag = [p.pid intValue];
+                item.tag = [p.nid intValue];
                 [self.menu addItem:item];
             }
             
