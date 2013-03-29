@@ -49,7 +49,10 @@
 
 - (void) sendEvent:(NSString *)event success:(BOOL)boolean
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:event object:@(boolean)];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:event object:@(boolean)];
+    });
 }
 
 - (NSDate *) dateFromString:(NSString *)dateString
@@ -165,17 +168,11 @@
             
             if ([_database save])
             {
-                dispatch_async(dispatch_get_main_queue(), ^
-                {
-                    [self sendEvent:FILTERS_LOADED success:YES];
-                });
+                [self sendEvent:FILTERS_LOADED success:YES];
                 return;
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [self sendEvent:FILTERS_LOADED success:NO];
-        });
+        [self sendEvent:FILTERS_LOADED success:NO];
     });
 }
 
@@ -266,9 +263,7 @@
     
     if (error)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:PROJECTS_LOADED success:NO];
-        });
+        [self sendEvent:PROJECTS_LOADED success:NO];
         return NO;
     }
     
@@ -278,9 +273,7 @@
                                                              error:&error];
     if (error)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:PROJECTS_LOADED success:NO];
-        });
+        [self sendEvent:PROJECTS_LOADED success:NO];
         return NO;
     }
     
@@ -339,9 +332,7 @@
     {
         if (![_database save])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self sendEvent:PROJECTS_LOADED success:NO];
-            });
+            [self sendEvent:PROJECTS_LOADED success:NO];
             return NO;
         }
     }
@@ -349,9 +340,7 @@
     // Если у нас total меньше чем offsef, то делаем рекурсивно вызов на загрузку сл. offseta
     if (offset < [[result objectForKey:@"total_count"] intValue])
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:PROJECTS_LOADED success:YES];
-        });
+        [self sendEvent:PROJECTS_LOADED success:YES];
         
         offset += 100;
         return [self loadProjectsWithOffset:offset];
@@ -423,9 +412,7 @@
     
     if (error)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:ISSUES_LOADED success:NO];
-        });
+        [self sendEvent:ISSUES_LOADED success:NO];
         return NO;
     }
     
@@ -435,9 +422,7 @@
                                                              error:&error];
     if (error)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:ISSUES_LOADED success:NO];
-        });
+        [self sendEvent:ISSUES_LOADED success:NO];
         return NO;
     }
     
@@ -457,9 +442,7 @@
     {
         if (![_database save])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self sendEvent:ISSUES_LOADED success:NO];
-            });
+            [self sendEvent:ISSUES_LOADED success:NO];
             return NO;
         }
     }
@@ -467,9 +450,7 @@
     // Если у нас total меньше чем offsef, то делаем рекурсивно вызов на загрузку сл. offseta
     if (offset < [[result objectForKey:@"total_count"] intValue])
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendEvent:ISSUES_LOADED success:YES];
-        });
+        [self sendEvent:ISSUES_LOADED success:YES];
         
         offset += 100;
         return [self loadIssuesWithOffset:offset];

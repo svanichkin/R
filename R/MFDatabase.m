@@ -69,8 +69,6 @@
     // a key to cache the context for the given thread
     NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
     
-    NSLog(@"Thread %@",_managedObjectContexts);
-    
     if ([_managedObjectContexts objectForKey:threadKey] == nil)
     {
         // create a context for this thread
@@ -176,7 +174,7 @@
                                                    object:moc];
     }
     
-    NSError *error;
+    NSError *error = nil;
     if (![moc save:&error])
     {
         return NO;

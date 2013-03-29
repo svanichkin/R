@@ -84,7 +84,7 @@
         [[MFConnector sharedInstance] loadProjects];
         
         // Загрузка списка задач
-        [[MFConnector sharedInstance] loadIssues];
+//        [[MFConnector sharedInstance] loadIssues];
     }
 }
 
