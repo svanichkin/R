@@ -20,7 +20,7 @@
 
 @implementation MFDatabase
 {
-    IZManagedObjectContext *_managedObjectContext;
+    NSMutableDictionary *_managedObjectContexts;
 }
 
 + (MFDatabase *)sharedInstance
@@ -37,10 +37,51 @@
 {
     if ((self = [super init]) != nil)
     {
-        MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
-        _managedObjectContext = [appController managedObjectContext];
+        _managedObjectContexts = [NSMutableDictionary dictionary];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(threadExit)
+                                                     name:NSThreadWillExitNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)threadExit
+{
+    NSString *threadKey = [NSString stringWithFormat:@"%p", [NSThread currentThread]];
+    
+    [_managedObjectContexts removeObjectForKey:threadKey];
+}
+
+- (NSManagedObjectContext *) managedObjectContext
+{
+    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    NSManagedObjectContext *moc = [appController managedObjectContext];
+    
+    NSThread *thread = [NSThread currentThread];
+    
+    if ([thread isMainThread])
+    {
+        return moc;
+    }
+    
+    // a key to cache the context for the given thread
+    NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
+    
+    NSLog(@"Thread %@",_managedObjectContexts);
+    
+    if ([_managedObjectContexts objectForKey:threadKey] == nil)
+    {
+        // create a context for this thread
+        NSManagedObjectContext *threadContext = [[NSManagedObjectContext alloc] init];
+        [threadContext setPersistentStoreCoordinator:[moc persistentStoreCoordinator]];
+        
+        // cache the context for this thread
+        [_managedObjectContexts setObject:threadContext forKey:threadKey];
+    }
+    
+    return [_managedObjectContexts objectForKey:threadKey];
 }
 
 #pragma mark - Work With All Objects
@@ -48,14 +89,14 @@
 - (id) newObjectByName:(NSString *)name
 {
    return [NSEntityDescription insertNewObjectForEntityForName:name
-                                        inManagedObjectContext:_managedObjectContext];
+                                        inManagedObjectContext:[self managedObjectContext]];
 }
 
 - (id) objectsByName:(NSString *)name sortingField:(NSString *)field
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
-                                               inManagedObjectContext:_managedObjectContext];
+                                               inManagedObjectContext:[self managedObjectContext]];
     
     [fetchRequest setEntity:project];
     
@@ -67,7 +108,7 @@
     }
     
     NSError *error = nil;
-    id result = [_managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
     
     return result;
 }
@@ -77,19 +118,15 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
-                                               inManagedObjectContext:_managedObjectContext];
+                                               inManagedObjectContext:[self managedObjectContext]];
     
     [fetchRequest setEntity:project];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"nid == %@", nid];
     [fetchRequest setPredicate:predicate];
     
-    __block id *result;
     NSError *error = nil;
-    [_managedObjectContext executeFetchRequestAsynchronously:fetchRequest delegate:^()
-    {
-        result =
-    }];
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
     
     return result;
 }
@@ -100,7 +137,7 @@
     
     for (NSManagedObject *managedObject in items)
     {
-        [_managedObjectContext deleteObject:managedObject];
+        [[self managedObjectContext] deleteObject:managedObject];
     }
     
     return [self save];
@@ -108,7 +145,7 @@
 
 - (BOOL) deleteObject:(NSManagedObject *)object
 {
-    [_managedObjectContext deleteObject:object];
+    [[self managedObjectContext] deleteObject:object];
         
     return [self save];
 }
@@ -118,7 +155,7 @@
 {
     for (NSManagedObject *managedObject in objects)
     {
-        [_managedObjectContext deleteObject:managedObject];
+        [[self managedObjectContext] deleteObject:managedObject];
     }
     
     return [self save];
@@ -126,10 +163,43 @@
 
 - (BOOL) save
 {
-    NSError *error = nil;
-    BOOL result = [_managedObjectContext save:&error];
+    NSManagedObjectContext *moc = [self managedObjectContext];
     
-    return result;
+    NSThread *thread = [NSThread currentThread];
+    
+    if ([thread isMainThread] == NO)
+    {
+        // only observe notifications other than the main thread
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contextDidSave:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:moc];
+    }
+    
+    NSError *error;
+    if (![moc save:&error])
+    {
+        return NO;
+    }
+    
+    if ([thread isMainThread] == NO)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:moc];
+    }
+    
+    return YES;
+}
+
+- (void) contextDidSave:(NSNotification*)saveNotification
+{
+    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    NSManagedObjectContext *moc = [appController managedObjectContext];
+        
+    [moc performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+                          withObject:saveNotification
+                       waitUntilDone:YES];
 }
 
 #pragma mark - Project
