@@ -121,7 +121,6 @@
         if ([MFSettings sharedInstance].projectsLastUpdate == nil || [MFSettings sharedInstance].filtersLastUpdate == nil || [MFSettings sharedInstance].issuesLastUpdate == nil)
         {
             _progressDatabaseUpdate.hidden = NO;
-            [_progressDatabaseUpdate setIntValue:1];
          
             // Загрузка значений с сервера для генерации количества и названий сегментов
             [[MFConnector sharedInstance] loadFilters];
@@ -212,7 +211,7 @@
 
 - (void) refreshProgress
 {
-    [_progressDatabaseUpdate setIntValue: (_projectsProgress + _filtersProgress + _issuesProgress) / 3];
+    [_progressDatabaseUpdate setDoubleValue: (_projectsProgress + _filtersProgress + _issuesProgress) / 3];
 }
 
 @end
