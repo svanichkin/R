@@ -288,7 +288,7 @@
                 }
                 
                 NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-                //[operationQueue setMaxConcurrentOperationCount:1];
+                [operationQueue setMaxConcurrentOperationCount:1];
                 [operationQueue addOperations:operationsArray waitUntilFinished:YES];
             }
             else

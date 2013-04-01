@@ -89,6 +89,8 @@
             _renewDatabase = YES;
         }
         
+        [_progressText setHidden:YES];
+        
         // Покажем прогресс индикатор
         [_progressLogin setHidden:NO];
         [_progressLogin startAnimation:nil];
