@@ -16,7 +16,7 @@
         <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
         <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" syncable="YES"/>
-        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="issues" inverseEntity="Project" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
         <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" syncable="YES"/>
         <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" syncable="YES"/>
         <relationship name="version" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Version" syncable="YES"/>
@@ -32,7 +32,7 @@
         <attribute name="sid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="project" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
     </entity>
     <entity name="Status" representedClassName="Status" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -51,11 +51,11 @@
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Project" positionX="583" positionY="258" width="128" height="148"/>
         <element name="Issue" positionX="385" positionY="153" width="128" height="328"/>
-        <element name="Tracker" positionX="43" positionY="456" width="128" height="73"/>
-        <element name="Status" positionX="43" positionY="375" width="128" height="73"/>
         <element name="Priority" positionX="43" positionY="294" width="128" height="73"/>
+        <element name="Project" positionX="583" positionY="258" width="128" height="148"/>
+        <element name="Status" positionX="43" positionY="375" width="128" height="73"/>
+        <element name="Tracker" positionX="43" positionY="456" width="128" height="73"/>
         <element name="User" positionX="180" positionY="249" width="128" height="73"/>
         <element name="Version" positionX="180" positionY="492" width="128" height="73"/>
     </elements>

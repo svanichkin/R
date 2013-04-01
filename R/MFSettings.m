@@ -43,9 +43,26 @@
 {
     if ((self = [super init]) != nil)
     {
-        _defaults = [NSUserDefaults standardUserDefaults];   
+        _defaults = [NSUserDefaults standardUserDefaults];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_ALL_DATA
+                                                   object:nil];
     }
     return self;
+}
+
+- (void) resetData
+{
+    [self setFiltersLastUpdate: nil];
+    [self setFiltersStates:nil];
+    
+    [self setProjectsLastUpdate:nil];
+    [self setSelectedProjectId:nil];
+    
+    [self setIssuesLastUpdate:nil];
+    [self setSelectedIssueId:nil];
 }
 
 #pragma mark - Credentials

@@ -2,7 +2,7 @@
 //  Tracker.h
 //  R
 //
-//  Created by Сергей Ваничкин on 28.03.13.
+//  Created by Сергей Ваничкин on 29.03.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 
 @interface Tracker : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * nid;
 
 @end

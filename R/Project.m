@@ -2,22 +2,22 @@
 //  Project.m
 //  R
 //
-//  Created by Сергей Ваничкин on 28.03.13.
+//  Created by Сергей Ваничкин on 29.03.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
 #import "Project.h"
-#import "Issue.h"
+#import "Project.h"
 
 
 @implementation Project
 
 @dynamic create;
-@dynamic text;
-@dynamic nid;
 @dynamic name;
-@dynamic update;
+@dynamic nid;
 @dynamic sid;
-@dynamic issues;
+@dynamic text;
+@dynamic update;
+@dynamic parent;
 
 @end

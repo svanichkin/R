@@ -7,14 +7,23 @@
     #import <CoreData/CoreData.h>
 #endif
 
+// All
+#define RESET_ALL_DATA              @"resetAllData"
+
 // MFConnector
-#define CONNECT_COMPLETE    @"connectComplete"
-#define FILTERS_LOADED      @"filtersLoaded"
-#define PROJECTS_LOADED     @"projectsLoaded"
-#define ISSUES_LOADED       @"issuesLoaded"
+#define CONNECT_COMPLETE            @"connectComplete"
+
+#define FILTERS_LOADED              @"filtersLoaded"
+#define FILTERS_LOADING_PROGRESS    @"filterssLoadingProgress"
+
+#define PROJECTS_LOADED             @"projectsLoaded"
+#define PROJECTS_LOADING_PROGRESS   @"projectsLoadingProgress"
+
+#define ISSUES_LOADED               @"issuesLoaded"
+#define ISSUES_LOADING_PROGRESS     @"issuesLoadingProgress"
 
 // MFProjectSelector
-#define PROJECT_SELECTED    @"projectsSelected"
+#define PROJECT_SELECTED            @"projectsSelected"
 
 // MFFiltersControl
-#define FILTERS_CHANGED     @"filtersChanged"
+#define FILTERS_CHANGED             @"filtersChanged"

@@ -43,9 +43,16 @@
                                                  selector:@selector(threadExit)
                                                      name:NSThreadWillExitNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_ALL_DATA
+                                                   object:nil];
     }
     return self;
 }
+
+#pragma mark - Work With Contexts
 
 - (void)threadExit
 {
@@ -82,7 +89,31 @@
     return [_managedObjectContexts objectForKey:threadKey];
 }
 
+- (void) contextDidSave:(NSNotification*)saveNotification
+{
+    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    NSManagedObjectContext *moc = [appController managedObjectContext];
+    
+    [moc performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+                          withObject:saveNotification
+                       waitUntilDone:YES];
+}
+
 #pragma mark - Work With All Objects
+
+- (void) resetData
+{
+    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [appController persistentStoreCoordinator];
+
+    NSArray *stores = [persistentStoreCoordinator persistentStores];
+    
+    for(NSPersistentStore *store in stores)
+    {
+        [persistentStoreCoordinator removePersistentStore:store error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
+    }
+}
 
 - (id) newObjectByName:(NSString *)name
 {
@@ -133,12 +164,19 @@
 {
     NSArray *items = [self objectsByName:entityDescription sortingField:nil];
     
-    for (NSManagedObject *managedObject in items)
+    if (items.count)
     {
-        [[self managedObjectContext] deleteObject:managedObject];
+        for (NSManagedObject *managedObject in items)
+        {
+            [[self managedObjectContext] deleteObject:managedObject];
+        }
+        
+        return [self save];
     }
-    
-    return [self save];
+    else
+    {
+        return NO;
+    }
 }
 
 - (BOOL) deleteObject:(NSManagedObject *)object
@@ -147,7 +185,6 @@
         
     return [self save];
 }
-
 
 - (BOOL) deleteObjects:(NSArray *)objects
 {
@@ -161,43 +198,36 @@
 
 - (BOOL) save
 {
-    NSManagedObjectContext *moc = [self managedObjectContext];
-    
-    NSThread *thread = [NSThread currentThread];
-    
-    if ([thread isMainThread] == NO)
+    @synchronized (self)
     {
-        // only observe notifications other than the main thread
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(contextDidSave:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:moc];
-    }
-    
-    NSError *error = nil;
-    if (![moc save:&error])
-    {
-        return NO;
-    }
-    
-    if ([thread isMainThread] == NO)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:NSManagedObjectContextDidSaveNotification
-                                                      object:moc];
-    }
-    
-    return YES;
-}
-
-- (void) contextDidSave:(NSNotification*)saveNotification
-{
-    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
-    NSManagedObjectContext *moc = [appController managedObjectContext];
+        NSManagedObjectContext *moc = [self managedObjectContext];
         
-    [moc performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
-                          withObject:saveNotification
-                       waitUntilDone:YES];
+        NSThread *thread = [NSThread currentThread];
+        
+        if ([thread isMainThread] == NO)
+        {
+            // only observe notifications other than the main thread
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(contextDidSave:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:moc];
+        }
+        
+        NSError *error = nil;
+        if (![moc save:&error])
+        {
+            return NO;
+        }
+        
+        if ([thread isMainThread] == NO)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:NSManagedObjectContextDidSaveNotification
+                                                          object:moc];
+        }
+        
+        return YES;
+    }
 }
 
 #pragma mark - Project

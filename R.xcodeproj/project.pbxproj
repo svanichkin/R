@@ -12,13 +12,6 @@
 		930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC1117036EA700B664C2 /* MFDatabase.m */; };
 		930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC141703814600B664C2 /* MFProjectSelector.m */; };
 		930BBC18170444D300B664C2 /* MFIssuesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC17170444D200B664C2 /* MFIssuesList.m */; };
-		930BBC841704B0B700B664C2 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC831704B0B700B664C2 /* Project.m */; };
-		930BBC871704B0B800B664C2 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC861704B0B800B664C2 /* Issue.m */; };
-		930BBC8A1704B0B800B664C2 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC891704B0B800B664C2 /* Status.m */; };
-		930BBC8D1704B0B900B664C2 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC8C1704B0B900B664C2 /* Tracker.m */; };
-		930BBC901704B0B900B664C2 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC8F1704B0B900B664C2 /* Version.m */; };
-		930BBC931704B0B900B664C2 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC921704B0B900B664C2 /* User.m */; };
-		930BBC961704B0BA00B664C2 /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 930BBC951704B0BA00B664C2 /* Priority.m */; };
 		936EED7816FF421700379492 /* background_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7716FF421700379492 /* background_small.png */; };
 		936EED7B16FF5F2D00379492 /* p1.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7916FF5F2D00379492 /* p1.png */; };
 		936EED7C16FF5F2D00379492 /* p2.png in Resources */ = {isa = PBXBuildFile; fileRef = 936EED7A16FF5F2D00379492 /* p2.png */; };
@@ -64,6 +57,13 @@
 		93EEA9DA16FF9F350066ECC7 /* add1.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D516FF9F350066ECC7 /* add1.png */; };
 		93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */; };
 		93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */; };
+		93FCDF9D1706199200B8A3EF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9C1706199200B8A3EF /* User.m */; };
+		93FCDFA01706199300B8A3EF /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9F1706199300B8A3EF /* Status.m */; };
+		93FCDFA31706199300B8A3EF /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA21706199300B8A3EF /* Project.m */; };
+		93FCDFA61706199300B8A3EF /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA51706199300B8A3EF /* Issue.m */; };
+		93FCDFA91706199400B8A3EF /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA81706199400B8A3EF /* Tracker.m */; };
+		93FCDFAC1706199400B8A3EF /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFAB1706199400B8A3EF /* Version.m */; };
+		93FCDFAF1706199400B8A3EF /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFAE1706199400B8A3EF /* Priority.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,20 +87,6 @@
 		930BBC141703814600B664C2 /* MFProjectSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFProjectSelector.m; sourceTree = "<group>"; };
 		930BBC16170444D200B664C2 /* MFIssuesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFIssuesList.h; sourceTree = "<group>"; };
 		930BBC17170444D200B664C2 /* MFIssuesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFIssuesList.m; sourceTree = "<group>"; };
-		930BBC821704B0B700B664C2 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
-		930BBC831704B0B700B664C2 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
-		930BBC851704B0B800B664C2 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
-		930BBC861704B0B800B664C2 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
-		930BBC881704B0B800B664C2 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
-		930BBC891704B0B800B664C2 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
-		930BBC8B1704B0B900B664C2 /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
-		930BBC8C1704B0B900B664C2 /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
-		930BBC8E1704B0B900B664C2 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
-		930BBC8F1704B0B900B664C2 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
-		930BBC911704B0B900B664C2 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		930BBC921704B0B900B664C2 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		930BBC941704B0B900B664C2 /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
-		930BBC951704B0BA00B664C2 /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
 		936EED7716FF421700379492 /* background_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_small.png; sourceTree = "<group>"; };
 		936EED7916FF5F2D00379492 /* p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p1.png; sourceTree = "<group>"; };
 		936EED7A16FF5F2D00379492 /* p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p2.png; sourceTree = "<group>"; };
@@ -173,6 +159,20 @@
 		93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZBackgroundFetchOperation.m; sourceTree = "<group>"; };
 		93FCDF821705F26300B8A3EF /* IZManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IZManagedObjectContext.h; sourceTree = "<group>"; };
 		93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZManagedObjectContext.m; sourceTree = "<group>"; };
+		93FCDF9B1706199200B8A3EF /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		93FCDF9C1706199200B8A3EF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		93FCDF9E1706199300B8A3EF /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
+		93FCDF9F1706199300B8A3EF /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
+		93FCDFA11706199300B8A3EF /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
+		93FCDFA21706199300B8A3EF /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		93FCDFA41706199300B8A3EF /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
+		93FCDFA51706199300B8A3EF /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
+		93FCDFA71706199300B8A3EF /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
+		93FCDFA81706199400B8A3EF /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
+		93FCDFAA1706199400B8A3EF /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		93FCDFAB1706199400B8A3EF /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
+		93FCDFAD1706199400B8A3EF /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
+		93FCDFAE1706199400B8A3EF /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,20 +227,20 @@
 			isa = PBXGroup;
 			children = (
 				9390E71D16FCD1A900D68182 /* R.xcdatamodeld */,
-				930BBC941704B0B900B664C2 /* Priority.h */,
-				930BBC951704B0BA00B664C2 /* Priority.m */,
-				930BBC911704B0B900B664C2 /* User.h */,
-				930BBC921704B0B900B664C2 /* User.m */,
-				930BBC8E1704B0B900B664C2 /* Version.h */,
-				930BBC8F1704B0B900B664C2 /* Version.m */,
-				930BBC8B1704B0B900B664C2 /* Tracker.h */,
-				930BBC8C1704B0B900B664C2 /* Tracker.m */,
-				930BBC881704B0B800B664C2 /* Status.h */,
-				930BBC891704B0B800B664C2 /* Status.m */,
-				930BBC851704B0B800B664C2 /* Issue.h */,
-				930BBC861704B0B800B664C2 /* Issue.m */,
-				930BBC821704B0B700B664C2 /* Project.h */,
-				930BBC831704B0B700B664C2 /* Project.m */,
+				93FCDF9B1706199200B8A3EF /* User.h */,
+				93FCDF9C1706199200B8A3EF /* User.m */,
+				93FCDF9E1706199300B8A3EF /* Status.h */,
+				93FCDF9F1706199300B8A3EF /* Status.m */,
+				93FCDFA11706199300B8A3EF /* Project.h */,
+				93FCDFA21706199300B8A3EF /* Project.m */,
+				93FCDFA41706199300B8A3EF /* Issue.h */,
+				93FCDFA51706199300B8A3EF /* Issue.m */,
+				93FCDFA71706199300B8A3EF /* Tracker.h */,
+				93FCDFA81706199400B8A3EF /* Tracker.m */,
+				93FCDFAA1706199400B8A3EF /* Version.h */,
+				93FCDFAB1706199400B8A3EF /* Version.m */,
+				93FCDFAD1706199400B8A3EF /* Priority.h */,
+				93FCDFAE1706199400B8A3EF /* Priority.m */,
 				930BBC1017036EA700B664C2 /* MFDatabase.h */,
 				930BBC1117036EA700B664C2 /* MFDatabase.m */,
 			);
@@ -564,15 +564,15 @@
 				930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */,
 				930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */,
 				930BBC18170444D300B664C2 /* MFIssuesList.m in Sources */,
-				930BBC841704B0B700B664C2 /* Project.m in Sources */,
-				930BBC871704B0B800B664C2 /* Issue.m in Sources */,
-				930BBC8A1704B0B800B664C2 /* Status.m in Sources */,
-				930BBC8D1704B0B900B664C2 /* Tracker.m in Sources */,
-				930BBC901704B0B900B664C2 /* Version.m in Sources */,
-				930BBC931704B0B900B664C2 /* User.m in Sources */,
-				930BBC961704B0BA00B664C2 /* Priority.m in Sources */,
 				93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */,
 				93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */,
+				93FCDF9D1706199200B8A3EF /* User.m in Sources */,
+				93FCDFA01706199300B8A3EF /* Status.m in Sources */,
+				93FCDFA31706199300B8A3EF /* Project.m in Sources */,
+				93FCDFA61706199300B8A3EF /* Issue.m in Sources */,
+				93FCDFA91706199400B8A3EF /* Tracker.m in Sources */,
+				93FCDFAC1706199400B8A3EF /* Version.m in Sources */,
+				93FCDFAF1706199400B8A3EF /* Priority.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

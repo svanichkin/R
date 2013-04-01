@@ -20,9 +20,9 @@
     MFSettings *_settings;
 }
 
-@synthesize persistentStoreCoordinator =    _persistentStoreCoordinator;
-@synthesize managedObjectModel =            _managedObjectModel;
-@synthesize managedObjectContext =          _managedObjectContext;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize managedObjectModel         = _managedObjectModel;
+@synthesize managedObjectContext       = _managedObjectContext;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -78,10 +78,10 @@
         [operationQueue addOperations:operationsArray waitUntilFinished:YES];*/
         
         // Загрузка значений с сервера для генерации количества и названий сегментов
-        [[MFConnector sharedInstance] loadFilters];
+//        [[MFConnector sharedInstance] loadFilters];
         
         // Загрузка списка проектов
-        [[MFConnector sharedInstance] loadProjects];
+//        [[MFConnector sharedInstance] loadProjects];
         
         // Загрузка списка задач
 //        [[MFConnector sharedInstance] loadIssues];
