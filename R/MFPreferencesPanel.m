@@ -104,12 +104,10 @@
 {
     [_progressLogin setHidden:YES];
     [_progressLogin stopAnimation:nil];
-    [_progressText setHidden:NO];
     
     if ([notification.object boolValue])
     {
-        _progressText.stringValue = @"Connected";
-        
+
         // Если авторизация происходит с другим логином паролем, то всё загруженное удаляем
         if (_renewDatabase == YES)
         {
@@ -125,9 +123,15 @@
             // Загрузка значений с сервера для генерации количества и названий сегментов
             [[MFConnector sharedInstance] loadFilters];
         }
+        else
+        {
+            [_progressText setHidden:NO];
+            _progressText.stringValue = @"Connected";
+        }
     }
     else
     {
+        [_progressText setHidden:NO];
         _progressText.stringValue = @"Error";
     }
 }
@@ -193,6 +197,9 @@
     {
         _issuesProgress = 100;
         [self refreshProgress];
+        
+        [_progressText setHidden:NO];
+        _progressText.stringValue = @"Connected";
     }
     else
     {
@@ -204,6 +211,7 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:RESET_ALL_DATA object:nil];
     
+    [_progressText setHidden:NO];
     _progressText.stringValue = @"Error";
     
     _progressDatabaseUpdate.hidden = YES;
