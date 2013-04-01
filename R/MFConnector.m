@@ -22,25 +22,19 @@
 // чем скорость формирования базы, значит прогресс бар
 // быстрее проползет по загрузке а затем долго будет ползти по
 // формированию базы. Поэтому лучше поставить соотношение 30/70
-#define SHIFT_LOADING_PROCENT    10
-#define SHIFT_DATABASE_PROCENT   90
 
 @implementation MFConnector
 {
     MFSettings *_settings;
     MFDatabase *_database;
 
-    NSMutableArray *_newProjects;
-    NSMutableArray *_newIssues;
-    
     BOOL _noNeedFilters;
     BOOL _noNeedProjects;
     BOOL _noNeedIssues;
     
-    float _shiftLoading;
-    float _shiftDatabase;
-    
     int _projectsProgress, _filtersProgress, _issuesProgress;
+    
+    int _projectsTotal, _issuesTotal;
 }
 
 + (MFConnector *)sharedInstance
@@ -66,10 +60,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(allStop)
                                                      name:RESET_ALL_DATA
-                                                   object:nil];
-        
-        _shiftLoading  = 100/SHIFT_LOADING_PROCENT;
-        _shiftDatabase = 100/SHIFT_DATABASE_PROCENT;
+                                                   object:nil];        
     }
     return self;
 }
@@ -264,10 +255,7 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
-        // В этом массиве будут абсолютно все загруженные проекты
-        _newProjects = [NSMutableArray array];
-        
-        // Начинаем рекурсивную загрузку, если она успешна продолжим
+        // Начинаем загрузку и получаем сколько всего проектов
         if ([self loadProjectsWithOffset:0])
         {
             if (_noNeedProjects)
@@ -275,114 +263,96 @@
                 return;
             }
             
-            if (_newProjects.count)
+            if (_projectsTotal > 100)
             {
-                int index = 0;
-                for (NSDictionary *newProject in _newProjects)
-                {
-                    @autoreleasepool
-                    {
-                        Project *oldProject = [_database projectById:[newProject objectForKey:@"id"]];
-                        [self refreshProject:oldProject withDictionary:newProject];
-
-                        index ++;
-                        int progress = ((index * 100)/_newProjects.count);
-                        _projectsProgress = progress > 100 ? 100 : progress;
-                        [self sendEvent:PROJECTS_LOADING_PROGRESS progress:SHIFT_LOADING_PROCENT + (_projectsProgress/_shiftDatabase)];
-                    }
-                }
+                NSMutableArray *operationsArray = [NSMutableArray array];
                 
-                if (![_database save])
+                for (int i = 100; i < _projectsTotal; i += 100)
                 {
-                    [self sendEvent:PROJECTS_LOADED success:NO];
-                    return;
-                }
-            }
-            
-            // Если длина массива хранимых значений больше чем длина пришедших данных,
-            // значит, у нас какие то значения нужно удалить (проекты были удалены)
-            /*NSMutableArray *oldProjects = [NSMutableArray arrayWithArray:[_database projects]];
-            if (oldProjects.count > _newProjects.count)
-            {
-                for (int i = 0; i < oldProjects.count; i ++)
-                {
-                    Project *op = [oldProjects objectAtIndex:i];
-                    for (int j = 0; j < _newProjects.count; j ++)
+                    [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                     {
-                        NSDictionary *np = [_newProjects objectAtIndex:j];
-                        if ([[np objectForKey:@"id"] isEqualToNumber:op.nid])
+                        if (_noNeedProjects)
                         {
-                            // Затем удаляем объект новых
-                            [_newProjects removeObjectAtIndex:j --];
-                            [oldProjects removeObjectAtIndex:i --];
-                            break;
+                            return;
                         }
-                    }
-                    continue;
+                        
+                        [self loadProjectsWithOffset:i];
+                        
+                        if (i + 100 > _projectsTotal)
+                        {
+                            _settings.projectsLastUpdate = [NSDate date];
+                            [self sendEvent:PROJECTS_LOADED success:YES];
+                        }
+                    }]];
                 }
                 
-                // Удаляем из базы проекты которые были удалены на серваке
-                if (oldProjects.count)
-                {
-                    [_database deleteObjects:oldIssues];
-                    _settings.projectsLastUpdate = [NSDate date];
-                    [self sendEvent:PROJECTS_LOADING_PROGRESS progress:100];
-                    [self sendEvent:PROJECTS_LOADED success:[_database deleteObjects:oldProjects]];
-                }
-            }*/
-            
-            _settings.projectsLastUpdate = [NSDate date];
-            [self sendEvent:PROJECTS_LOADING_PROGRESS progress:100];
-            [self sendEvent:PROJECTS_LOADED success:YES];
+                NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+                [operationQueue setMaxConcurrentOperationCount:1];
+                [operationQueue addOperations:operationsArray waitUntilFinished:YES];
+            }
+            else
+            {
+                _settings.projectsLastUpdate = [NSDate date];
+                [self sendEvent:PROJECTS_LOADED success:YES];
+            }
         }
     });
 }
 
 - (BOOL) loadProjectsWithOffset:(int)offset
 {
-    // Грузим проекты рекурсивно
-    NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
-    NSData *jsonData = [NSData dataWithContentsOfURL:url
-                                             options:NSDataReadingUncached
-                                               error:&error];
-    
-    if (error)
+    @autoreleasepool
     {
-        [self sendEvent:PROJECTS_LOADED success:NO];
-        return NO;
-    }
-    
-    error = nil;
-    NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                           options:NSJSONReadingMutableContainers
-                                                             error:&error];
-    if (error)
-    {
-        [self sendEvent:PROJECTS_LOADED success:NO];
-        return NO;
-    }
-    
-    if (_noNeedProjects)
-    {
-        return NO;
-    }
-    
-    // Добавляем все новые проекты в один массив, что бы потом про сравнении двух массивов понять, какие из проектов были удалены
-    [_newProjects addObjectsFromArray:[result objectForKey:@"projects"]];
+        // Грузим проекты рекурсивно
+        NSError *error = nil;
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
+        NSData *jsonData = [NSData dataWithContentsOfURL:url
+                                                 options:NSDataReadingUncached
+                                                   error:&error];
         
-    // Если у нас total меньше чем offsef, то делаем рекурсивно вызов на загрузку сл. offseta
-    if (offset < [[result objectForKey:@"total_count"] intValue])
-    {
+        if (error)
+        {
+            [self sendEvent:PROJECTS_LOADED success:NO];
+            return NO;
+        }
+        
+        error = nil;
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&error];
+        if (error)
+        {
+            [self sendEvent:PROJECTS_LOADED success:NO];
+            return NO;
+        }
+        
+        if (_noNeedProjects)
+        {
+            return NO;
+        }
+        
+        // Наполняем базу
+        NSArray *newProjects = [result objectForKey:@"projects"];
+        for (NSDictionary *newProject in newProjects)
+        {
+            Project *oldProject = [_database projectById:[newProject objectForKey:@"id"]];
+            [self refreshProject:oldProject withDictionary:newProject];
+        }
+        
+        if (![_database save])
+        {
+            [self sendEvent:PROJECTS_LOADED success:NO];
+            return NO;
+        }
+        
+        _projectsTotal = [[result objectForKey:@"total_count"] intValue];
+                
         int progress = ((offset * 100)/[[result objectForKey:@"total_count"] intValue]);
         _projectsProgress = progress > 100 ? 100 : progress;
-        [self sendEvent:PROJECTS_LOADING_PROGRESS progress:_projectsProgress/_shiftLoading];
+        [self sendEvent:PROJECTS_LOADING_PROGRESS progress:_projectsProgress];
         
-        offset += 100;
-        return [self loadProjectsWithOffset:offset];
+        return YES;
     }
-    
-    return YES;
 }
 
 - (void) refreshProject:(Project *)project withDictionary:(NSDictionary *)dictionary
@@ -438,9 +408,6 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
-        // В этом массиве будут абсолютно все загруженные задачи
-        _newIssues = [NSMutableArray array];
-        
         // Начинаем рекурсивную загрузку, если она успешна продолжим
         if ([self loadIssuesWithOffset:0])
         {
@@ -449,127 +416,96 @@
                 return;
             }
             
-            if (_newProjects.count)
+            if (_issuesTotal > 100)
             {
-                int index = 0;
-                for (NSDictionary *newIssue in _newIssues)
-                {
-                    @autoreleasepool
-                    {
-                        Issue *oldIssue = [_database issueById:[newIssue objectForKey:@"id"]];
-                        [self refreshIssue:oldIssue withDictionary:newIssue];
-                        
-                        index ++;
-                        int progress = ((index * 100)/_newIssues.count);
-                        _issuesProgress = progress > 100 ? 100 : progress;
-                        [self sendEvent:ISSUES_LOADING_PROGRESS progress:SHIFT_LOADING_PROCENT + (_issuesProgress / _shiftDatabase)];
-                    }
-                }
+                NSMutableArray *operationsArray = [NSMutableArray array];
                 
-                if (![_database save])
+                for (int i = 100; i < _issuesTotal; i += 100)
                 {
-                    [self sendEvent:ISSUES_LOADED success:NO];
-                    return;
-                }
-            }
-            
-            // Если длина массива хранимых значений больше чем длина пришедших данных,
-            // значит, у нас какие то значения нужно удалить (проекты были удалены)
-            /*NSMutableArray *oldIssues = [NSMutableArray arrayWithArray:[_database issues]];
-            if (oldIssues.count > _newIssues.count)
-            {
-                for (int i = 0; i < oldIssues.count; i ++)
-                {
-                    Issue *oldIssue = [oldIssues objectAtIndex:i];
-                    for (int j = 0; j < _newIssues.count; j ++)
+                    [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                     {
-                        NSDictionary *newIssue = [_newIssues objectAtIndex:j];
-                        if ([[newIssue objectForKey:@"id"] isEqualToNumber:oldIssue.nid])
+                        if (_noNeedIssues)
                         {
-                            // Затем удаляем объект новых
-                            [_newIssues removeObjectAtIndex:j --];
-                            [oldIssues removeObjectAtIndex:i --];
-                            break;
+                            return;
                         }
-                    }
-                    continue;
+                        
+                        [self loadIssuesWithOffset:i];
+                        
+                        if (i + 100 > _issuesTotal)
+                        {
+                            _settings.issuesLastUpdate = [NSDate date];
+                            [self sendEvent:ISSUES_LOADING_PROGRESS progress:100];
+                            [self sendEvent:ISSUES_LOADED success:YES];
+                        }
+                    }]];
                 }
                 
-                // Удаляем из базы проекты которые были удалены на серваке
-                if (oldIssues.count)
-                {
-                    [_database deleteObjects:oldIssues];
-                    _settings.issuesLastUpdate = [NSDate date];
-                    [self sendEvent:ISSUES_LOADING_PROGRESS progress:100];
-                    [self sendEvent:ISSUES_LOADED success:YES];
-                }
-            }*/
-            
-            _settings.issuesLastUpdate = [NSDate date];
-            [self sendEvent:ISSUES_LOADING_PROGRESS progress:100];
-            [self sendEvent:ISSUES_LOADED success:YES];
+                NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+                [operationQueue setMaxConcurrentOperationCount:1];
+                [operationQueue addOperations:operationsArray waitUntilFinished:YES];
+            }
+            else
+            {
+                _settings.issuesLastUpdate = [NSDate date];
+                [self sendEvent:ISSUES_LOADING_PROGRESS progress:100];
+                [self sendEvent:ISSUES_LOADED success:YES];
+            }
         }
     });
 }
 
 - (BOOL) loadIssuesWithOffset:(int)offset
 {
-    // Грузим задачи рекурсивно
-    NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
-    NSData *jsonData = [NSData dataWithContentsOfURL:url
-                                             options:NSDataReadingUncached
-                                               error:&error];
-    
-    if (error)
+    @autoreleasepool
     {
-        [self sendEvent:ISSUES_LOADED success:NO];
-        return NO;
-    }
-    
-    error = nil;
-    NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                           options:NSJSONReadingMutableContainers
-                                                             error:&error];
-    if (error)
-    {
-        [self sendEvent:ISSUES_LOADED success:NO];
-        return NO;
-    }
-    
-    if (_noNeedIssues)
-    {
-        return NO;
-    }
-    
-    // Добавляем все новые проекты в один массив, что бы потом про сравнении двух массивов понять, какие из проектов были удалены
-    [_newIssues addObjectsFromArray:[result objectForKey:@"issues"]];
-    
-    // Проверим, возможно такие проекты уже существуют, если существуют выкинем их, а если существуют и изменялись на сервере, то обновим
-    /*NSMutableArray *newIssues = [result objectForKey:@"issues"];
-    for (NSDictionary *newIssue in newIssues)
-    {
-        Issue *oldIssue = [_database issueById:[newIssue objectForKey:@"id"]];
-        [self refreshIssue:oldIssue withDictionary:newIssue];
+        // Грузим задачи рекурсивно
+        NSError *error = nil;
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
+        NSData *jsonData = [NSData dataWithContentsOfURL:url
+                                                 options:NSDataReadingUncached
+                                                   error:&error];
+        
+        if (error)
+        {
+            [self sendEvent:ISSUES_LOADED success:NO];
+            return NO;
+        }
+        
+        error = nil;
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&error];
+        if (error)
+        {
+            [self sendEvent:ISSUES_LOADED success:NO];
+            return NO;
+        }
+        
+        if (_noNeedIssues)
+        {
+            return NO;
+        }
+        
+        // Наполняем базу
+        NSArray *newArray = [result objectForKey:@"issues"];
+        for (NSDictionary *newIssue in newArray)
+        {
+            Issue *oldIssue = [_database issueById:[newIssue objectForKey:@"id"]];
+            [self refreshIssue:oldIssue withDictionary:newIssue];                
+        }
+        
         if (![_database save])
         {
             [self sendEvent:ISSUES_LOADED success:NO];
             return NO;
         }
-    }*/
         
-    // Если у нас total меньше чем offsef, то делаем рекурсивно вызов на загрузку сл. offseta
-    if (offset < [[result objectForKey:@"total_count"] intValue])
-    {
         int progress = ((offset * 100)/[[result objectForKey:@"total_count"] intValue]);
         _issuesProgress = progress > 100 ? 100 : progress;
-        [self sendEvent:ISSUES_LOADING_PROGRESS progress:_issuesProgress / _shiftLoading];
-
-        offset += 100;
-        return [self loadIssuesWithOffset:offset];
+        [self sendEvent:ISSUES_LOADING_PROGRESS progress:_issuesProgress];
+        
+        return YES;
     }
-    
-    return YES;
 }
 
 - (void) refreshIssue:(Issue *)issue withDictionary:(NSDictionary *)dictionary
