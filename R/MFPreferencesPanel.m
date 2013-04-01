@@ -147,6 +147,9 @@
     {
         _projectsProgress = 100;
         [self refreshProgress];
+        
+        // Загрузка списка задач
+        [[MFConnector sharedInstance] loadIssues];
     }
     else
     {
@@ -191,9 +194,6 @@
     {
         _issuesProgress = 100;
         [self refreshProgress];
-        
-        // Загрузка списка задач
-        [[MFConnector sharedInstance] loadIssues];
     }
     else
     {

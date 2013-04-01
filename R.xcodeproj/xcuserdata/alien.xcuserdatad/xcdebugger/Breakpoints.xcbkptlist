@@ -44,19 +44,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "R/MFPreferencesPanel.m"
-         timestampString = "386529851.898983"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "145"
-         endingLineNumber = "145"
-         landmarkName = "-projectsLoadingComplete:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "R/MFConnector.m"
          timestampString = "386529676.237536"
          startingColumnNumber = "9223372036854775807"
