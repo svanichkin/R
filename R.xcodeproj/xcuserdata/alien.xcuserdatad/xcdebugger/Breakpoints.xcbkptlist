@@ -32,11 +32,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "R/MFConnector.m"
-         timestampString = "386540922.470358"
+         timestampString = "386542367.242836"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "699"
-         endingLineNumber = "699"
+         startingLineNumber = "701"
+         endingLineNumber = "701"
          landmarkName = "@implementation MFConnector"
          landmarkType = "3">
       </FileBreakpoint>
@@ -45,26 +45,34 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "R/MFConnector.m"
-         timestampString = "386540807.36365"
+         timestampString = "386542367.242836"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "436"
-         endingLineNumber = "436"
+         startingLineNumber = "438"
+         endingLineNumber = "438"
          landmarkName = "-loadIssues"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
-         continueAfterRunningActions = "No"
+         continueAfterRunningActions = "Yes"
          filePath = "R/MFConnector.m"
-         timestampString = "386540394.424541"
+         timestampString = "386542931.791937"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "281"
+         endingLineNumber = "281"
          landmarkName = "-loadProjects"
          landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p i">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>

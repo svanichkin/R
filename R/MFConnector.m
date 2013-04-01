@@ -281,18 +281,20 @@
                         if (i + 100 > _projectsTotal)
                         {
                             _settings.projectsLastUpdate = [NSDate date];
+                            [self sendEvent:PROJECTS_LOADING_PROGRESS progress:100];
                             [self sendEvent:PROJECTS_LOADED success:YES];
                         }
                     }]];
                 }
                 
                 NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-                [operationQueue setMaxConcurrentOperationCount:1];
+                //[operationQueue setMaxConcurrentOperationCount:1];
                 [operationQueue addOperations:operationsArray waitUntilFinished:YES];
             }
             else
             {
                 _settings.projectsLastUpdate = [NSDate date];
+                [self sendEvent:PROJECTS_LOADING_PROGRESS progress:100];
                 [self sendEvent:PROJECTS_LOADED success:YES];
             }
         }
