@@ -32,7 +32,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "R/MFConnector.m"
-         timestampString = "386545429.090918"
+         timestampString = "386588348.508752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "703"
@@ -45,7 +45,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "R/MFConnector.m"
-         timestampString = "386545423.468587"
+         timestampString = "386588348.508752"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "436"
@@ -60,19 +60,6 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "R/MFDatabase.m"
-         timestampString = "386580557.630924"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "219"
-         endingLineNumber = "219"
-         landmarkName = "-save"
-         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>

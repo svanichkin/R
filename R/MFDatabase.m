@@ -70,6 +70,7 @@
     
     if ([thread isMainThread])
     {
+        [moc setUndoManager:nil];
         return moc;
     }
     
@@ -81,6 +82,7 @@
         // create a context for this thread
         NSManagedObjectContext *threadContext = [[NSManagedObjectContext alloc] init];
         [threadContext setPersistentStoreCoordinator:[moc persistentStoreCoordinator]];
+        [threadContext setUndoManager:nil];
         
         // cache the context for this thread
         [_managedObjectContexts setObject:threadContext forKey:threadKey];
@@ -103,7 +105,8 @@
 
 - (void) resetData
 {
-    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    
+    /*MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
     NSPersistentStoreCoordinator *persistentStoreCoordinator = [appController persistentStoreCoordinator];
 
     NSArray *stores = [persistentStoreCoordinator persistentStores];
@@ -112,7 +115,7 @@
     {
         [persistentStoreCoordinator removePersistentStore:store error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
-    }
+    }*/
 }
 
 - (id) newObjectByName:(NSString *)name

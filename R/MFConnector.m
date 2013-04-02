@@ -184,7 +184,7 @@
         {
             return;
         }
-
+        
         [_database deleteAllObjects:@"Status"];
         [_database deleteAllObjects:@"Tracker"];
         [_database deleteAllObjects:@"Priority"];

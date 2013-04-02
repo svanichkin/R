@@ -72,12 +72,12 @@
     if (server)
     {
         [_defaults setObject:server forKey:KEY_SERVER];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_SERVER];
     }
+    [_defaults synchronize];
 }
 
 -(NSString *)server
@@ -90,12 +90,12 @@
     if (login)
     {
         [_defaults setObject:login forKey:KEY_LOGIN];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_LOGIN];
     }
+    [_defaults synchronize];
 }
 
 - (NSString *)login
@@ -108,12 +108,12 @@
     if (password)
     {
         [_defaults setObject:password forKey:KEY_PASSWORD];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_LOGIN];
     }
+    [_defaults synchronize];
 }
 
 - (NSString *)password
@@ -133,12 +133,12 @@
     if (filtersLastUpdate)
     {
         [_defaults setObject:filtersLastUpdate forKey:KEY_FILT_LAST_UPD];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_FILT_LAST_UPD];
     }
+    [_defaults synchronize];
 }
 
 - (NSDate *) filtersLastUpdate
@@ -151,12 +151,12 @@
     if (filtersStates)
     {
         [_defaults setObject:filtersStates forKey:KEY_STATES];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_STATES];
     }
+    [_defaults synchronize];
 }
 
 - (NSArray *) filtersStates
@@ -171,12 +171,12 @@
     if (selectedProjectId)
     {
         [_defaults setObject:selectedProjectId forKey:KEY_SEL_PROJ_ID];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_SEL_PROJ_ID];
     }
+    [_defaults synchronize];
 }
 
 - (NSNumber *) selectedProjectId
@@ -189,12 +189,12 @@
     if (projectsLastUpdate)
     {
         [_defaults setObject:projectsLastUpdate forKey:KEY_PROJ_LAST_UPD];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_PROJ_LAST_UPD];
     }
+    [_defaults synchronize];
 }
 
 - (NSDate *) projectsLastUpdate
@@ -209,12 +209,12 @@
     if (selectedIssueId)
     {
         [_defaults setObject:selectedIssueId forKey:KEY_SEL_ISSUE_ID];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_SEL_ISSUE_ID];
     }
+    [_defaults synchronize];
 }
 
 - (NSNumber *) selectedIssueId
@@ -227,12 +227,12 @@
     if (issuesLastUpdate)
     {
         [_defaults setObject:issuesLastUpdate forKey:KEY_ISSUES_LAST_UPD];
-        [_defaults synchronize];
     }
     else
     {
         [_defaults removeObjectForKey:KEY_ISSUES_LAST_UPD];
     }
+    [_defaults synchronize];
 }
 
 - (NSDate *) issuesLastUpdate

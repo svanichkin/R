@@ -55,8 +55,6 @@
 		93EEA9D816FF9F350066ECC7 /* add3.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D316FF9F350066ECC7 /* add3.png */; };
 		93EEA9D916FF9F350066ECC7 /* add2.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D416FF9F350066ECC7 /* add2.png */; };
 		93EEA9DA16FF9F350066ECC7 /* add1.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D516FF9F350066ECC7 /* add1.png */; };
-		93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */; };
-		93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */; };
 		93FCDF9D1706199200B8A3EF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9C1706199200B8A3EF /* User.m */; };
 		93FCDFA01706199300B8A3EF /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9F1706199300B8A3EF /* Status.m */; };
 		93FCDFA31706199300B8A3EF /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA21706199300B8A3EF /* Project.m */; };
@@ -155,10 +153,6 @@
 		93EEA9D316FF9F350066ECC7 /* add3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add3.png; sourceTree = "<group>"; };
 		93EEA9D416FF9F350066ECC7 /* add2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add2.png; sourceTree = "<group>"; };
 		93EEA9D516FF9F350066ECC7 /* add1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add1.png; sourceTree = "<group>"; };
-		93FCDF801705F26300B8A3EF /* IZBackgroundFetchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IZBackgroundFetchOperation.h; sourceTree = "<group>"; };
-		93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZBackgroundFetchOperation.m; sourceTree = "<group>"; };
-		93FCDF821705F26300B8A3EF /* IZManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IZManagedObjectContext.h; sourceTree = "<group>"; };
-		93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IZManagedObjectContext.m; sourceTree = "<group>"; };
 		93FCDF9B1706199200B8A3EF /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		93FCDF9C1706199200B8A3EF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		93FCDF9E1706199300B8A3EF /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
@@ -216,7 +210,6 @@
 		930BBBF61702D06100B664C2 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				93FCDF7F1705F25000B8A3EF /* ManagerContext */,
 				9390E74716FCF90D00D68182 /* Dependencies */,
 				9390E74F16FCF90D00D68182 /* RedmineKit */,
 			);
@@ -427,17 +420,6 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
-		93FCDF7F1705F25000B8A3EF /* ManagerContext */ = {
-			isa = PBXGroup;
-			children = (
-				93FCDF801705F26300B8A3EF /* IZBackgroundFetchOperation.h */,
-				93FCDF811705F26300B8A3EF /* IZBackgroundFetchOperation.m */,
-				93FCDF821705F26300B8A3EF /* IZManagedObjectContext.h */,
-				93FCDF831705F26300B8A3EF /* IZManagedObjectContext.m */,
-			);
-			name = ManagerContext;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -564,8 +546,6 @@
 				930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */,
 				930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */,
 				930BBC18170444D300B664C2 /* MFIssuesList.m in Sources */,
-				93FCDF841705F26300B8A3EF /* IZBackgroundFetchOperation.m in Sources */,
-				93FCDF851705F26300B8A3EF /* IZManagedObjectContext.m in Sources */,
 				93FCDF9D1706199200B8A3EF /* User.m in Sources */,
 				93FCDFA01706199300B8A3EF /* Status.m in Sources */,
 				93FCDFA31706199300B8A3EF /* Project.m in Sources */,

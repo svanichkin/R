@@ -119,6 +119,8 @@
         
         if ([MFSettings sharedInstance].projectsLastUpdate == nil || [MFSettings sharedInstance].filtersLastUpdate == nil || [MFSettings sharedInstance].issuesLastUpdate == nil)
         {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RESET_ALL_DATA object:nil];
+            
             _progressDatabaseUpdate.hidden = NO;
          
             // Загрузка значений с сервера для генерации количества и названий сегментов

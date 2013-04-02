@@ -220,7 +220,7 @@
 }
 
 // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) 
-- (IZManagedObjectContext *)managedObjectContext
+- (NSManagedObjectContext *)managedObjectContext
 {
     if (_managedObjectContext) {
         return _managedObjectContext;
@@ -235,7 +235,7 @@
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
-    _managedObjectContext = [[IZManagedObjectContext alloc] init];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
 
     return _managedObjectContext;
