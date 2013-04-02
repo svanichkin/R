@@ -213,7 +213,7 @@
             
             if ([_database save])
             {
-                _settings.projectsLastUpdate = [NSDate date];
+                _settings.filtersLastUpdate = [NSDate date];
                 [self sendEvent:FILTERS_LOADING_PROGRESS progress:100];
                 [self sendEvent:FILTERS_LOADED success:YES];
                 return;
@@ -501,6 +501,8 @@
             [self sendEvent:ISSUES_LOADED success:NO];
             return NO;
         }
+        
+        _issuesTotal = [[result objectForKey:@"total_count"] intValue];
         
         int progress = ((offset * 100)/[[result objectForKey:@"total_count"] intValue]);
         _issuesProgress = progress > 100 ? 100 : progress;

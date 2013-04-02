@@ -219,6 +219,8 @@
             return NO;
         }
         
+        [moc reset];
+        
         if ([thread isMainThread] == NO)
         {
             [[NSNotificationCenter defaultCenter] removeObserver:self

@@ -109,7 +109,6 @@
     
     if ([notification.object boolValue])
     {
-
         // Если авторизация происходит с другим логином паролем, то всё загруженное удаляем
         if (_renewDatabase == YES)
         {
@@ -202,6 +201,8 @@
         
         [_progressText setHidden:NO];
         _progressText.stringValue = @"Connected";
+        
+        _progressDatabaseUpdate.hidden = YES;
     }
     else
     {
