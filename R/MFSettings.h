@@ -13,6 +13,7 @@
 @property (nonatomic, weak) NSString *server;
 @property (nonatomic, weak) NSString *login;
 @property (nonatomic, weak) NSString *password;
+@property (nonatomic, weak) NSString *token;
 @property (nonatomic, readonly) BOOL credentials;
 
 @property (nonatomic, weak) NSDate *filtersLastUpdate;

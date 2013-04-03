@@ -95,6 +95,9 @@
         [_progressLogin setHidden:NO];
         [_progressLogin startAnimation:nil];
         
+        _progressDatabaseUpdate.hidden = YES;
+
+        
         // Начнём конект
         [[MFConnector sharedInstance] connectWithLogin:_login.stringValue
                                               password:_password.stringValue

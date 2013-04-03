@@ -14,6 +14,7 @@
 #import "User.h"
 #import "MFDatabase.h"
 #import "MFAppDelegate.h"
+#import "MFToken.h"
 
 // Загрузка состоит из двух частей, первая это загрузка из сети
 // вторая часть это формирование базы даных
@@ -142,11 +143,17 @@
         _redmine.password      = password;
         _redmine.serverAddress = server;
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
-        {
-            [_redmine login];
-        });
+        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        //{
+            [[[MFToken alloc] init] tokenWithDelegate:self andFunction:@selector(tokenComplete)];
+            //[_redmine login];
+        //});
     }
+}
+
+- (void) tokenComplete
+{
+    NSLog(@"sdsdsd");
 }
 
 - (void) connectionComplete:(NSNumber *)success
@@ -226,7 +233,7 @@
 - (NSDictionary *) loadFilterByPath:(NSString *)path
 {
     NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [MFSettings sharedInstance].server, path]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@?key=%@", [MFSettings sharedInstance].server, path, self.redmine.apiKey]];
     NSData *jsonData = [NSData dataWithContentsOfURL:url
                                              options:NSDataReadingUncached
                                                error:&error];
@@ -307,7 +314,7 @@
     {
         // Грузим проекты рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.redmine.apiKey]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
@@ -462,7 +469,7 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i", [MFSettings sharedInstance].server, offset]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.redmine.apiKey]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];

@@ -10,6 +10,7 @@
 
 #define KEY_SERVER          @"server"
 #define KEY_LOGIN           @"login"
+#define KEY_TOKEN           @"token"
 #define KEY_PASSWORD        @"password"
 
 #define KEY_STATES          @"states"
@@ -124,6 +125,24 @@
 - (BOOL) credentials
 {
     return (self.server && self.login && self.password);
+}
+
+- (void) setToken:(NSString *)token
+{
+    if (token)
+    {
+        [_defaults setObject:token forKey:KEY_TOKEN];
+    }
+    else
+    {
+        [_defaults removeObjectForKey:KEY_TOKEN];
+    }
+    [_defaults synchronize];
+}
+
+- (NSString *)token
+{
+    return [_defaults objectForKey:KEY_TOKEN];
 }
 
 #pragma mark - Filters
