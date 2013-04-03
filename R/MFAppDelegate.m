@@ -36,7 +36,8 @@
     // Если есть креды, делаем автоконнект к серверу
     if (_settings.credentials)
     {
-        [[MFConnector sharedInstance] connect];
+        self.connector = [MFConnector sharedInstance];
+        [self.connector connect];
     }
     
     //[_issuesTable setAction:@selector(issuesCellSelected:)];

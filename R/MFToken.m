@@ -102,23 +102,26 @@
     [_delegate performSelector:_function withObject:nil afterDelay:0];
 }
 
-
+/*
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response
 {
     return  request;
 }
 
-
+*/
+/*
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     
 }
+*/
 
+/*
 -(BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
 {
     return YES;
 }
-
+*/
 -(NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
     return cachedResponse;

@@ -11,6 +11,8 @@
 #import "MFFiltersControl.h"
 #import "MFProjectSelector.h"
 
+@class MFConnector;
+
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 
 #pragma mark - Preferences
@@ -26,5 +28,7 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+@property (strong, nonatomic) MFConnector *connector;
 
 @end
