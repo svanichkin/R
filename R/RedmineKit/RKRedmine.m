@@ -109,10 +109,7 @@
 {
     NSString *urlString     = [NSString stringWithFormat:@"%@/login", self.serverAddress];
     NSURL *url              = [NSURL URLWithString:urlString];
-    
-    
     NSData  *data           = [NSData dataWithContentsOfURL:url];
-    
     TFHpple *doc            = [[TFHpple alloc] initWithHTMLData:data];
     NSArray *elements       = [doc searchWithXPathQuery:@"//input[@name='authenticity_token']"];
     NSString *auth_key      = nil;

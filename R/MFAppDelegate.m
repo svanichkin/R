@@ -17,6 +17,7 @@
     NSMenuItem *_projectSelected;
     NSArray *_issues;
     NSTableCellView *_oldCellSelected;
+    
     MFSettings *_settings;
 }
 
@@ -36,8 +37,7 @@
     // Если есть креды, делаем автоконнект к серверу
     if (_settings.credentials)
     {
-        self.connector = [MFConnector sharedInstance];
-        [self.connector connect];
+        [[MFConnector sharedInstance] connect];
     }
     
     //[_issuesTable setAction:@selector(issuesCellSelected:)];

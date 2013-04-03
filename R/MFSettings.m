@@ -10,7 +10,7 @@
 
 #define KEY_SERVER          @"server"
 #define KEY_LOGIN           @"login"
-#define KEY_TOKEN           @"token"
+#define KEY_API_TOKEN       @"apiToken"
 #define KEY_PASSWORD        @"password"
 
 #define KEY_STATES          @"states"
@@ -127,24 +127,23 @@
     return (self.server && self.login && self.password);
 }
 
-- (void) setToken:(NSString *)token
+- (void) setApiToken:(NSString *)token
 {
     if (token)
     {
-        [_defaults setObject:token forKey:KEY_TOKEN];
+        [_defaults setObject:token forKey:KEY_API_TOKEN];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_TOKEN];
+        [_defaults removeObjectForKey:KEY_API_TOKEN];
     }
     [_defaults synchronize];
 }
 
-- (NSString *)token
+- (NSString *)apiToken
 {
-    return [_defaults objectForKey:KEY_TOKEN];
+    return [_defaults objectForKey:KEY_API_TOKEN];
 }
-
 #pragma mark - Filters
 
 - (void) setFiltersLastUpdate:(NSDate *) filtersLastUpdate

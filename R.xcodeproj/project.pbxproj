@@ -49,7 +49,7 @@
 		9390E79D16FD0BD200D68182 /* MFConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E79C16FD0BD100D68182 /* MFConnector.m */; };
 		9390E79F16FDEA4200D68182 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E79E16FDEA4200D68182 /* background.png */; };
 		9390E7A116FE002D00D68182 /* background_p.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E7A016FE002D00D68182 /* background_p.png */; };
-		93C94493170C40B500843955 /* MFToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94492170C40B500843955 /* MFToken.m */; };
+		93C94493170C40B500843955 /* MFAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94492170C40B500843955 /* MFAuthorization.m */; };
 		93C94496170C411300843955 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94495170C411300843955 /* Base64.m */; };
 		93EEA9D016FF9AB00066ECC7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9CF16FF9AB00066ECC7 /* add.png */; };
 		93EEA9D616FF9F350066ECC7 /* add5.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D116FF9F350066ECC7 /* add5.png */; };
@@ -149,8 +149,8 @@
 		9390E79C16FD0BD100D68182 /* MFConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFConnector.m; sourceTree = "<group>"; };
 		9390E79E16FDEA4200D68182 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9390E7A016FE002D00D68182 /* background_p.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_p.png; sourceTree = "<group>"; };
-		93C94491170C40B500843955 /* MFToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFToken.h; sourceTree = "<group>"; };
-		93C94492170C40B500843955 /* MFToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFToken.m; sourceTree = "<group>"; };
+		93C94491170C40B500843955 /* MFAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAuthorization.h; sourceTree = "<group>"; };
+		93C94492170C40B500843955 /* MFAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAuthorization.m; sourceTree = "<group>"; };
 		93C94494170C411300843955 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		93C94495170C411300843955 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		93EEA9CF16FF9AB00066ECC7 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
@@ -432,8 +432,8 @@
 			children = (
 				9390E79B16FD0BD100D68182 /* MFConnector.h */,
 				9390E79C16FD0BD100D68182 /* MFConnector.m */,
-				93C94491170C40B500843955 /* MFToken.h */,
-				93C94492170C40B500843955 /* MFToken.m */,
+				93C94491170C40B500843955 /* MFAuthorization.h */,
+				93C94492170C40B500843955 /* MFAuthorization.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -571,7 +571,7 @@
 				93FCDFA91706199400B8A3EF /* Tracker.m in Sources */,
 				93FCDFAC1706199400B8A3EF /* Version.m in Sources */,
 				93FCDFAF1706199400B8A3EF /* Priority.m in Sources */,
-				93C94493170C40B500843955 /* MFToken.m in Sources */,
+				93C94493170C40B500843955 /* MFAuthorization.m in Sources */,
 				93C94496170C411300843955 /* Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

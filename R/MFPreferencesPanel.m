@@ -19,7 +19,7 @@
     int _projectsProgress, _filtersProgress, _issuesProgress;
 }
 
--(void)awakeFromNib
+-(void) awakeFromNib
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -69,35 +69,30 @@
                                                object:nil];
 }
 
-- (IBAction)connectAction:(id)sender
+- (IBAction) connectAction:(id)sender
 {
-    if (_serverAddress.stringValue.length && _login.stringValue.length && _password.stringValue.length && [MFConnector sharedInstance].connectionProgress == NO)
+    if (_serverAddress.stringValue.length &&
+        _login.stringValue.length &&
+        _password.stringValue.length &&
+        [MFConnector sharedInstance].connectionProgress == NO)
     {
         MFSettings *settings = [MFSettings sharedInstance];
         
-        // Если данные по коннекту уже имеются
-        if (settings.credentials)
-        {
-            // Если данные по коннекту отличаются от имеющихся
-            if ([_serverAddress.stringValue isEqualToString:settings.server] == NO || [_login.stringValue isEqualToString:settings.login] == NO || [_password.stringValue isEqualToString:settings.password] == NO)
-            {
-                _renewDatabase = YES;
-            }
-        }
-        else
-        {
-            _renewDatabase = YES;
-        }
+        // Если данных по коннекту нет или данные отличаются от тех что сохранены в настройках
+        _renewDatabase = ([_serverAddress.stringValue isEqualToString:settings.server] == NO ||
+                          [_login.stringValue isEqualToString:settings.login] == NO ||
+                          [_password.stringValue isEqualToString:settings.password] == NO);
         
-        [_progressText setHidden:YES];
+        // Скрываем текст
+        _progressText.hidden = YES;
         
         // Покажем прогресс индикатор
-        [_progressLogin setHidden:NO];
+        _progressLogin.hidden = NO;
         [_progressLogin startAnimation:nil];
         
+        // Скрываем обновление данных
         _progressDatabaseUpdate.hidden = YES;
 
-        
         // Начнём конект
         [[MFConnector sharedInstance] connectWithLogin:_login.stringValue
                                               password:_password.stringValue
@@ -107,7 +102,8 @@
 
 - (void) connectionComplete:(NSNotification *)notification
 {
-    [_progressLogin setHidden:YES];
+    // Скрываем прогресс бар логина
+    _progressLogin.hidden = NO;
     [_progressLogin stopAnimation:nil];
     
     if ([notification.object boolValue])
@@ -120,7 +116,9 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:RESET_ALL_DATA object:nil];
         }
         
-        if ([MFSettings sharedInstance].projectsLastUpdate == nil || [MFSettings sharedInstance].filtersLastUpdate == nil || [MFSettings sharedInstance].issuesLastUpdate == nil)
+        if ([MFSettings sharedInstance].projectsLastUpdate == nil ||
+            [MFSettings sharedInstance].filtersLastUpdate == nil ||
+            [MFSettings sharedInstance].issuesLastUpdate == nil)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:RESET_ALL_DATA object:nil];
             
@@ -131,13 +129,13 @@
         }
         else
         {
-            [_progressText setHidden:NO];
+            _progressText.hidden = NO;
             _progressText.stringValue = @"Connected";
         }
     }
     else
     {
-        [_progressText setHidden:NO];
+        _progressText.hidden = NO;
         _progressText.stringValue = @"Error";
     }
 }

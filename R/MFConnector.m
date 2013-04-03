@@ -14,7 +14,7 @@
 #import "User.h"
 #import "MFDatabase.h"
 #import "MFAppDelegate.h"
-#import "MFToken.h"
+#import "MFAuthorization.h"
 
 // Загрузка состоит из двух частей, первая это загрузка из сети
 // вторая часть это формирование базы даных
@@ -32,6 +32,8 @@
     BOOL _noNeedFilters;
     BOOL _noNeedProjects;
     BOOL _noNeedIssues;
+    
+    MFAuthorization *token;
     
     int _projectsProgress, _filtersProgress, _issuesProgress;
     
@@ -139,35 +141,22 @@
     {
         _connectionProgress = YES;
         
-        _redmine.username      = login;
-        _redmine.password      = password;
-        _redmine.serverAddress = server;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(connectionComplete:)
+                                                     name:CONNECT_COMPLETE
+                                                   object:nil];
         
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
-        //{
-            [[[MFToken alloc] init] tokenWithDelegate:self andFunction:@selector(tokenComplete)];
-            //[_redmine login];
-        //});
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        {
+            // Получаем токен авторизации
+            [[[MFAuthorization alloc] init] authorizationWithLogin:login password:password andServer:server];
+        });
     }
-}
-
-- (void) tokenComplete
-{
-    NSLog(@"sdsdsd");
 }
 
 - (void) connectionComplete:(NSNumber *)success
 {
     _connectionProgress = NO;
-    
-    if ([success boolValue])
-    {
-        [MFSettings sharedInstance].server   = _redmine.serverAddress;
-        [MFSettings sharedInstance].login    = _redmine.username;
-        [MFSettings sharedInstance].password = _redmine.password;
-    }
-    
-    [self sendEvent:CONNECT_COMPLETE success:[success boolValue]];
 }
 
 #pragma mark - Load settings
@@ -233,7 +222,7 @@
 - (NSDictionary *) loadFilterByPath:(NSString *)path
 {
     NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@?key=%@", [MFSettings sharedInstance].server, path, self.redmine.apiKey]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@?key=%@", [MFSettings sharedInstance].server, path, _settings.apiToken]];
     NSData *jsonData = [NSData dataWithContentsOfURL:url
                                              options:NSDataReadingUncached
                                                error:&error];
@@ -314,7 +303,7 @@
     {
         // Грузим проекты рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.redmine.apiKey]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
@@ -469,7 +458,7 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.redmine.apiKey]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
