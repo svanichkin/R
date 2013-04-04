@@ -27,18 +27,5 @@
          landmarkName = "-issuesCellSelected:"
          landmarkType = "5">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "R/MFConnector.m"
-         timestampString = "386698682.520356"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "699"
-         endingLineNumber = "699"
-         landmarkName = "@implementation MFConnector"
-         landmarkType = "3">
-      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

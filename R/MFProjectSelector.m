@@ -22,7 +22,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(projectsLoaded:)
-                                                     name:PROJECTS_LOADED
+                                                     name:DATABASE_UPDATING_COMPLETE
                                                    object:nil];
         _settings = [MFSettings sharedInstance];
     }

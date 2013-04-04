@@ -7,24 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RKRedmine.h"
 
 @interface MFConnector : NSObject
 
 @property (nonatomic, assign) BOOL connectionProgress;
-@property (nonatomic, readonly) RKRedmine *redmine;
+@property (nonatomic, assign) BOOL databaseUpdatingProgress;
 
 + (MFConnector *) sharedInstance;
 
 - (void) connect;
 - (void) connectWithLogin:(NSString *)login password:(NSString *)password andServer:(NSString *)server;
 
-- (void) loadFilters;
-
-- (void) loadProjects;
-
-- (void) loadIssues;
-
-- (void) loadTimeEntries;
+- (void) databaseUpdate;
 
 @end

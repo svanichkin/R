@@ -7,7 +7,6 @@
 //
 
 #import "MFAuthorization.h"
-#import "Base64.h"
 #import "MFSettings.h"
 #import "TFHpple.h"
 
@@ -22,6 +21,7 @@
     NSString *_login, *_password, *_server, *_authenticityToken, *_apiToken;
     
     BOOL _finished;
+    BOOL _stop;
 }
 
 - (void) authorizationWithLogin:(NSString *)login password:(NSString *)password andServer:(NSString *)server
@@ -32,7 +32,25 @@
     _login    = login;
     _password = password;
     
+    _stop = NO;
+    _finished = NO;
+    
     [self login];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resetData)
+                                                 name:RESET_DATABASE
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resetData)
+                                                 name:RESET_FULL
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resetData)
+                                                 name:RESET_AUTHORIZATION
+                                               object:nil];
     
     // Цикл позволяет не закрывать поток, пока выполняется пустой цикл
     while(!_finished)
@@ -42,8 +60,17 @@
     }
 }
 
+- (void) resetData
+{
+    _stop = YES;
+    _finished = YES;
+}
+
 - (void) login
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:CONNECT_START
+                                                        object:nil];
+    
     NSString *urlString          = [NSString stringWithFormat:@"%@/login", _settings.server];
     NSURL *url                   = [NSURL URLWithString:urlString];
     
@@ -118,6 +145,11 @@
 
 -(void) connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    if (_stop)
+    {
+        return;
+    }
+    
     if ([connection isEqual:_loginTokenConnection])
     {
         TFHpple *doc              = [[TFHpple alloc] initWithHTMLData:_receivedData];
@@ -162,6 +194,11 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    if (_stop)
+    {
+        return;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:CONNECT_COMPLETE

@@ -14,13 +14,10 @@
 #define KEY_PASSWORD        @"password"
 
 #define KEY_STATES          @"states"
-#define KEY_FILT_LAST_UPD   @"filtersLastUpdate"
-
 #define KEY_SEL_PROJ_ID     @"selectedProjectId"
-#define KEY_PROJ_LAST_UPD   @"projectsLastUpdate"
-
 #define KEY_SEL_ISSUE_ID    @"selectedIssueId"
-#define KEY_ISSUES_LAST_UPD @"issuesLastUpdate"
+
+#define KEY_DATA_LAST_UPD   @"dataLastUpdate"
 
 
 @implementation MFSettings
@@ -48,7 +45,17 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(resetData)
-                                                     name:RESET_ALL_DATA
+                                                     name:RESET_DATABASE
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetFull)
+                                                     name:RESET_FULL
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetAuthorization)
+                                                     name:RESET_AUTHORIZATION
                                                    object:nil];
     }
     return self;
@@ -56,14 +63,25 @@
 
 - (void) resetData
 {
-    [self setFiltersLastUpdate: nil];
+    [self setDataLastUpdate: nil];
+    
     [self setFiltersStates:nil];
-    
-    [self setProjectsLastUpdate:nil];
     [self setSelectedProjectId:nil];
-    
-    [self setIssuesLastUpdate:nil];
     [self setSelectedIssueId:nil];
+}
+
+- (void) resetAuthorization
+{
+    [self setLogin: nil];
+    [self setPassword:nil];
+    [self setServer:nil];
+    [self setApiToken:nil];
+}
+
+- (void) resetFull
+{
+    [self resetData];
+    [self resetAuthorization];
 }
 
 #pragma mark - Credentials
@@ -146,24 +164,6 @@
 }
 #pragma mark - Filters
 
-- (void) setFiltersLastUpdate:(NSDate *) filtersLastUpdate
-{
-    if (filtersLastUpdate)
-    {
-        [_defaults setObject:filtersLastUpdate forKey:KEY_FILT_LAST_UPD];
-    }
-    else
-    {
-        [_defaults removeObjectForKey:KEY_FILT_LAST_UPD];
-    }
-    [_defaults synchronize];
-}
-
-- (NSDate *) filtersLastUpdate
-{
-    return [_defaults objectForKey:KEY_PROJ_LAST_UPD];
-}
-
 - (void)setFiltersStates:(NSArray *)filtersStates
 {
     if (filtersStates)
@@ -202,24 +202,6 @@
     return [_defaults objectForKey:KEY_SEL_PROJ_ID];
 }
 
-- (void) setProjectsLastUpdate:(NSDate *)projectsLastUpdate
-{
-    if (projectsLastUpdate)
-    {
-        [_defaults setObject:projectsLastUpdate forKey:KEY_PROJ_LAST_UPD];
-    }
-    else
-    {
-        [_defaults removeObjectForKey:KEY_PROJ_LAST_UPD];
-    }
-    [_defaults synchronize];
-}
-
-- (NSDate *) projectsLastUpdate
-{
-    return [_defaults objectForKey:KEY_PROJ_LAST_UPD];
-}
-
 #pragma mark - Issues
 
 - (void) setSelectedIssueId:(NSNumber *)selectedIssueId
@@ -240,22 +222,24 @@
     return [_defaults objectForKey:KEY_SEL_ISSUE_ID];
 }
 
-- (void) setIssuesLastUpdate:(NSDate *)issuesLastUpdate
+
+
+- (void) setDataLastUpdate:(NSDate *)lastUpdate
 {
-    if (issuesLastUpdate)
+    if (lastUpdate)
     {
-        [_defaults setObject:issuesLastUpdate forKey:KEY_ISSUES_LAST_UPD];
+        [_defaults setObject:lastUpdate forKey:KEY_DATA_LAST_UPD];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_ISSUES_LAST_UPD];
+        [_defaults removeObjectForKey:KEY_DATA_LAST_UPD];
     }
     [_defaults synchronize];
 }
 
-- (NSDate *) issuesLastUpdate
+- (NSDate *) dataLastUpdate
 {
-    return [_defaults objectForKey:KEY_ISSUES_LAST_UPD];
+    return [_defaults objectForKey:KEY_DATA_LAST_UPD];
 }
 
 @end

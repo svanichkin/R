@@ -8,19 +8,18 @@
 #endif
 
 // All
-#define RESET_ALL_DATA              @"resetAllData"
+#define RESET_DATABASE              @"resetDatabase"
+#define RESET_FULL                  @"resetFull"
+#define RESET_AUTHORIZATION         @"resetAuthorization"
 
 // MFConnector
 #define CONNECT_COMPLETE            @"connectComplete"
+#define CONNECT_START               @"connectStart"
 
-#define FILTERS_LOADED              @"filtersLoaded"
-#define FILTERS_LOADING_PROGRESS    @"filterssLoadingProgress"
-
-#define PROJECTS_LOADED             @"projectsLoaded"
-#define PROJECTS_LOADING_PROGRESS   @"projectsLoadingProgress"
-
-#define ISSUES_LOADED               @"issuesLoaded"
-#define ISSUES_LOADING_PROGRESS     @"issuesLoadingProgress"
+// MFDatabaseUpdator
+#define DATABASE_UPDATING_START     @"databaseUpdatingStart"
+#define DATABASE_UPDATING_COMPLETE  @"databaseUpdatingComplete"
+#define DATABASE_UPDATING_PROGRESS  @"databaseUpdatingProgress"
 
 // MFProjectSelector
 #define PROJECT_SELECTED            @"projectsSelected"

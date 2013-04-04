@@ -22,7 +22,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(issuesLoaded:)
-                                                     name:ISSUES_LOADED
+                                                     name:DATABASE_UPDATING_COMPLETE
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self

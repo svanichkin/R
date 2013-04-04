@@ -27,7 +27,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(filtersLoaded:)
-                                                     name:FILTERS_LOADED
+                                                     name:DATABASE_UPDATING_COMPLETE
                                                    object:nil];
         
         _settings = [MFSettings sharedInstance];
@@ -39,7 +39,7 @@
 {
     if ([notification.object boolValue])
     {
-        if (_settings.filtersLastUpdate)
+        if (_settings.dataLastUpdate)
         {
             self.hidden = NO;
             self.target = self;

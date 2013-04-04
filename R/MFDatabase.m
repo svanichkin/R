@@ -46,7 +46,17 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(resetData)
-                                                     name:RESET_ALL_DATA
+                                                     name:RESET_DATABASE
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_FULL
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_AUTHORIZATION
                                                    object:nil];
     }
     return self;
@@ -105,17 +115,17 @@
 
 - (void) resetData
 {
+    [self deleteAllObjects:@"Status"];
+    [self deleteAllObjects:@"Tracker"];
+    [self deleteAllObjects:@"Priority"];
     
-    /*MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
-    NSPersistentStoreCoordinator *persistentStoreCoordinator = [appController persistentStoreCoordinator];
-
-    NSArray *stores = [persistentStoreCoordinator persistentStores];
+    [self deleteAllObjects:@"User"];
+    [self deleteAllObjects:@"Project"];
+    [self deleteAllObjects:@"Issue"];
+    [self deleteAllObjects:@"Tracker"];
+    [self deleteAllObjects:@"Version"];
     
-    for(NSPersistentStore *store in stores)
-    {
-        [persistentStoreCoordinator removePersistentStore:store error:nil];
-        [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
-    }*/
+    [self save];
 }
 
 - (id) newObjectByName:(NSString *)name
