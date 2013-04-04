@@ -21,12 +21,34 @@
 	if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_DATABASE
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_FULL
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(projectsLoaded:)
                                                      name:DATABASE_UPDATING_COMPLETE
                                                    object:nil];
         _settings = [MFSettings sharedInstance];
     }
     return self;
+}
+
+- (void) resetData
+{
+    [self.menu removeAllItems];
+    
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"No Projects"
+                                                  action:nil
+                                           keyEquivalent:@""];
+    [self.menu addItem:item];
+    
+    [self setEnabled:NO];
 }
 
 - (void) projectsLoaded:(NSNotification *) notification

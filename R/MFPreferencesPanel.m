@@ -152,7 +152,7 @@
     [_progressDatabaseUpdate setDoubleValue:[notification.object floatValue]];
 }
 
-- (void) databaseLoadingComplete:(NSNotification *)notification
+- (void) databaseUpdatingComplete:(NSNotification *)notification
 {
     if ([notification.object boolValue])
     {
@@ -174,6 +174,11 @@
     _progressText.stringValue = @"Error";
     
     _progressDatabaseUpdate.hidden = YES;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

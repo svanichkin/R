@@ -115,7 +115,7 @@
 
 - (void) resetData
 {
-    [self deleteAllObjects:@"Status"];
+    /*[self deleteAllObjects:@"Status"];
     [self deleteAllObjects:@"Tracker"];
     [self deleteAllObjects:@"Priority"];
     
@@ -125,7 +125,20 @@
     [self deleteAllObjects:@"Tracker"];
     [self deleteAllObjects:@"Version"];
     
-    [self save];
+    [self save];*/
+    
+    MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [appController persistentStoreCoordinator];
+    
+    NSArray *stores = [persistentStoreCoordinator persistentStores];
+    
+    for (NSPersistentStore *store in stores)
+    {
+        [persistentStoreCoordinator removePersistentStore:store error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
+    }
+    
+    [[self managedObjectContext] reset];
 }
 
 - (id) newObjectByName:(NSString *)name
@@ -409,6 +422,11 @@
 - (NSArray *) priorities
 {
     return [self objectsByName:PRIORITY_ENTITY sortingField:@"nid"];
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

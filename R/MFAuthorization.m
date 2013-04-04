@@ -71,7 +71,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:CONNECT_START
                                                         object:nil];
     
-    NSString *urlString          = [NSString stringWithFormat:@"%@/login", _settings.server];
+    NSString *urlString          = [NSString stringWithFormat:@"%@/login", _server];
     NSURL *url                   = [NSURL URLWithString:urlString];
     
     _trustedHosts                = [NSArray arrayWithObject:url.host];
@@ -102,7 +102,7 @@
 
 - (void) api
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@/my/account", _settings.server];
+    NSString *urlString = [NSString stringWithFormat:@"%@/my/account", _server];
     NSURL *url = [NSURL URLWithString:urlString];
     
     _trustedHosts = [NSArray arrayWithObject:url.host];
@@ -177,15 +177,16 @@
             TFHppleElement *input = [elements objectAtIndex:0];
             
             _settings.apiToken    = [input content];
-            _settings.server      = _server;
-            _settings.login       = _login;
-            _settings.password    = _password;
         }
+        
+        _settings.server      = _server;
+        _settings.login       = _login;
+        _settings.password    = _password;
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:CONNECT_COMPLETE
-                                                                object:@(elements.count)];
+                                                                object:@(YES)];
         });
         
         _finished = YES;
@@ -206,6 +207,11 @@
     });
     
     _finished = YES;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

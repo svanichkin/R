@@ -7,25 +7,36 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "R/MFFiltersControl.m"
-         timestampString = "386168833.145489"
+         filePath = "R/MFPreferencesPanel.m"
+         timestampString = "386802398.498384"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "135"
-         endingLineNumber = "135">
+         startingLineNumber = "165"
+         endingLineNumber = "165"
+         landmarkName = "-databaseUpdatingComplete:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "R/MFAppDelegate.m"
-         timestampString = "386693710.289058"
+         filePath = "R/MFDatabase.m"
+         timestampString = "386804188.083507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "135"
-         endingLineNumber = "135"
-         landmarkName = "-issuesCellSelected:"
+         startingLineNumber = "117"
+         endingLineNumber = "117"
+         landmarkName = "-resetData"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
+   <ExceptionBreakpoints>
+      <ExceptionBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         scope = "0"
+         stopOnStyle = "0">
+      </ExceptionBreakpoint>
+   </ExceptionBreakpoints>
 </Bucket>

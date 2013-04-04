@@ -33,6 +33,7 @@
 - (void) update
 {
     _database = [MFDatabase sharedInstance];
+    _settings = [MFSettings sharedInstance];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetData)
@@ -109,6 +110,8 @@
 // Подсчитывает необходимый шаг в процентах для прогресс бара
 - (void) setDeltaProgressWithNumSteps:(float)numSteps
 {
+    if (numSteps < 1) numSteps = 1;
+    
     _deltaProgress = (100.0/numSteps)/NUM_OF_TASKS;
 }
 
@@ -278,9 +281,12 @@
             {
                 [self sendNotificationComplete:NO];
             }
+            else
+            {
+                [self loadIssues];
+            }
         }
     }
-
 }
 
 - (BOOL) loadProjectsWithOffset:(int)offset
@@ -330,7 +336,7 @@
         if (!_projectsTotal)
         {
             _projectsTotal = [[result objectForKey:@"total_count"] intValue];
-            [self setDeltaProgressWithNumSteps:_projectsTotal];
+            [self setDeltaProgressWithNumSteps:_projectsTotal/100];
         }
         
         [self sendNotificationProgress];
@@ -449,7 +455,7 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];        
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
@@ -493,7 +499,7 @@
         if (!_issuesTotal)
         {
             _issuesTotal = [[result objectForKey:@"total_count"] intValue];
-            [self setDeltaProgressWithNumSteps:_issuesTotal];
+            [self setDeltaProgressWithNumSteps:_issuesTotal/100];
         }
         
         [self sendNotificationProgress];
@@ -674,6 +680,11 @@
             _issuesError = YES;
         }
     }
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

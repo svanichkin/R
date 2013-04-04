@@ -242,4 +242,9 @@
     return [_defaults objectForKey:KEY_DATA_LAST_UPD];
 }
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 @end
