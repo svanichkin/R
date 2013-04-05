@@ -123,6 +123,7 @@
         {
             _progressText.hidden = NO;
             _progressText.stringValue = @"Connected";
+            [[NSNotificationCenter defaultCenter] postNotificationName:DATABASE_UPDATING_COMPLETE object:(@YES)];
         }
     }
     else

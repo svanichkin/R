@@ -125,6 +125,9 @@
         [persistentStoreCoordinator removePersistentStore:store error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
     }
+    
+    _managedObjectContexts = [NSMutableDictionary dictionary];
+    [appController createNewCoreData];
 }
 
 - (id) newObjectByName:(NSString *)name

@@ -152,32 +152,41 @@
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *appSupportURL = [[fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-    return [appSupportURL URLByAppendingPathComponent:@"ru.macflash.R"];
+    return [appSupportURL URLByAppendingPathComponent:@"R"];
+}
+
+- (void) createNewCoreData
+{
+    [self createNewManagedObjectModel];
+    [self createNewPersistentStoreCoordinator];
+    [self createNewManagerContext];
 }
 
 // Creates if necessary and returns the managed object model for the application.
-- (NSManagedObjectModel *)managedObjectModel
+- (void) createNewManagedObjectModel
 {
-    if (_managedObjectModel) {
-        return _managedObjectModel;
-    }
-	
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"R" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+}
+
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (_managedObjectModel)
+    {
+        return _managedObjectModel;
+    }
+    
+    [self createNewManagedObjectModel];
     return _managedObjectModel;
 }
 
 // Returns the persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.)
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+- (void) createNewPersistentStoreCoordinator
 {
-    if (_persistentStoreCoordinator) {
-        return _persistentStoreCoordinator;
-    }
-    
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSLog(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
-        return nil;
+        _persistentStoreCoordinator = nil;
     }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -193,7 +202,7 @@
         }
         if (!ok) {
             [[NSApplication sharedApplication] presentError:error];
-            return nil;
+            _persistentStoreCoordinator = nil;
         }
     } else {
         if (![properties[NSURLIsDirectoryKey] boolValue]) {
@@ -205,7 +214,7 @@
             error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:101 userInfo:dict];
             
             [[NSApplication sharedApplication] presentError:error];
-            return nil;
+            _persistentStoreCoordinator = nil;
         }
     }
     
@@ -213,32 +222,47 @@
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
     if (![coordinator addPersistentStoreWithType:NSBinaryStoreType configuration:nil URL:url options:nil error:&error]) {
         [[NSApplication sharedApplication] presentError:error];
-        return nil;
+        _persistentStoreCoordinator = nil;
     }
     _persistentStoreCoordinator = coordinator;
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    if (_persistentStoreCoordinator)
+    {
+        return _persistentStoreCoordinator;
+    }
     
+    [self createNewPersistentStoreCoordinator];
     return _persistentStoreCoordinator;
 }
 
 // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) 
-- (NSManagedObjectContext *)managedObjectContext
+- (void) createNewManagerContext
 {
-    if (_managedObjectContext) {
-        return _managedObjectContext;
-    }
-    
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (!coordinator) {
+    if (!coordinator)
+    {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [dict setValue:@"Failed to initialize the store" forKey:NSLocalizedDescriptionKey];
         [dict setValue:@"There was an error building up the data file." forKey:NSLocalizedFailureReasonErrorKey];
         NSError *error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
         [[NSApplication sharedApplication] presentError:error];
-        return nil;
+        _managedObjectContext = nil;
     }
     _managedObjectContext = [[NSManagedObjectContext alloc] init];
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+}
 
+- (NSManagedObjectContext *)managedObjectContext
+{
+    if (_managedObjectContext)
+    {
+        return _managedObjectContext;
+    }
+    
+    [self createNewManagerContext];
     return _managedObjectContext;
 }
 
