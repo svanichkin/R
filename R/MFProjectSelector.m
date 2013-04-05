@@ -74,6 +74,7 @@
             
             // Сетим выбранный проект
             [self selectItemWithTag:[_settings.selectedProjectId intValue]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
         }
     
         [self setEnabled:projects.count];

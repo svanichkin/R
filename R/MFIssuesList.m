@@ -13,6 +13,7 @@
 @implementation MFIssuesList
 {
     MFSettings *_settings;
+    NSArray *_issues;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -21,8 +22,13 @@
 	if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(issuesLoaded:)
-                                                     name:DATABASE_UPDATING_COMPLETE
+                                                 selector:@selector(resetData)
+                                                     name:RESET_DATABASE
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resetData)
+                                                     name:RESET_FULL
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -30,42 +36,74 @@
                                                      name:PROJECT_SELECTED
                                                    object:nil];
         _settings = [MFSettings sharedInstance];
+        self.dataSource = self;
     }
     return self;
 }
 
-- (void) issuesLoaded:(NSNotification *) notification
+- (void) resetData
 {
-    if ([notification.object boolValue])
-    {
-        /*NSArray *projects = [[MFDatabase sharedInstance] projects];
+    
+}
+
+- (void) projectSelected:(NSNotification *) notification
+{
+    _issues = [[MFDatabase sharedInstance] issuesByProjectId:_settings.selectedProjectId];
         
-        // Генерация таблицы
-        if (projects)
-        {
-            [self.menu removeAllItems];
+    // Генерация таблицы
+    if (_issues)
+    {
+//            self.m
             
-            for (Project *p in projects)
+            /*[self.menu removeAllItems];
+            
+            for (Issue *p in _issues)
             {
                 NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:p.name
-                                                              action:@selector (projectSelected:)
+                                                              action:nil//@selector (projectSelected:)
                                                        keyEquivalent:@""];
                 item.target = self;
-                item.tag = [p.pid intValue];
+                item.tag = [p.nid intValue];
                 [self.menu addItem:item];
-            }
+            }*/
             
             // Сетим выбранный проект
-            [self selectItemWithTag:[_settings.selectedProjectId intValue]];
+            //[self selectItemWithTag:[_settings.selectedProjectId intValue]];
+//            self sele
         }
         
-        [self setEnabled:projects.count];*/
-    }
+//        [self setEnabled:_issues.count];
+        [self setEnabled:YES];
+    [self reloadData];
+        
+//        selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:
+//        - (NSTableViewSelectionHighlightStyle)selectionHighlightStyle NS_AVAILABLE_MAC(10_5);
+//       - (void)setSelectionHighlightStyle:(NSTableViewSelectionHighlightStyle)selectionHighlightStyle NS_AVAILABLE_MAC(10_5);
+
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return _issues.count;
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSButtonCell *cell = [[NSButtonCell alloc] init];
+    [cell setAllowsMixedState:YES];
+    [(NSButtonCell *)cell setButtonType:NSSwitchButton];
+    [cell setTitle:@"Test"];
+    
+    return cell;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
 }
 
 // Выбрали один из проектов
-- (void) projectSelected:(NSNotification *) notification
-{
+//- (void) projectSelected:(NSNotification *) notification
+//{
     // Скрываем правый фрейм
     /*[_mainPageScroll setHidden:YES];
      
@@ -102,7 +140,7 @@
      [_issuesTable reloadData];
      [_issuesTable deselectAll:nil];
      */
-}
+//}
 
 - (void) redrawIssues
 {

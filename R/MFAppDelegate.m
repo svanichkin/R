@@ -12,14 +12,6 @@
 #import "MFSettings.h"
 
 @implementation MFAppDelegate
-{
-    NSArray *_projects;
-    NSMenuItem *_projectSelected;
-    NSArray *_issues;
-    NSTableCellView *_oldCellSelected;
-    
-    MFSettings *_settings;
-}
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel         = _managedObjectModel;
@@ -27,65 +19,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(connectionComplete:)
-                                                 name:CONNECT_COMPLETE
-                                               object:nil];
-    
-    _settings = [MFSettings sharedInstance];
-    
     // Если есть креды, делаем автоконнект к серверу
-    if (_settings.credentials)
+    if ([MFSettings sharedInstance].credentials)
     {
         [[MFConnector sharedInstance] connect];
-    }
-    
-    //[_issuesTable setAction:@selector(issuesCellSelected:)];
-}
-
-- (void) connectionComplete:(NSNotification *) notification
-{
-    if ([notification.object boolValue])
-    {
-        /*NSArray *operationsArray = @[
-        [NSBlockOperation blockOperationWithBlock:^
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                // Загрузка значений с сервера для генерации количества и названий сегментов
-                [[MFConnector sharedInstance] loadFilters];
-            });
-        }],
-    
-        [NSBlockOperation blockOperationWithBlock:^
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                // Загрузка списка проектов
-                [[MFConnector sharedInstance] loadProjects];
-            });
-        }],
-        
-        [NSBlockOperation blockOperationWithBlock:^
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                // Загрузка списка задач
-                [[MFConnector sharedInstance] loadIssues];
-            });
-        }]];
-        
-        NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-        [operationQueue addOperations:operationsArray waitUntilFinished:YES];*/
-        
-        // Загрузка значений с сервера для генерации количества и названий сегментов
-//        [[MFConnector sharedInstance] loadFilters];
-        
-        // Загрузка списка проектов
-//        [[MFConnector sharedInstance] loadProjects];
-        
-        // Загрузка списка задач
-//        [[MFConnector sharedInstance] loadIssues];
     }
 }
 

@@ -27,6 +27,7 @@
 - (BOOL) deleteAllObjects:(NSString *) entityDescription;
 - (BOOL) deleteObject:(NSManagedObject *)object;
 - (BOOL) deleteObjects:(NSArray *)objects;
+
 - (BOOL) save;
 
 - (Project *) projectById:(NSNumber *)nid;
@@ -36,18 +37,24 @@
 - (Issue *) issueById:(NSNumber *)nid;
 - (Issue *) issue;
 - (NSArray *) issues;
+- (NSArray *) issuesByProjectId:(NSNumber *)nid;
+
 - (Version *) versionById:(NSNumber *)nid;
 - (NSArray *) versions;
+
 - (User *) userById:(NSNumber *)nid;
 
 - (Tracker *) trackerById:(NSNumber *)nid;
 - (Tracker *) tracker;
 - (NSArray *) trackers;
+
 - (Status *) statusById:(NSNumber *)nid;
 - (Status *) status;
 - (NSArray *) statuses;
+
 - (Priority *) priorityById:(NSNumber *)nid;
 - (Priority *) priority;
 - (NSArray *) priorities;
+;
 
 @end

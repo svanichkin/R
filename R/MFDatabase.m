@@ -159,7 +159,6 @@
 
 - (id) objectsByName:(NSString *)name andId:(NSNumber *)nid
 {
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *project = [NSEntityDescription entityForName:name
                                                inManagedObjectContext:[self managedObjectContext]];
@@ -275,6 +274,23 @@
 }
 
 #pragma mark - Issue
+
+- (NSArray *) issuesByProjectId:(NSNumber *)nid
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *project = [NSEntityDescription entityForName:@"Issue"
+                                               inManagedObjectContext:[self managedObjectContext]];
+    
+    [fetchRequest setEntity:project];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"project.nid == %@", nid];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    
+    return result;
+}
 
 - (Issue *) issueById:(NSNumber *)nid
 {
