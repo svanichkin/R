@@ -114,19 +114,7 @@
 #pragma mark - Work With All Objects
 
 - (void) resetData
-{
-    /*[self deleteAllObjects:@"Status"];
-    [self deleteAllObjects:@"Tracker"];
-    [self deleteAllObjects:@"Priority"];
-    
-    [self deleteAllObjects:@"User"];
-    [self deleteAllObjects:@"Project"];
-    [self deleteAllObjects:@"Issue"];
-    [self deleteAllObjects:@"Tracker"];
-    [self deleteAllObjects:@"Version"];
-    
-    [self save];*/
-    
+{    
     MFAppDelegate *appController = [[NSApplication sharedApplication] delegate];
     NSPersistentStoreCoordinator *persistentStoreCoordinator = [appController persistentStoreCoordinator];
     
@@ -137,8 +125,6 @@
         [persistentStoreCoordinator removePersistentStore:store error:nil];
         [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
     }
-    
-    [[self managedObjectContext] reset];
 }
 
 - (id) newObjectByName:(NSString *)name

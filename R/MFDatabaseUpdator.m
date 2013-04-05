@@ -57,15 +57,6 @@
     
     
     [self loadFilters];
-    
-    /*_finished = NO;
-    
-    // Цикл позволяет не закрывать поток, пока выполняется пустой цикл
-    while(!_finished)
-    {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                 beforeDate:[NSDate distantFuture]];
-    }*/
 }
 
 - (void) resetData
