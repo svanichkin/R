@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MFIssuesList : NSTableView <NSTableViewDataSource>
+@interface MFIssuesList : NSTableView <NSTableViewDataSource, NSTableViewDelegate>
 
 @end
