@@ -9,6 +9,7 @@
 #import "MFIssuesList.h"
 #import "MFSettings.h"
 #import "MFDatabase.h"
+#import "MFIssueCell.h"
 
 @implementation MFIssuesList
 {

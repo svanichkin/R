@@ -49,6 +49,7 @@
 		9390E79D16FD0BD200D68182 /* MFConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E79C16FD0BD100D68182 /* MFConnector.m */; };
 		9390E79F16FDEA4200D68182 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E79E16FDEA4200D68182 /* background.png */; };
 		9390E7A116FE002D00D68182 /* background_p.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E7A016FE002D00D68182 /* background_p.png */; };
+		93BEB3DB171028C4003D5A01 /* MFIssueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB3DA171028C4003D5A01 /* MFIssueCell.m */; };
 		93C94493170C40B500843955 /* MFAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94492170C40B500843955 /* MFAuthorization.m */; };
 		93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94499170DE39E00843955 /* MFDatabaseUpdator.m */; };
 		93EEA9D016FF9AB00066ECC7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9CF16FF9AB00066ECC7 /* add.png */; };
@@ -149,6 +150,8 @@
 		9390E79C16FD0BD100D68182 /* MFConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFConnector.m; sourceTree = "<group>"; };
 		9390E79E16FDEA4200D68182 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9390E7A016FE002D00D68182 /* background_p.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_p.png; sourceTree = "<group>"; };
+		93BEB3D9171028C4003D5A01 /* MFIssueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFIssueCell.h; sourceTree = "<group>"; };
+		93BEB3DA171028C4003D5A01 /* MFIssueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFIssueCell.m; sourceTree = "<group>"; };
 		93C94491170C40B500843955 /* MFAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAuthorization.h; sourceTree = "<group>"; };
 		93C94492170C40B500843955 /* MFAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAuthorization.m; sourceTree = "<group>"; };
 		93C94498170DE39E00843955 /* MFDatabaseUpdator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDatabaseUpdator.h; sourceTree = "<group>"; };
@@ -207,8 +210,7 @@
 				930BBBF81702D32100B664C2 /* MFFiltersControl.m */,
 				930BBC131703814600B664C2 /* MFProjectSelector.h */,
 				930BBC141703814600B664C2 /* MFProjectSelector.m */,
-				930BBC16170444D200B664C2 /* MFIssuesList.h */,
-				930BBC17170444D200B664C2 /* MFIssuesList.m */,
+				93BEB3DC171028D3003D5A01 /* Issues */,
 			);
 			name = "Main Window";
 			sourceTree = "<group>";
@@ -381,6 +383,17 @@
 				9390E76216FCF90D00D68182 /* RKValue.m */,
 			);
 			path = RedmineKit;
+			sourceTree = "<group>";
+		};
+		93BEB3DC171028D3003D5A01 /* Issues */ = {
+			isa = PBXGroup;
+			children = (
+				930BBC16170444D200B664C2 /* MFIssuesList.h */,
+				930BBC17170444D200B664C2 /* MFIssuesList.m */,
+				93BEB3D9171028C4003D5A01 /* MFIssueCell.h */,
+				93BEB3DA171028C4003D5A01 /* MFIssueCell.m */,
+			);
+			name = Issues;
 			sourceTree = "<group>";
 		};
 		93F477211701F4290069B255 /* Images */ = {
@@ -558,6 +571,7 @@
 				93FCDFAF1706199400B8A3EF /* Priority.m in Sources */,
 				93C94493170C40B500843955 /* MFAuthorization.m in Sources */,
 				93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */,
+				93BEB3DB171028C4003D5A01 /* MFIssueCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
