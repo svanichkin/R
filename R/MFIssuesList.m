@@ -38,8 +38,8 @@
                                                      name:PROJECT_SELECTED
                                                    object:nil];
         _settings = [MFSettings sharedInstance];
-        self.dataSource = self;
-        self.delegate = self;
+        //self.dataSource = self;
+        //self.delegate = self;
     }
     return self;
 }
@@ -53,21 +53,50 @@
 {
     _issues = [[MFDatabase sharedInstance] issuesByProjectId:_settings.selectedProjectId];
 
-    [self deselectAll:nil];
+    
+    
+    
+    // Загрузка задач по проекту
+    NSUInteger count = [_issuesArrayController.arrangedObjects count];
+    [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+    
+    for (Issue *i in _issues)
+    {
+//        if ([_filtersControl checkIssueWithStatusIndex:[i.status.index intValue]
+//                                         priorityIndex:[i.priority.index intValue]
+//                                       andTrackerIndex:[i.tracker.index intValue]])
+//        {
+        
+            NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
+            
+            [_issuesArrayController addObject:@{@"text":[NSString stringWithFormat:@"%@", i.text],
+             @"type":type,
+             @"number":[NSString stringWithFormat:@"#%@", i.nid]}];
+//        }
+    }
+    [self reloadData];
+//    [self deselectAll:nil];
+    
+    
+    
+    
+    
+    
+    /*[self deselectAll:nil];
     [self reloadData];
     
     if (_issues)
     {
 //    [self selectCell:<#(NSCell *)#>]
-    }
+    }*/
 }
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+/*- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
     return _issues.count;
-}
+}*/
 
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+/*- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     Issue *issue = [_issues objectAtIndex:row];
     
@@ -76,7 +105,7 @@
     NSString *number = [NSString stringWithFormat:@"#%@", issue.nid];
     
     return @{@"type":type, @"text":issue.text, @"number":number};
-}
+}*/
 
 - (void) redrawIssues
 {
