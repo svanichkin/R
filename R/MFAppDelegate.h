@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MFPreferencesPanel.h"
-#import "MFFiltersControl.h"
-#import "MFProjectSelector.h"
 
 @interface MFAppDelegate : NSObject <NSApplicationDelegate>
 

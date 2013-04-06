@@ -20,8 +20,6 @@
 
 @interface MFDatabase : NSObject
 
-//@property (nonatomic, strong) NSMutableDictionary *managedObjectContexts;
-
 + (MFDatabase *) sharedInstance;
 
 - (BOOL) deleteAllObjects:(NSString *) entityDescription;

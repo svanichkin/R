@@ -115,15 +115,52 @@
 }
 
 // Проверяем, проходит ли задача через фильтр или нет
-- (BOOL) checkIssueWithStatusIndex:(int)status priorityIndex:(int)priority andTrackerIndex:(int)tracker
++ (BOOL) checkIssueWithStatusIndex:(int)status priorityIndex:(int)priority andTrackerIndex:(int)tracker
 {
-    NSInteger statusesCount = _statusesCount - 1;
-    NSInteger trackersCount = _trackersCount - 1;
+    MFSettings *settings = [MFSettings sharedInstance];
+    MFDatabase *database = [MFDatabase sharedInstance];
     
-    BOOL statusSegmentPressed =   [self isSelectedForSegment:status - 1];
-    BOOL trackerSegmentPressed =  [self isSelectedForSegment:statusesCount + tracker];
-    BOOL prioritySegmentPressed = [self isSelectedForSegment:statusesCount + trackersCount + priority - 1];
+    NSArray *statuses   = database.statuses;
+    NSArray *trackers   = database.trackers;
+    NSArray *priorities = database.priorities;
     
+    NSInteger statusesCount = database.statuses.count - 1;
+    NSInteger trackersCount = database.trackers.count - 1;
+
+    BOOL statusSegmentPressed;
+    BOOL trackerSegmentPressed;
+    BOOL prioritySegmentPressed;
+    
+    NSArray *states = settings.filtersStates;
+    
+    int i = 0;
+    for (id s in statuses)
+    {
+        if (i == status && [[states objectAtIndex:i] boolValue] == YES)
+        {
+            statusSegmentPressed = YES;
+            break;
+        }
+    }
+    
+    for (id t in trackers)
+    {
+        if (i == tracker && [[states objectAtIndex:i] boolValue] == YES)
+        {
+            trackerSegmentPressed = YES;
+            break;
+        }
+    }
+    
+    for (id p in priorities)
+    {
+        if (i == priority && [[states objectAtIndex:i] boolValue] == YES)
+        {
+            prioritySegmentPressed = YES;
+            break;
+        }
+    }
+
     return (statusSegmentPressed && trackerSegmentPressed && prioritySegmentPressed);
 }
 

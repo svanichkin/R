@@ -10,6 +10,6 @@
 
 @interface MFFiltersControl : NSSegmentedControl
 
-- (BOOL) checkIssueWithStatusIndex:(int)status priorityIndex:(int)priority andTrackerIndex:(int)tracker;
++ (BOOL) checkIssueWithStatusIndex:(int)status priorityIndex:(int)priority andTrackerIndex:(int)tracker;
 
 @end
