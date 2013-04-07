@@ -7,9 +7,6 @@
 //
 
 #import "MFFiltersControl.h"
-#import "MFConnector.h"
-#import "MFSettings.h"
-#import "MFDatabase.h"
 
 @implementation MFFiltersControl
 {
@@ -105,7 +102,11 @@
                 {
                     [self setSelected:YES forSegment:i];
                 }
+                
+                [self setStates];
             }
+        
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILTERS_INITED object:nil];
         }
         else
         {
@@ -166,8 +167,7 @@
     return (statusSegmentPressed && trackerSegmentPressed && prioritySegmentPressed);
 }
 
-
-- (void) segmentChanged:(id)sender
+- (void) setStates
 {
     // Сохраним значения сегментов, что бы восстановить при следующем входе
     NSInteger count = self.segmentCount;
@@ -177,7 +177,12 @@
         [states addObject:@([self isSelectedForSegment:i])];
     }
     _settings.filtersStates = states;
-    
+}
+
+- (void) segmentChanged:(id)sender
+{
+    [self setStates];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:FILTERS_CHANGED object:nil];
 }
 

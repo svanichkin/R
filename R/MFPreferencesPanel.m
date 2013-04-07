@@ -7,9 +7,6 @@
 //
 
 #import "MFPreferencesPanel.h"
-#import "MFConnector.h"
-#import "MFSettings.h"
-#import "MFDatabase.h"
 
 @implementation MFPreferencesPanel
 {

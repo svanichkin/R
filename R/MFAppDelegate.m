@@ -7,9 +7,6 @@
 //
 
 #import "MFAppDelegate.h"
-#import "MFConnector.h"
-#import "RKIssue.h"
-#import "MFSettings.h"
 
 @implementation MFAppDelegate
 
@@ -24,64 +21,6 @@
     {
         [[MFConnector sharedInstance] connect];
     }
-}
-
-#pragma mark - Table view callbacks
-
-// Если выбрали задачу в левом окне
-- (void) issuesCellSelected:(NSTableView *)sender
-{
-    /*if (_oldCellSelected)
-    {
-        [[_oldCellSelected viewWithTag:1] setHidden:NO];
-        [[_oldCellSelected viewWithTag:2] setHidden:YES];
-    }
-    
-    NSInteger row = [_issuesTable clickedRow];
-    
-    if (row != -1)
-    {
-        NSTableCellView *cellView = [_issuesTable viewAtColumn:0 row:row makeIfNecessary:YES];
-        [[cellView viewWithTag:1] setHidden:YES];
-        [[cellView viewWithTag:2] setHidden:NO];
-        [_mainPageScroll setHidden:NO];
-        _oldCellSelected = cellView;
-        
-        RKIssue *issue = [_issues objectAtIndex:row];
-        
-        NSString *smallHeader = [NSString stringWithFormat:@"#%@ – %@ %@", issue.index, [issue.priority.name lowercaseString], [issue.tracker.name lowercaseString]];
-        
-        if (issue.fixedVersion.name)
-        {
-            smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@", smallHeader, issue.fixedVersion.name, [issue.status.name lowercaseString]];
-        }
-        else
-        {
-            smallHeader = [NSString stringWithFormat:@"%@, %@", smallHeader, [issue.status.name lowercaseString]];
-        }
-        
-        if ([issue.doneRatio intValue] > 0)
-        {
-            smallHeader = [NSString stringWithFormat:@"%@ %@%%.", smallHeader, issue.doneRatio];
-        }
-        else
-        {
-            smallHeader = [NSString stringWithFormat:@"%@.", smallHeader];
-        }
-        
-        RKValue *h = issue.spentHours;
-        if (issue.spentHours)
-        {
-            smallHeader = [NSString stringWithFormat:@"%@ Spent time %@ hour.", smallHeader, issue.spentHours.value];
-        }
-        _smallHeader.stringValue = smallHeader;
-        
-        //#30000 – immediate question for version 2.4.11, in progress 50%. Spent time 0.9 hour.
-    }
-    else
-    {
-        [_mainPageScroll setHidden:YES];
-    }*/
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ru.macflash.R" in the user's Application Support directory.

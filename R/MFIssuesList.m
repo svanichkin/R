@@ -7,8 +7,6 @@
 //
 
 #import "MFIssuesList.h"
-#import "MFSettings.h"
-#import "MFDatabase.h"
 #import "MFFiltersControl.h"
 
 @implementation MFIssuesList

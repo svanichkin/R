@@ -7,8 +7,6 @@
 //
 
 #import "MFDatabaseUpdator.h"
-#import "MFDatabase.h"
-#import "MFSettings.h"
 
 #define NUM_OF_TASKS 3.0
 
@@ -604,7 +602,15 @@
         {
             issue.creator = [_database userById:[object objectForKey:@"id"]];
         }
-        issue.creator.name = [object objectForKey:@"name"];
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        issue.creator.name = [n componentsJoinedByString:@" "];
+        
         needSave = YES;
     }
     else if (issue.creator != nil)
@@ -621,7 +627,15 @@
         {
             issue.assigner = [_database userById:[object objectForKey:@"id"]];
         }
-        issue.assigner.name = [object objectForKey:@"name"];
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        issue.assigner.name = [n componentsJoinedByString:@" "];
+        
         needSave = YES;
     }
     else if (issue.assigner != nil)

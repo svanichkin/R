@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
-#import "MFSettings.h"
 
 #define KEY_SERVER          @"server"
 #define KEY_LOGIN           @"login"

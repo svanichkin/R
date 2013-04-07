@@ -6,13 +6,10 @@
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
-#import "MFConnector.h"
-#import "MFSettings.h"
 #import "Project.h"
 #import "Issue.h"
 #import "Version.h"
 #import "User.h"
-#import "MFDatabase.h"
 #import "MFAppDelegate.h"
 #import "MFAuthorization.h"
 #import "MFDatabaseUpdator.h"

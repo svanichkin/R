@@ -18,9 +18,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSScrollView *mainPageScroll;
 
-#pragma mark - Main page
-@property (assign) IBOutlet NSTextField *smallHeader;
-
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

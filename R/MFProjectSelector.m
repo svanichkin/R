@@ -7,8 +7,6 @@
 //
 
 #import "MFProjectSelector.h"
-#import "MFDatabase.h"
-#import "MFSettings.h"
 
 @implementation MFProjectSelector
 {
@@ -32,8 +30,9 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(projectsLoaded:)
-                                                     name:DATABASE_UPDATING_COMPLETE
+                                                     name:FILTERS_INITED
                                                    object:nil];
+        
         _settings = [MFSettings sharedInstance];
     }
     return self;
@@ -53,32 +52,29 @@
 
 - (void) projectsLoaded:(NSNotification *) notification
 {
-    if ([notification.object boolValue])
-    {
-        NSArray *projects = [[MFDatabase sharedInstance] projects];
-        
-        // Генерация выпадающего меню
-        if (projects)
-        {
-            [self.menu removeAllItems];
-            
-            for (Project *p in projects)
-            {
-                NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:p.name
-                                                              action:@selector (projectSelected:)
-                                                       keyEquivalent:@""];
-                item.target = self;
-                item.tag = [p.nid intValue];
-                [self.menu addItem:item];
-            }
-            
-            // Сетим выбранный проект
-            [self selectItemWithTag:[_settings.selectedProjectId intValue]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
-        }
+    NSArray *projects = [[MFDatabase sharedInstance] projects];
     
-        [self setEnabled:projects.count];
+    // Генерация выпадающего меню
+    if (projects)
+    {
+        [self.menu removeAllItems];
+        
+        for (Project *p in projects)
+        {
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:p.name
+                                                          action:@selector (projectSelected:)
+                                                   keyEquivalent:@""];
+            item.target = self;
+            item.tag = [p.nid intValue];
+            [self.menu addItem:item];
+        }
+        
+        // Сетим выбранный проект
+        [self selectItemWithTag:[_settings.selectedProjectId intValue]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
     }
+
+    [self setEnabled:projects.count];
 }
 
 - (void) projectSelected:(NSMenuItem *)sender

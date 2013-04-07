@@ -7,7 +7,6 @@
 //
 
 #import "MFAuthorization.h"
-#import "MFSettings.h"
 #import "TFHpple.h"
 
 @implementation MFAuthorization

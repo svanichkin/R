@@ -5,6 +5,9 @@
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>    
     #import <CoreData/CoreData.h>
+    #import "MFConnector.h"
+    #import "MFSettings.h"
+    #import "MFDatabase.h"
 #endif
 
 // All
@@ -29,3 +32,4 @@
 
 // MFFiltersControl
 #define FILTERS_CHANGED             @"filtersChanged"
+#define FILTERS_INITED              @"filtersInited"
