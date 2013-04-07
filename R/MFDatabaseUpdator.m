@@ -444,7 +444,7 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?status_id=*&ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];        
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
@@ -527,7 +527,7 @@
     BOOL needSave = NO;
     
     // Version
-    object = [dictionary objectForKey:@"version"];
+    object = [dictionary objectForKey:@"fixed_version"];
     if (object)
     {
         if (issue.version == nil)

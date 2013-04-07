@@ -137,6 +137,8 @@
     }
     
     _infoHeader.stringValue = infoHeader;
+    
+    _descriptionField.stringValue = _issue.text;
 }
 
 @end
