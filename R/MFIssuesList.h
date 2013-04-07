@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MFIssuesList : NSTableView <NSTableViewDelegate>
+@interface MFIssuesList : NSTableView <NSTableViewDelegate, NSTableViewDataSource>
 
 @property (assign) IBOutlet NSArrayController *issuesArrayController;
 

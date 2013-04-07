@@ -22,7 +22,10 @@
 #define DATABASE_UPDATING_PROGRESS  @"databaseUpdatingProgress"
 
 // MFProjectSelector
-#define PROJECT_SELECTED            @"projectsSelected"
+#define PROJECT_SELECTED            @"projectSelected"
+
+// MFIssueSelector
+#define ISSUE_SELECTED              @"issueSelected"
 
 // MFFiltersControl
 #define FILTERS_CHANGED             @"filtersChanged"

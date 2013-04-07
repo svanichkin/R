@@ -14,7 +14,7 @@
 @implementation MFIssuesList
 {
     MFSettings *_settings;
-    NSArray *_issues;
+    NSMutableArray *_issues;
     id _oldSelectedCell;
 }
 
@@ -34,29 +34,44 @@
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(projectSelected:)
+                                                 selector:@selector(refreshIssues:)
                                                      name:PROJECT_SELECTED
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshIssues:)
+                                                     name:FILTERS_CHANGED
+                                                   object:nil];
+        
         _settings = [MFSettings sharedInstance];
         self.delegate = self;
+        self.dataSource = self;
     }
     return self;
 }
 
 - (void) resetData
 {
-    [self clearArrayController];
+    _issues = [NSMutableArray array];
+
     [self reloadData];
 }
 
-- (void) clearArrayController
+- (void) selectIssueByRow:(NSInteger)row
 {
-    // Загрузка задач по проекту
-    NSUInteger count = [_issuesArrayController.arrangedObjects count];
-    [_issuesArrayController removeObjectsAtArrangedObjectIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+    [self selectionReset];
+    
+    NSTableCellView *selectedCell = [self viewAtColumn:0 row:row makeIfNecessary:NO];
+    
+    _oldSelectedCell = selectedCell;
+    
+    [[selectedCell viewWithTag:1] setHidden:YES];
+    [[selectedCell viewWithTag:2] setHidden:NO];
+    
+    [self issueSelected:[selectedCell.objectValue objectForKey:@"nid"]];
 }
 
-- (void) selectIssueByRow:(NSInteger)row
+- (void) selectionReset
 {
     // Скрываем нажатую ячейку
     if (_oldSelectedCell)
@@ -64,50 +79,78 @@
         [[_oldSelectedCell viewWithTag:1] setHidden:NO];
         [[_oldSelectedCell viewWithTag:2] setHidden:YES];
     }
-
-    NSTableCellView *selectedCell = [self viewAtColumn:0 row:row makeIfNecessary:NO];
-    _oldSelectedCell = selectedCell;
-    
-    [[selectedCell viewWithTag:1] setHidden:YES];
-    [[selectedCell viewWithTag:2] setHidden:NO];
 }
 
-- (void) projectSelected:(NSNotification *) notification
+- (void) refreshIssues:(NSNotification *) notification
 {
-    _issues = [[MFDatabase sharedInstance] issuesByProjectId:_settings.selectedProjectId];
-
-    [self clearArrayController];
+    [self selectionReset];
     
-    for (Issue *i in _issues)
+    NSArray *issues = [[MFDatabase sharedInstance] issuesByProjectId:_settings.selectedProjectId];
+    
+    _issues = [NSMutableArray array];
+
+    // Фильтруем задачи
+    for (Issue *i in issues)
     {
         if ([MFFiltersControl checkIssueWithStatusIndex:[i.status.nid intValue]
                                           priorityIndex:[i.priority.nid intValue]
                                         andTrackerIndex:[i.tracker.nid intValue]])
-        {
-        
-            NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [i.status.name lowercaseString], [i.priority.name  lowercaseString], [i.tracker.name lowercaseString]];
-            
-            [_issuesArrayController addObject:@{
-             @"text":[NSString stringWithFormat:@"%@", i.name],
-             @"type":type,
-             @"number":[NSString stringWithFormat:@"#%@", i.nid]}];
+        {        
+            [_issues addObject:i];
         }
     }
     
     [self reloadData];
-    [self selectIssueByRow:1];
 }
 
-- (void) issueSelected
+// Создаем массив ячеек
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    //_settings.selectedIssueId = sender.tag;
+    NSTableCellView *cell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
     
-    //[[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
+    if (row == 0)
+    {
+        _oldSelectedCell = cell;
+        
+        [[cell viewWithTag:1] setHidden:YES];
+        [[cell viewWithTag:2] setHidden:NO];
+    }
+    
+    return cell;
+}
+
+// Генерим данные
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return _issues.count;
+}
+
+// Сетим данные
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    Issue *issue = [_issues objectAtIndex:row];
+    
+    NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [issue.status.name lowercaseString], [issue.priority.name  lowercaseString], [issue.tracker.name lowercaseString]];
+    
+    NSString *number = [NSString stringWithFormat:@"#%@", issue.nid];
+    
+    if (row == 0)
+    {
+        [self issueSelected:issue.nid];
+    }
+    
+    return @{@"type":type, @"text":issue.name, @"number":number, @"nid":issue.nid};
 }
 
 - (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
 {
     [self selectIssueByRow:self.selectedRow];
+}
+
+- (void) issueSelected:(NSNumber *)nid
+{
+    _settings.selectedIssueId = nid;
+    [[NSNotificationCenter defaultCenter] postNotificationName:ISSUE_SELECTED object:nil];
 }
 
 @end

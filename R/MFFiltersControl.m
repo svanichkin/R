@@ -123,42 +123,44 @@
     NSArray *statuses   = database.statuses;
     NSArray *trackers   = database.trackers;
     NSArray *priorities = database.priorities;
-    
-    NSInteger statusesCount = database.statuses.count - 1;
-    NSInteger trackersCount = database.trackers.count - 1;
 
-    BOOL statusSegmentPressed;
-    BOOL trackerSegmentPressed;
-    BOOL prioritySegmentPressed;
+    BOOL statusSegmentPressed = NO;
+    BOOL trackerSegmentPressed = NO;
+    BOOL prioritySegmentPressed = NO;
     
     NSArray *states = settings.filtersStates;
     
-    int i = 0;
-    for (id s in statuses)
+    NSInteger i = 0;
+    for (Status *s in statuses)
     {
-        if (i == status && [[states objectAtIndex:i] boolValue] == YES)
+        if ([s.nid isEqualToNumber:@(status)] && [[states objectAtIndex:i] boolValue] == YES)
         {
             statusSegmentPressed = YES;
             break;
         }
+        i ++;
     }
     
-    for (id t in trackers)
+    i = statuses.count;
+    for (Tracker *t in trackers)
     {
-        if (i == tracker && [[states objectAtIndex:i] boolValue] == YES)
+        if ([t.nid isEqualToNumber:@(tracker)] && [[states objectAtIndex:i] boolValue] == YES)
         {
             trackerSegmentPressed = YES;
             break;
         }
+        i ++;
     }
     
-    for (id p in priorities)
+    i = trackers.count;
+    for (Priority *p in priorities)
     {
-        if (i == priority && [[states objectAtIndex:i] boolValue] == YES)
+        if ([p.nid isEqualToNumber:@(priority)] && [[states objectAtIndex:i] boolValue] == YES)
         {
             prioritySegmentPressed = YES;
             break;
         }
+        i ++;
     }
 
     return (statusSegmentPressed && trackerSegmentPressed && prioritySegmentPressed);
