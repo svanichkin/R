@@ -2,11 +2,12 @@
 //  Issue.m
 //  R
 //
-//  Created by Сергей Ваничкин on 29.03.13.
+//  Created by Сергей Ваничкин on 09.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
 #import "Issue.h"
+#import "Activity.h"
 #import "Issue.h"
 #import "Priority.h"
 #import "Project.h"
@@ -24,10 +25,10 @@
 @dynamic finish;
 @dynamic name;
 @dynamic nid;
-@dynamic spent;
 @dynamic start;
 @dynamic text;
 @dynamic update;
+@dynamic activity;
 @dynamic assigner;
 @dynamic children;
 @dynamic creator;

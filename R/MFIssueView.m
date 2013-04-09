@@ -74,7 +74,7 @@
         smallHeader = [NSString stringWithFormat:@"%@.", smallHeader];
     }
     
-    if ([_issue.spent intValue] > 0)
+/*!!!    if ([_issue.spent intValue] > 0)
     {
         NSNumber *t = _issue.spent;
         
@@ -92,7 +92,7 @@
         {
             smallHeader = [NSString stringWithFormat:@"%@ Spent time %i minutes.", smallHeader, min];
         }
-    }
+    }*/
     _smallHeader.stringValue = smallHeader;
     
     _bigHeader.stringValue = _issue.name;

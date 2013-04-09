@@ -1,5 +1,5 @@
 //
-//  User.h
+//  Activity.h
 //  R
 //
 //  Created by Сергей Ваничкин on 09.04.13.
@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 
-@interface User : NSManagedObject
+@interface Activity : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * nid;

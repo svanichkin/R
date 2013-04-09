@@ -8,7 +8,7 @@
 
 #import "MFDatabaseUpdator.h"
 
-#define NUM_OF_TASKS 3.0
+#define NUM_OF_TASKS 4.0
 
 @implementation MFDatabaseUpdator
 {
@@ -23,6 +23,9 @@
     
     int _issuesTotal;
     BOOL _issuesError;
+    
+    int _timeEntriesTotal;
+    BOOL _timeEntriesError;
     
     MFDatabase *_database;
     MFSettings *_settings;
@@ -313,7 +316,7 @@
                 return NO;
             }
             Project *oldProject = [_database projectById:[newProject objectForKey:@"id"]];
-            [self refreshProject:oldProject withDictionary:newProject];            
+            [self refreshProject:oldProject withDictionaryProject:newProject];
         }
         
         if (![_database save])
@@ -334,7 +337,7 @@
     }
 }
 
-- (void) refreshProject:(Project *)project withDictionary:(NSDictionary *)dictionary
+- (void) refreshProject:(Project *)project withDictionaryProject:(NSDictionary *)dictionary
 {
     NSString *name = [dictionary objectForKey:@"name"];
     if (name) project.name = name;
@@ -413,8 +416,7 @@
                     
                     if (i + 100 > _issuesTotal)
                     {
-                        _settings.dataLastUpdate = [NSDate date];
-                        [self sendNotificationComplete:YES];
+                        [self loadTimeEntries];
                     }
                 }]];
             }
@@ -431,8 +433,7 @@
             }
             else
             {
-                _settings.dataLastUpdate = [NSDate date];
-                [self sendNotificationComplete:YES];
+                [self loadTimeEntries];
             }
         }
     }
@@ -474,7 +475,7 @@
                 return NO;
             }
             Issue *oldIssue = [_database issueById:[newIssue objectForKey:@"id"]];
-            [self refreshIssue:oldIssue withDictionary:newIssue];
+            [self refreshIssue:oldIssue withDictionaryIssue:newIssue];
         }
         
         if (![_database save])
@@ -497,7 +498,7 @@
     }
 }
 
-- (void) refreshIssue:(Issue *)issue withDictionary:(NSDictionary *)dictionary
+- (void) refreshIssue:(Issue *)issue withDictionaryIssue:(NSDictionary *)dictionary
 {
     NSString *name = [dictionary objectForKey:@"subject"];
     if (name) issue.name = name;
@@ -686,6 +687,418 @@
         }
     }
 }
+
+#pragma mark - Load Time Entries
+
+- (void) loadTimeEntries
+{
+    if (_stop)
+    {
+        return;
+    }
+    
+    // Начинаем рекурсивную загрузку, если она успешна продолжим
+    if ([self loadTimeEntryWithOffset:0])
+    {
+        if (_stop)
+        {
+            return;
+        }
+        
+        if (_timeEntriesTotal > 100)
+        {
+            NSMutableArray *operationsArray = [NSMutableArray array];
+            
+            for (int i = 100; i < _timeEntriesTotal; i += 100)
+            {
+                [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
+                {
+                    if (_stop)
+                    {
+                        return;
+                    }
+                    
+                    [self loadTimeEntryWithOffset:i];
+                    
+                    if (i + 100 > _timeEntriesTotal)
+                    {
+                        _settings.dataLastUpdate = [NSDate date];
+                        [self sendNotificationComplete:YES];
+                    }
+                }]];
+            }
+            
+            NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+            [operationQueue setMaxConcurrentOperationCount:1];
+            [operationQueue addOperations:operationsArray waitUntilFinished:YES];
+        }
+        else
+        {
+            if (_timeEntriesError)
+            {
+                [self sendNotificationComplete:NO];
+            }
+            else
+            {
+                _settings.dataLastUpdate = [NSDate date];
+                [self sendNotificationComplete:YES];
+            }
+        }
+    }
+}
+
+- (BOOL) loadTimeEntryWithOffset:(int)offset
+{
+    @autoreleasepool
+    {
+        // Грузим задачи рекурсивно
+        NSError *error = nil;
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/time_entries.json?ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
+        NSData *jsonData = [NSData dataWithContentsOfURL:url
+                                                 options:NSDataReadingUncached
+                                                   error:&error];
+        
+        if (error)
+        {
+            _timeEntriesError = YES;
+            return NO;
+        }
+        
+        error = nil;
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&error];
+        if (error)
+        {
+            _timeEntriesError = YES;
+            return NO;
+        }
+        
+        // Наполняем базу
+        NSArray *newArray = [result objectForKey:@"time_entries"];
+        for (NSDictionary *newTimeEntry in newArray)
+        {
+            if (_timeEntriesError)
+            {
+                return NO;
+            }
+            TimeEntry *oldTimeEntry = [_database timeEntryById:[newTimeEntry objectForKey:@"id"]];
+            [self refreshTimeEntry:oldTimeEntry withDictionaryTimeEntry:newTimeEntry];
+        }
+        
+        if (![_database save])
+        {
+            _timeEntriesError = YES;
+            return NO;
+        }
+        
+        _timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
+        
+        if (!_timeEntriesTotal)
+        {
+            _timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
+            [self setDeltaProgressWithNumSteps:_timeEntriesTotal/100];
+        }
+        
+        [self sendNotificationProgress];
+        
+        return YES;
+    }
+}
+
+- (void) refreshTimeEntry:(TimeEntry *)timeEntry withDictionaryTimeEntry:(NSDictionary *)dictionary
+{
+    NSString *text = [dictionary objectForKey:@"comments"];
+    if (text) timeEntry.text = text;
+    
+    NSNumber *hours = [dictionary objectForKey:@"hours"];
+    if (hours) timeEntry.hours = hours;
+    
+    NSDate *update = [self dateFromString:[dictionary objectForKey:@"updated_on"]];
+    if (update) timeEntry.update = update;
+    
+    NSDate *create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    if (create) timeEntry.create = create;
+    
+    NSDictionary *object;
+    BOOL needSave = NO;
+    
+    // Project
+    object = [dictionary objectForKey:@"project"];
+    if (object)
+    {
+        if (timeEntry.project == nil)
+        {
+            timeEntry.project = [_database projectById:[object objectForKey:@"id"]];
+        }
+        timeEntry.project.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (timeEntry.project != nil)
+    {
+        timeEntry.project = nil;
+        needSave = YES;
+    }
+
+    // Issue
+    object = [dictionary objectForKey:@"issue"];
+    if (object)
+    {
+        if (timeEntry.issue == nil)
+        {
+            timeEntry.issue = [_database issueById:[object objectForKey:@"id"]];
+        }
+        timeEntry.issue.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (timeEntry.issue != nil)
+    {
+        timeEntry.issue = nil;
+        needSave = YES;
+    }
+        
+    // Activity
+    object = [dictionary objectForKey:@"activity"];
+    if (object)
+    {
+        if (timeEntry.activity == nil)
+        {
+            timeEntry.activity = [_database activityById:[object objectForKey:@"id"]];
+        }
+        timeEntry.activity.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (timeEntry.activity != nil)
+    {
+        timeEntry.activity = nil;
+        needSave = YES;
+    }
+    
+    // User
+    object = [dictionary objectForKey:@"user"];
+    if (object)
+    {
+        if (timeEntry.user == nil)
+        {
+            timeEntry.user = [_database userById:[object objectForKey:@"id"]];
+        }
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        timeEntry.user.name = [n componentsJoinedByString:@" "];
+        
+        needSave = YES;
+    }
+    else if (timeEntry.user != nil)
+    {
+        timeEntry.user = nil;
+        needSave = YES;
+    }
+    
+    if (needSave == YES)
+    {
+        if(![_database save])
+        {
+            _issuesError = YES;
+        }
+    }
+}
+
+- (void) refreshIssue:(Issue *)issue withDictionaryTimesEntry:(NSDictionary *)dictionary
+{
+    NSString *name = [dictionary objectForKey:@"subject"];
+    if (name) issue.name = name;
+    
+    NSString *text = [dictionary objectForKey:@"description"];
+    if (text) issue.text = text;
+    
+    NSNumber *estimated = [dictionary objectForKey:@"estimated_hours"];
+    if (estimated) issue.estimated = estimated;
+    
+    NSNumber *done = [dictionary objectForKey:@"done_ratio"];
+    if (done) issue.done = done;
+    
+    NSDate *start = [self dateFromString2:[dictionary objectForKey:@"start_date"]];
+    if (start) issue.start = start;
+    
+    NSDate *finish = [self dateFromString2:[dictionary objectForKey:@"due_date"]];
+    if (finish) issue.finish = finish;
+    
+    NSDate *update = [self dateFromString:[dictionary objectForKey:@"updated_on"]];
+    if (update) issue.update = update;
+    
+    NSDate *create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    if (create) issue.create = create;
+    
+    NSDictionary *object;
+    BOOL needSave = NO;
+    
+    // Version
+    object = [dictionary objectForKey:@"fixed_version"];
+    if (object)
+    {
+        if (issue.version == nil)
+        {
+            issue.version = [_database versionById:[object objectForKey:@"id"]];
+        }
+        issue.version.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.version != nil)
+    {
+        issue.version = nil;
+        needSave = YES;
+    }
+    
+    // Tracker
+    object = [dictionary objectForKey:@"tracker"];
+    if (object)
+    {
+        if (issue.tracker == nil)
+        {
+            issue.tracker = [_database trackerById:[object objectForKey:@"id"]];
+        }
+        issue.tracker.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.tracker != nil)
+    {
+        issue.tracker = nil;
+        needSave = YES;
+    }
+    
+    // Status
+    object = [dictionary objectForKey:@"status"];
+    if (object)
+    {
+        if (issue.status == nil)
+        {
+            issue.status = [_database statusById:[object objectForKey:@"id"]];
+        }
+        issue.status.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.status != nil)
+    {
+        issue.status = nil;
+        needSave = YES;
+    }
+    
+    // Priority
+    object = [dictionary objectForKey:@"priority"];
+    if (object)
+    {
+        if (issue.priority == nil)
+        {
+            issue.priority = [_database priorityById:[object objectForKey:@"id"]];
+        }
+        issue.priority.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.priority != nil)
+    {
+        issue.priority = nil;
+        needSave = YES;
+    }
+    
+    // Author
+    object = [dictionary objectForKey:@"author"];
+    if (object)
+    {
+        if (issue.creator == nil)
+        {
+            issue.creator = [_database userById:[object objectForKey:@"id"]];
+        }
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        issue.creator.name = [n componentsJoinedByString:@" "];
+        
+        needSave = YES;
+    }
+    else if (issue.creator != nil)
+    {
+        issue.creator = nil;
+        needSave = YES;
+    }
+    
+    // Assigned to
+    object = [dictionary objectForKey:@"assigned_to"];
+    if (object)
+    {
+        if (issue.assigner == nil)
+        {
+            issue.assigner = [_database userById:[object objectForKey:@"id"]];
+        }
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        issue.assigner.name = [n componentsJoinedByString:@" "];
+        
+        needSave = YES;
+    }
+    else if (issue.assigner != nil)
+    {
+        issue.assigner = nil;
+        needSave = YES;
+    }
+    
+    // Parent
+    object = [dictionary objectForKey:@"parent"];
+    if (object)
+    {
+        if (issue.parent == nil)
+        {
+            issue.parent = [_database issueById:[object objectForKey:@"id"]];
+        }
+        issue.parent.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.parent != nil)
+    {
+        issue.parent = nil;
+        needSave = YES;
+    }
+    
+    // Project
+    object = [dictionary objectForKey:@"project"];
+    if (object)
+    {
+        if (issue.project == nil)
+        {
+            issue.project = [_database projectById:[object objectForKey:@"id"]];
+        }
+        issue.project.name = [object objectForKey:@"name"];
+        needSave = YES;
+    }
+    else if (issue.project != nil)
+    {
+        issue.project = nil;
+        needSave = YES;
+    }
+    
+    if (needSave == YES)
+    {
+        if(![_database save])
+        {
+            _issuesError = YES;
+        }
+    }
+}
+
+#pragma mark - Memory Management
 
 - (void) dealloc
 {

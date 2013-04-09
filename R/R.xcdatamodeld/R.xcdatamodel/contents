@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Activity" syncable="YES">
+    <entity name="Activity" representedClassName="Activity" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
@@ -11,8 +11,6 @@
         <attribute name="finish" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="spent" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="spented" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="start" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
@@ -23,7 +21,6 @@
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
         <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" syncable="YES"/>
         <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
-        <relationship name="spenter" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
         <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" syncable="YES"/>
         <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" syncable="YES"/>
         <relationship name="version" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Version" syncable="YES"/>
@@ -45,6 +42,18 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="TimeEntry" representedClassName="TimeEntry" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="hours" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="spent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" syncable="YES"/>
+        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" syncable="YES"/>
+        <relationship name="project" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+    </entity>
     <entity name="Tracker" representedClassName="Tracker" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -58,13 +67,14 @@
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Issue" positionX="385" positionY="153" width="128" height="375"/>
+        <element name="Activity" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Issue" positionX="385" positionY="153" width="128" height="330"/>
         <element name="Priority" positionX="43" positionY="294" width="128" height="73"/>
         <element name="Project" positionX="583" positionY="258" width="128" height="148"/>
         <element name="Status" positionX="43" positionY="375" width="128" height="73"/>
         <element name="Tracker" positionX="43" positionY="456" width="128" height="73"/>
         <element name="User" positionX="180" positionY="249" width="128" height="73"/>
         <element name="Version" positionX="180" positionY="492" width="128" height="73"/>
-        <element name="Activity" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="TimeEntry" positionX="160" positionY="192" width="128" height="195"/>
     </elements>
 </model>

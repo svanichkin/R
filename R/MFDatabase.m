@@ -11,12 +11,14 @@
 
 #define PROJECT_ENTITY      @"Project"
 #define ISSUE_ENTITY        @"Issue"
+#define TIME_ENTRY_ENTITY   @"TimeEntry"
 #define VERSION_ENTITY      @"Version"
 #define USER_ENTITY         @"User"
 
 #define TRACKER_ENTITY      @"Tracker"
 #define STATUS_ENTITY       @"Status"
 #define PRIORITY_ENTITY     @"Priority"
+#define ACTIVITY_ENTITY     @"Activity"
 
 @implementation MFDatabase
 {
@@ -317,6 +319,52 @@
     return [self objectsByName:ISSUE_ENTITY sortingField:@"name"];
 }
 
+#pragma mark - Time Entry
+
+- (NSArray *) timeEntriesByIssueId:(NSNumber *)nid
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *timeEntry = [NSEntityDescription entityForName:@"TimeEntry"
+                                                 inManagedObjectContext:[self managedObjectContext]];
+    
+    [fetchRequest setEntity:timeEntry];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"issue.nid == %@", nid];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    
+    return result;
+}
+
+- (TimeEntry *) timeEntryById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:TIME_ENTRY_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        TimeEntry *object = [self newObjectByName:TIME_ENTRY_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
+
+- (TimeEntry *) timeEntry
+{
+    return [self newObjectByName:TIME_ENTRY_ENTITY];
+}
+
+- (NSArray *) timeEntries
+{
+    return [self objectsByName:TIME_ENTRY_ENTITY sortingField:@"name"];
+}
+
+#pragma mark - Version
+
 - (Version *) versionById:(NSNumber *)nid
 {
     NSArray *objects = [self objectsByName:VERSION_ENTITY andId:nid];
@@ -369,6 +417,8 @@
     }
 }
 
+#pragma mark - Tracker
+
 - (Tracker *) tracker
 {
     return [self newObjectByName:TRACKER_ENTITY];
@@ -394,6 +444,8 @@
     }
 }
 
+#pragma mark - Status
+
 - (Status *) status
 {
     return [self newObjectByName:STATUS_ENTITY];
@@ -403,6 +455,8 @@
 {
     return [self objectsByName:STATUS_ENTITY sortingField:@"nid"];
 }
+
+#pragma mark - Priority
 
 - (Priority *) priorityById:(NSNumber *)nid
 {
@@ -425,6 +479,33 @@
 }
 
 - (NSArray *) priorities
+{
+    return [self objectsByName:PRIORITY_ENTITY sortingField:@"nid"];
+}
+
+#pragma mark - Activity
+
+- (Activity *) activityById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:ACTIVITY_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Activity *object = [self newObjectByName:ACTIVITY_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
+
+- (Activity *) activity
+{
+    return [self newObjectByName:ACTIVITY_ENTITY];
+}
+
+- (NSArray *) activities
 {
     return [self objectsByName:PRIORITY_ENTITY sortingField:@"nid"];
 }

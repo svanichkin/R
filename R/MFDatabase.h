@@ -11,12 +11,14 @@
 #import "Project.h"
 
 #import "Issue.h"
+#import "TimeEntry.h"
 #import "Version.h"
 #import "User.h"
 
 #import "Tracker.h"
 #import "Status.h"
 #import "Priority.h"
+#import "Activity.h"
 
 @interface MFDatabase : NSObject
 
@@ -37,6 +39,11 @@
 - (NSArray *) issues;
 - (NSArray *) issuesByProjectId:(NSNumber *)nid;
 
+- (TimeEntry *) timeEntryById:(NSNumber *)nid;
+- (TimeEntry *) timeEntry;
+- (NSArray *) timeEntries;
+- (NSArray *) timeEntriesByProjectId:(NSNumber *)nid;
+
 - (Version *) versionById:(NSNumber *)nid;
 - (NSArray *) versions;
 
@@ -53,6 +60,9 @@
 - (Priority *) priorityById:(NSNumber *)nid;
 - (Priority *) priority;
 - (NSArray *) priorities;
-;
+
+- (Activity *) activityById:(NSNumber *)nid;
+- (Activity *) activity;
+- (NSArray *) activities;
 
 @end

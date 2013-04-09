@@ -2,14 +2,14 @@
 //  Issue.h
 //  R
 //
-//  Created by Сергей Ваничкин on 29.03.13.
+//  Created by Сергей Ваничкин on 09.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Issue, Priority, Project, Status, Tracker, User, Version;
+@class Activity, Issue, Priority, Project, Status, Tracker, User, Version;
 
 @interface Issue : NSManagedObject
 
@@ -19,10 +19,10 @@
 @property (nonatomic, retain) NSDate * finish;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * nid;
-@property (nonatomic, retain) NSNumber * spent;
 @property (nonatomic, retain) NSDate * start;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * update;
+@property (nonatomic, retain) Activity *activity;
 @property (nonatomic, retain) User *assigner;
 @property (nonatomic, retain) Issue *children;
 @property (nonatomic, retain) User *creator;

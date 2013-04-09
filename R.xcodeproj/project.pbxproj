@@ -51,6 +51,15 @@
 		9390E7A116FE002D00D68182 /* background_p.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E7A016FE002D00D68182 /* background_p.png */; };
 		93BEB3DF17116F0C003D5A01 /* MFIssueView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB3DE17116F0C003D5A01 /* MFIssueView.m */; };
 		93BEB3F31713811B003D5A01 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 93BEB3F21713811B003D5A01 /* Icon.icns */; };
+		93BEB411171477E4003D5A01 /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB410171477E4003D5A01 /* Priority.m */; };
+		93BEB414171477E4003D5A01 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB413171477E4003D5A01 /* Status.m */; };
+		93BEB417171477E6003D5A01 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB416171477E5003D5A01 /* Project.m */; };
+		93BEB41A171477E6003D5A01 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB419171477E6003D5A01 /* Tracker.m */; };
+		93BEB41D171477E7003D5A01 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB41C171477E7003D5A01 /* Issue.m */; };
+		93BEB420171477E8003D5A01 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB41F171477E8003D5A01 /* User.m */; };
+		93BEB423171477E8003D5A01 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB422171477E8003D5A01 /* Version.m */; };
+		93BEB429171477EA003D5A01 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB428171477EA003D5A01 /* Activity.m */; };
+		93BEB42C1714790B003D5A01 /* TimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB42B1714790A003D5A01 /* TimeEntry.m */; };
 		93C94493170C40B500843955 /* MFAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94492170C40B500843955 /* MFAuthorization.m */; };
 		93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94499170DE39E00843955 /* MFDatabaseUpdator.m */; };
 		93EEA9D016FF9AB00066ECC7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9CF16FF9AB00066ECC7 /* add.png */; };
@@ -59,13 +68,6 @@
 		93EEA9D816FF9F350066ECC7 /* add3.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D316FF9F350066ECC7 /* add3.png */; };
 		93EEA9D916FF9F350066ECC7 /* add2.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D416FF9F350066ECC7 /* add2.png */; };
 		93EEA9DA16FF9F350066ECC7 /* add1.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9D516FF9F350066ECC7 /* add1.png */; };
-		93FCDF9D1706199200B8A3EF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9C1706199200B8A3EF /* User.m */; };
-		93FCDFA01706199300B8A3EF /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDF9F1706199300B8A3EF /* Status.m */; };
-		93FCDFA31706199300B8A3EF /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA21706199300B8A3EF /* Project.m */; };
-		93FCDFA61706199300B8A3EF /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA51706199300B8A3EF /* Issue.m */; };
-		93FCDFA91706199400B8A3EF /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFA81706199400B8A3EF /* Tracker.m */; };
-		93FCDFAC1706199400B8A3EF /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFAB1706199400B8A3EF /* Version.m */; };
-		93FCDFAF1706199400B8A3EF /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCDFAE1706199400B8A3EF /* Priority.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,24 @@
 		93BEB3DD17116F0C003D5A01 /* MFIssueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFIssueView.h; sourceTree = "<group>"; };
 		93BEB3DE17116F0C003D5A01 /* MFIssueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFIssueView.m; sourceTree = "<group>"; };
 		93BEB3F21713811B003D5A01 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Icon.icns; path = ../Icon.icns; sourceTree = "<group>"; };
+		93BEB40F171477E4003D5A01 /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
+		93BEB410171477E4003D5A01 /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
+		93BEB412171477E4003D5A01 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
+		93BEB413171477E4003D5A01 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
+		93BEB415171477E5003D5A01 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
+		93BEB416171477E5003D5A01 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		93BEB418171477E6003D5A01 /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
+		93BEB419171477E6003D5A01 /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
+		93BEB41B171477E7003D5A01 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
+		93BEB41C171477E7003D5A01 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
+		93BEB41E171477E8003D5A01 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		93BEB41F171477E8003D5A01 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		93BEB421171477E8003D5A01 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		93BEB422171477E8003D5A01 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
+		93BEB427171477EA003D5A01 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		93BEB428171477EA003D5A01 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
+		93BEB42A1714790A003D5A01 /* TimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntry.h; sourceTree = "<group>"; };
+		93BEB42B1714790A003D5A01 /* TimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntry.m; sourceTree = "<group>"; };
 		93C94491170C40B500843955 /* MFAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAuthorization.h; sourceTree = "<group>"; };
 		93C94492170C40B500843955 /* MFAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAuthorization.m; sourceTree = "<group>"; };
 		93C94498170DE39E00843955 /* MFDatabaseUpdator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDatabaseUpdator.h; sourceTree = "<group>"; };
@@ -164,20 +184,6 @@
 		93EEA9D316FF9F350066ECC7 /* add3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add3.png; sourceTree = "<group>"; };
 		93EEA9D416FF9F350066ECC7 /* add2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add2.png; sourceTree = "<group>"; };
 		93EEA9D516FF9F350066ECC7 /* add1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add1.png; sourceTree = "<group>"; };
-		93FCDF9B1706199200B8A3EF /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		93FCDF9C1706199200B8A3EF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		93FCDF9E1706199300B8A3EF /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
-		93FCDF9F1706199300B8A3EF /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
-		93FCDFA11706199300B8A3EF /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
-		93FCDFA21706199300B8A3EF /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
-		93FCDFA41706199300B8A3EF /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
-		93FCDFA51706199300B8A3EF /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
-		93FCDFA71706199300B8A3EF /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
-		93FCDFA81706199400B8A3EF /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
-		93FCDFAA1706199400B8A3EF /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
-		93FCDFAB1706199400B8A3EF /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
-		93FCDFAD1706199400B8A3EF /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
-		93FCDFAE1706199400B8A3EF /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,20 +240,24 @@
 			isa = PBXGroup;
 			children = (
 				9390E71D16FCD1A900D68182 /* R.xcdatamodeld */,
-				93FCDF9B1706199200B8A3EF /* User.h */,
-				93FCDF9C1706199200B8A3EF /* User.m */,
-				93FCDF9E1706199300B8A3EF /* Status.h */,
-				93FCDF9F1706199300B8A3EF /* Status.m */,
-				93FCDFA11706199300B8A3EF /* Project.h */,
-				93FCDFA21706199300B8A3EF /* Project.m */,
-				93FCDFA41706199300B8A3EF /* Issue.h */,
-				93FCDFA51706199300B8A3EF /* Issue.m */,
-				93FCDFA71706199300B8A3EF /* Tracker.h */,
-				93FCDFA81706199400B8A3EF /* Tracker.m */,
-				93FCDFAA1706199400B8A3EF /* Version.h */,
-				93FCDFAB1706199400B8A3EF /* Version.m */,
-				93FCDFAD1706199400B8A3EF /* Priority.h */,
-				93FCDFAE1706199400B8A3EF /* Priority.m */,
+				93BEB42A1714790A003D5A01 /* TimeEntry.h */,
+				93BEB42B1714790A003D5A01 /* TimeEntry.m */,
+				93BEB427171477EA003D5A01 /* Activity.h */,
+				93BEB428171477EA003D5A01 /* Activity.m */,
+				93BEB421171477E8003D5A01 /* Version.h */,
+				93BEB422171477E8003D5A01 /* Version.m */,
+				93BEB41E171477E8003D5A01 /* User.h */,
+				93BEB41F171477E8003D5A01 /* User.m */,
+				93BEB41B171477E7003D5A01 /* Issue.h */,
+				93BEB41C171477E7003D5A01 /* Issue.m */,
+				93BEB418171477E6003D5A01 /* Tracker.h */,
+				93BEB419171477E6003D5A01 /* Tracker.m */,
+				93BEB415171477E5003D5A01 /* Project.h */,
+				93BEB416171477E5003D5A01 /* Project.m */,
+				93BEB412171477E4003D5A01 /* Status.h */,
+				93BEB413171477E4003D5A01 /* Status.m */,
+				93BEB40F171477E4003D5A01 /* Priority.h */,
+				93BEB410171477E4003D5A01 /* Priority.m */,
 				930BBC1017036EA700B664C2 /* MFDatabase.h */,
 				930BBC1117036EA700B664C2 /* MFDatabase.m */,
 			);
@@ -558,16 +568,18 @@
 				930BBC1217036EA700B664C2 /* MFDatabase.m in Sources */,
 				930BBC151703814600B664C2 /* MFProjectSelector.m in Sources */,
 				930BBC18170444D300B664C2 /* MFIssuesList.m in Sources */,
-				93FCDF9D1706199200B8A3EF /* User.m in Sources */,
-				93FCDFA01706199300B8A3EF /* Status.m in Sources */,
-				93FCDFA31706199300B8A3EF /* Project.m in Sources */,
-				93FCDFA61706199300B8A3EF /* Issue.m in Sources */,
-				93FCDFA91706199400B8A3EF /* Tracker.m in Sources */,
-				93FCDFAC1706199400B8A3EF /* Version.m in Sources */,
-				93FCDFAF1706199400B8A3EF /* Priority.m in Sources */,
 				93C94493170C40B500843955 /* MFAuthorization.m in Sources */,
 				93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */,
 				93BEB3DF17116F0C003D5A01 /* MFIssueView.m in Sources */,
+				93BEB411171477E4003D5A01 /* Priority.m in Sources */,
+				93BEB414171477E4003D5A01 /* Status.m in Sources */,
+				93BEB417171477E6003D5A01 /* Project.m in Sources */,
+				93BEB41A171477E6003D5A01 /* Tracker.m in Sources */,
+				93BEB41D171477E7003D5A01 /* Issue.m in Sources */,
+				93BEB420171477E8003D5A01 /* User.m in Sources */,
+				93BEB423171477E8003D5A01 /* Version.m in Sources */,
+				93BEB429171477EA003D5A01 /* Activity.m in Sources */,
+				93BEB42C1714790B003D5A01 /* TimeEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
