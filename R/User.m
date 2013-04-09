@@ -13,5 +13,12 @@
 
 @dynamic name;
 @dynamic nid;
+@dynamic firstname;
+@dynamic lastname;
+@dynamic mail;
+@dynamic create;
+@dynamic lastLogin;
+@dynamic skype;
+@dynamic phone;
 
 @end

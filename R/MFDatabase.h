@@ -48,6 +48,7 @@
 - (NSArray *) versions;
 
 - (User *) userById:(NSNumber *)nid;
+- (NSArray *) users;
 
 - (Tracker *) trackerById:(NSNumber *)nid;
 - (Tracker *) tracker;

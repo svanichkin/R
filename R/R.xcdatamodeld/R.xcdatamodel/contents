@@ -59,8 +59,15 @@
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastLogin" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="lastname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skype" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Version" representedClassName="Version" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -73,7 +80,7 @@
         <element name="Project" positionX="583" positionY="258" width="128" height="148"/>
         <element name="Status" positionX="43" positionY="375" width="128" height="73"/>
         <element name="Tracker" positionX="43" positionY="456" width="128" height="73"/>
-        <element name="User" positionX="180" positionY="249" width="128" height="73"/>
+        <element name="User" positionX="180" positionY="249" width="128" height="180"/>
         <element name="Version" positionX="180" positionY="492" width="128" height="73"/>
         <element name="TimeEntry" positionX="160" positionY="192" width="128" height="195"/>
     </elements>

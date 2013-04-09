@@ -14,5 +14,12 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * nid;
+@property (nonatomic, retain) NSString * firstname;
+@property (nonatomic, retain) NSString * lastname;
+@property (nonatomic, retain) NSString * mail;
+@property (nonatomic, retain) NSDate * create;
+@property (nonatomic, retain) NSDate * lastLogin;
+@property (nonatomic, retain) NSString * skype;
+@property (nonatomic, retain) NSString * phone;
 
 @end

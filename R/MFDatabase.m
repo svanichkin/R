@@ -385,6 +385,13 @@
     return [self objectsByName:VERSION_ENTITY sortingField:@"name"];
 }
 
+#pragma mark - Users
+
+- (NSArray *) users
+{
+    return [self objectsByName:USER_ENTITY sortingField:@"name"];
+}
+
 - (User *) userById:(NSNumber *)nid
 {
     NSArray *objects = [self objectsByName:USER_ENTITY andId:nid];
