@@ -848,7 +848,6 @@
         {
             timeEntry.issue = [_database issueById:[object objectForKey:@"id"]];
         }
-        timeEntry.issue.name = [object objectForKey:@"name"];
         needSave = YES;
     }
     else if (timeEntry.issue != nil)
