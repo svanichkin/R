@@ -1,19 +1,21 @@
 //
-//  Priority.m
+//  Detail.m
 //  R
 //
 //  Created by Сергей Ваничкин on 11.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
-#import "Priority.h"
-#import "Issue.h"
+#import "Detail.h"
+#import "Journal.h"
 
 
-@implementation Priority
+@implementation Detail
 
+@dynamic property;
 @dynamic name;
-@dynamic nid;
-@dynamic issues;
+@dynamic oldValue;
+@dynamic newValue;
+@dynamic journal;
 
 @end

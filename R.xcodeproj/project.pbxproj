@@ -34,15 +34,6 @@
 		9390E77D16FCF90D00D68182 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E74A16FCF90D00D68182 /* TFHpple.m */; };
 		9390E77E16FCF90D00D68182 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E74C16FCF90D00D68182 /* TFHppleElement.m */; };
 		9390E77F16FCF90D00D68182 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E74E16FCF90D00D68182 /* XPathQuery.m */; };
-		9390E78016FCF90D00D68182 /* RKIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75216FCF90D00D68182 /* RKIssue.m */; };
-		9390E78116FCF90D00D68182 /* RKIssueOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75416FCF90D00D68182 /* RKIssueOptions.m */; };
-		9390E78216FCF90D00D68182 /* RKJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75616FCF90D00D68182 /* RKJournal.m */; };
-		9390E78316FCF90D00D68182 /* RKJournalDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75816FCF90D00D68182 /* RKJournalDetail.m */; };
-		9390E78416FCF90D00D68182 /* RKParseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75A16FCF90D00D68182 /* RKParseHelper.m */; };
-		9390E78516FCF90D00D68182 /* RKProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75C16FCF90D00D68182 /* RKProject.m */; };
-		9390E78616FCF90D00D68182 /* RKRedmine.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E75E16FCF90D00D68182 /* RKRedmine.m */; };
-		9390E78716FCF90D00D68182 /* RKTimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E76016FCF90D00D68182 /* RKTimeEntry.m */; };
-		9390E78816FCF90D00D68182 /* RKValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E76216FCF90D00D68182 /* RKValue.m */; };
 		9390E79616FCFB7100D68182 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9390E79516FCFB7100D68182 /* libxml2.dylib */; };
 		9390E79916FCFF9500D68182 /* MFPreferencesPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9390E79816FCFF9500D68182 /* MFPreferencesPanel.m */; };
 		9390E79A16FD07C600D68182 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9390E70A16FCD1A800D68182 /* Foundation.framework */; };
@@ -51,15 +42,30 @@
 		9390E7A116FE002D00D68182 /* background_p.png in Resources */ = {isa = PBXBuildFile; fileRef = 9390E7A016FE002D00D68182 /* background_p.png */; };
 		93BEB3DF17116F0C003D5A01 /* MFIssueView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB3DE17116F0C003D5A01 /* MFIssueView.m */; };
 		93BEB3F31713811B003D5A01 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 93BEB3F21713811B003D5A01 /* Icon.icns */; };
-		93BEB4651714943E003D5A01 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB4641714943E003D5A01 /* Status.m */; };
-		93BEB4681714943F003D5A01 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB4671714943F003D5A01 /* Tracker.m */; };
-		93BEB46B1714943F003D5A01 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB46A1714943F003D5A01 /* User.m */; };
-		93BEB46E17149440003D5A01 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB46D17149440003D5A01 /* Issue.m */; };
-		93BEB47117149440003D5A01 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB47017149440003D5A01 /* Version.m */; };
-		93BEB47417149441003D5A01 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB47317149441003D5A01 /* Activity.m */; };
-		93BEB47717149441003D5A01 /* TimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB47617149441003D5A01 /* TimeEntry.m */; };
-		93BEB47A17149441003D5A01 /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB47917149441003D5A01 /* Priority.m */; };
-		93BEB47D17149442003D5A01 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB47C17149442003D5A01 /* Project.m */; };
+		93BEB50D1715F9F9003D5A01 /* Attach.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB50C1715F9F9003D5A01 /* Attach.m */; };
+		93BEB5101715F9FA003D5A01 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB50F1715F9FA003D5A01 /* Issue.m */; };
+		93BEB5131715F9FC003D5A01 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5121715F9FC003D5A01 /* Status.m */; };
+		93BEB5161715FA02003D5A01 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5151715FA02003D5A01 /* Activity.m */; };
+		93BEB5191715FA03003D5A01 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5181715FA03003D5A01 /* User.m */; };
+		93BEB51C1715FA04003D5A01 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB51B1715FA04003D5A01 /* Version.m */; };
+		93BEB51F1715FA05003D5A01 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB51E1715FA04003D5A01 /* Journal.m */; };
+		93BEB5221715FA06003D5A01 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5211715FA05003D5A01 /* Tracker.m */; };
+		93BEB5251715FA07003D5A01 /* TimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5241715FA07003D5A01 /* TimeEntry.m */; };
+		93BEB5281715FA08003D5A01 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5271715FA08003D5A01 /* Project.m */; };
+		93BEB52B1715FA0B003D5A01 /* Detail.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB52A1715FA0A003D5A01 /* Detail.m */; };
+		93BEB52E1715FA0B003D5A01 /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB52D1715FA0B003D5A01 /* Priority.m */; };
+		93BEB59D17160691003D5A01 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB59C17160691003D5A01 /* Tracker.m */; };
+		93BEB5A017160691003D5A01 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB59F17160691003D5A01 /* Journal.m */; };
+		93BEB5A317160692003D5A01 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5A217160692003D5A01 /* User.m */; };
+		93BEB5A617160692003D5A01 /* Attach.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5A517160692003D5A01 /* Attach.m */; };
+		93BEB5A917160692003D5A01 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5A817160692003D5A01 /* Activity.m */; };
+		93BEB5AC17160693003D5A01 /* TimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5AB17160693003D5A01 /* TimeEntry.m */; };
+		93BEB5AF17160693003D5A01 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5AE17160693003D5A01 /* Status.m */; };
+		93BEB5B217160693003D5A01 /* Detail.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5B117160693003D5A01 /* Detail.m */; };
+		93BEB5B517160693003D5A01 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5B417160693003D5A01 /* Issue.m */; };
+		93BEB5B817160694003D5A01 /* Priority.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5B717160694003D5A01 /* Priority.m */; };
+		93BEB5BB17160694003D5A01 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5BA17160694003D5A01 /* Project.m */; };
+		93BEB5BE17160694003D5A01 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BEB5BD17160694003D5A01 /* Version.m */; };
 		93C94493170C40B500843955 /* MFAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94492170C40B500843955 /* MFAuthorization.m */; };
 		93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C94499170DE39E00843955 /* MFDatabaseUpdator.m */; };
 		93EEA9D016FF9AB00066ECC7 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 93EEA9CF16FF9AB00066ECC7 /* add.png */; };
@@ -127,25 +133,6 @@
 		9390E74C16FCF90D00D68182 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
 		9390E74D16FCF90D00D68182 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		9390E74E16FCF90D00D68182 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
-		9390E75016FCF90D00D68182 /* RedmineKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedmineKit.h; sourceTree = "<group>"; };
-		9390E75116FCF90D00D68182 /* RKIssue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKIssue.h; sourceTree = "<group>"; };
-		9390E75216FCF90D00D68182 /* RKIssue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKIssue.m; sourceTree = "<group>"; };
-		9390E75316FCF90D00D68182 /* RKIssueOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKIssueOptions.h; sourceTree = "<group>"; };
-		9390E75416FCF90D00D68182 /* RKIssueOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKIssueOptions.m; sourceTree = "<group>"; };
-		9390E75516FCF90D00D68182 /* RKJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKJournal.h; sourceTree = "<group>"; };
-		9390E75616FCF90D00D68182 /* RKJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKJournal.m; sourceTree = "<group>"; };
-		9390E75716FCF90D00D68182 /* RKJournalDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKJournalDetail.h; sourceTree = "<group>"; };
-		9390E75816FCF90D00D68182 /* RKJournalDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKJournalDetail.m; sourceTree = "<group>"; };
-		9390E75916FCF90D00D68182 /* RKParseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKParseHelper.h; sourceTree = "<group>"; };
-		9390E75A16FCF90D00D68182 /* RKParseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKParseHelper.m; sourceTree = "<group>"; };
-		9390E75B16FCF90D00D68182 /* RKProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKProject.h; sourceTree = "<group>"; };
-		9390E75C16FCF90D00D68182 /* RKProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKProject.m; sourceTree = "<group>"; };
-		9390E75D16FCF90D00D68182 /* RKRedmine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKRedmine.h; sourceTree = "<group>"; };
-		9390E75E16FCF90D00D68182 /* RKRedmine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKRedmine.m; sourceTree = "<group>"; };
-		9390E75F16FCF90D00D68182 /* RKTimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKTimeEntry.h; sourceTree = "<group>"; };
-		9390E76016FCF90D00D68182 /* RKTimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKTimeEntry.m; sourceTree = "<group>"; };
-		9390E76116FCF90D00D68182 /* RKValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKValue.h; sourceTree = "<group>"; };
-		9390E76216FCF90D00D68182 /* RKValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKValue.m; sourceTree = "<group>"; };
 		9390E79516FCFB7100D68182 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		9390E79716FCFF9500D68182 /* MFPreferencesPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFPreferencesPanel.h; sourceTree = "<group>"; };
 		9390E79816FCFF9500D68182 /* MFPreferencesPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFPreferencesPanel.m; sourceTree = "<group>"; };
@@ -156,24 +143,54 @@
 		93BEB3DD17116F0C003D5A01 /* MFIssueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFIssueView.h; sourceTree = "<group>"; };
 		93BEB3DE17116F0C003D5A01 /* MFIssueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFIssueView.m; sourceTree = "<group>"; };
 		93BEB3F21713811B003D5A01 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Icon.icns; path = ../Icon.icns; sourceTree = "<group>"; };
-		93BEB4631714943E003D5A01 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
-		93BEB4641714943E003D5A01 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
-		93BEB4661714943E003D5A01 /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
-		93BEB4671714943F003D5A01 /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
-		93BEB4691714943F003D5A01 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		93BEB46A1714943F003D5A01 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		93BEB46C17149440003D5A01 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
-		93BEB46D17149440003D5A01 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
-		93BEB46F17149440003D5A01 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
-		93BEB47017149440003D5A01 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
-		93BEB47217149441003D5A01 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		93BEB47317149441003D5A01 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
-		93BEB47517149441003D5A01 /* TimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntry.h; sourceTree = "<group>"; };
-		93BEB47617149441003D5A01 /* TimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntry.m; sourceTree = "<group>"; };
-		93BEB47817149441003D5A01 /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
-		93BEB47917149441003D5A01 /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
-		93BEB47B17149442003D5A01 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
-		93BEB47C17149442003D5A01 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		93BEB50B1715F9F8003D5A01 /* Attach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attach.h; sourceTree = "<group>"; };
+		93BEB50C1715F9F9003D5A01 /* Attach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Attach.m; sourceTree = "<group>"; };
+		93BEB50E1715F9FA003D5A01 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
+		93BEB50F1715F9FA003D5A01 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
+		93BEB5111715F9FC003D5A01 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
+		93BEB5121715F9FC003D5A01 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
+		93BEB5141715FA02003D5A01 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
+		93BEB5151715FA02003D5A01 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
+		93BEB5171715FA03003D5A01 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		93BEB5181715FA03003D5A01 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		93BEB51A1715FA03003D5A01 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		93BEB51B1715FA04003D5A01 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
+		93BEB51D1715FA04003D5A01 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal.h; sourceTree = "<group>"; };
+		93BEB51E1715FA04003D5A01 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal.m; sourceTree = "<group>"; };
+		93BEB5201715FA05003D5A01 /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
+		93BEB5211715FA05003D5A01 /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
+		93BEB5231715FA06003D5A01 /* TimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntry.h; sourceTree = "<group>"; };
+		93BEB5241715FA07003D5A01 /* TimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntry.m; sourceTree = "<group>"; };
+		93BEB5261715FA08003D5A01 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
+		93BEB5271715FA08003D5A01 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		93BEB5291715FA0A003D5A01 /* Detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Detail.h; sourceTree = "<group>"; };
+		93BEB52A1715FA0A003D5A01 /* Detail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Detail.m; sourceTree = "<group>"; };
+		93BEB52C1715FA0B003D5A01 /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Priority.h; sourceTree = "<group>"; };
+		93BEB52D1715FA0B003D5A01 /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Priority.m; sourceTree = "<group>"; };
+		93BEB59B17160691003D5A01 /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tracker.h; path = R/Tracker.h; sourceTree = "<group>"; };
+		93BEB59C17160691003D5A01 /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Tracker.m; path = R/Tracker.m; sourceTree = "<group>"; };
+		93BEB59E17160691003D5A01 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Journal.h; path = R/Journal.h; sourceTree = "<group>"; };
+		93BEB59F17160691003D5A01 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Journal.m; path = R/Journal.m; sourceTree = "<group>"; };
+		93BEB5A117160692003D5A01 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = R/User.h; sourceTree = "<group>"; };
+		93BEB5A217160692003D5A01 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = R/User.m; sourceTree = "<group>"; };
+		93BEB5A417160692003D5A01 /* Attach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Attach.h; path = R/Attach.h; sourceTree = "<group>"; };
+		93BEB5A517160692003D5A01 /* Attach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Attach.m; path = R/Attach.m; sourceTree = "<group>"; };
+		93BEB5A717160692003D5A01 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Activity.h; path = R/Activity.h; sourceTree = "<group>"; };
+		93BEB5A817160692003D5A01 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Activity.m; path = R/Activity.m; sourceTree = "<group>"; };
+		93BEB5AA17160693003D5A01 /* TimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeEntry.h; path = R/TimeEntry.h; sourceTree = "<group>"; };
+		93BEB5AB17160693003D5A01 /* TimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeEntry.m; path = R/TimeEntry.m; sourceTree = "<group>"; };
+		93BEB5AD17160693003D5A01 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Status.h; path = R/Status.h; sourceTree = "<group>"; };
+		93BEB5AE17160693003D5A01 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Status.m; path = R/Status.m; sourceTree = "<group>"; };
+		93BEB5B017160693003D5A01 /* Detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Detail.h; path = R/Detail.h; sourceTree = "<group>"; };
+		93BEB5B117160693003D5A01 /* Detail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Detail.m; path = R/Detail.m; sourceTree = "<group>"; };
+		93BEB5B317160693003D5A01 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Issue.h; path = R/Issue.h; sourceTree = "<group>"; };
+		93BEB5B417160693003D5A01 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Issue.m; path = R/Issue.m; sourceTree = "<group>"; };
+		93BEB5B617160693003D5A01 /* Priority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Priority.h; path = R/Priority.h; sourceTree = "<group>"; };
+		93BEB5B717160694003D5A01 /* Priority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Priority.m; path = R/Priority.m; sourceTree = "<group>"; };
+		93BEB5B917160694003D5A01 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Project.h; path = R/Project.h; sourceTree = "<group>"; };
+		93BEB5BA17160694003D5A01 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Project.m; path = R/Project.m; sourceTree = "<group>"; };
+		93BEB5BC17160694003D5A01 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Version.h; path = R/Version.h; sourceTree = "<group>"; };
+		93BEB5BD17160694003D5A01 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = R/Version.m; sourceTree = "<group>"; };
 		93C94491170C40B500843955 /* MFAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFAuthorization.h; sourceTree = "<group>"; };
 		93C94492170C40B500843955 /* MFAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFAuthorization.m; sourceTree = "<group>"; };
 		93C94498170DE39E00843955 /* MFDatabaseUpdator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDatabaseUpdator.h; sourceTree = "<group>"; };
@@ -231,7 +248,6 @@
 			children = (
 				9390E79516FCFB7100D68182 /* libxml2.dylib */,
 				9390E74816FCF90D00D68182 /* Hpple */,
-				9390E74F16FCF90D00D68182 /* RedmineKit */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -240,24 +256,30 @@
 			isa = PBXGroup;
 			children = (
 				9390E71D16FCD1A900D68182 /* R.xcdatamodeld */,
-				93BEB47B17149442003D5A01 /* Project.h */,
-				93BEB47C17149442003D5A01 /* Project.m */,
-				93BEB47817149441003D5A01 /* Priority.h */,
-				93BEB47917149441003D5A01 /* Priority.m */,
-				93BEB47517149441003D5A01 /* TimeEntry.h */,
-				93BEB47617149441003D5A01 /* TimeEntry.m */,
-				93BEB47217149441003D5A01 /* Activity.h */,
-				93BEB47317149441003D5A01 /* Activity.m */,
-				93BEB46F17149440003D5A01 /* Version.h */,
-				93BEB47017149440003D5A01 /* Version.m */,
-				93BEB46C17149440003D5A01 /* Issue.h */,
-				93BEB46D17149440003D5A01 /* Issue.m */,
-				93BEB4691714943F003D5A01 /* User.h */,
-				93BEB46A1714943F003D5A01 /* User.m */,
-				93BEB4661714943E003D5A01 /* Tracker.h */,
-				93BEB4671714943F003D5A01 /* Tracker.m */,
-				93BEB4631714943E003D5A01 /* Status.h */,
-				93BEB4641714943E003D5A01 /* Status.m */,
+				93BEB52C1715FA0B003D5A01 /* Priority.h */,
+				93BEB52D1715FA0B003D5A01 /* Priority.m */,
+				93BEB5291715FA0A003D5A01 /* Detail.h */,
+				93BEB52A1715FA0A003D5A01 /* Detail.m */,
+				93BEB5261715FA08003D5A01 /* Project.h */,
+				93BEB5271715FA08003D5A01 /* Project.m */,
+				93BEB5231715FA06003D5A01 /* TimeEntry.h */,
+				93BEB5241715FA07003D5A01 /* TimeEntry.m */,
+				93BEB5201715FA05003D5A01 /* Tracker.h */,
+				93BEB5211715FA05003D5A01 /* Tracker.m */,
+				93BEB51D1715FA04003D5A01 /* Journal.h */,
+				93BEB51E1715FA04003D5A01 /* Journal.m */,
+				93BEB51A1715FA03003D5A01 /* Version.h */,
+				93BEB51B1715FA04003D5A01 /* Version.m */,
+				93BEB5171715FA03003D5A01 /* User.h */,
+				93BEB5181715FA03003D5A01 /* User.m */,
+				93BEB5141715FA02003D5A01 /* Activity.h */,
+				93BEB5151715FA02003D5A01 /* Activity.m */,
+				93BEB5111715F9FC003D5A01 /* Status.h */,
+				93BEB5121715F9FC003D5A01 /* Status.m */,
+				93BEB50E1715F9FA003D5A01 /* Issue.h */,
+				93BEB50F1715F9FA003D5A01 /* Issue.m */,
+				93BEB50B1715F9F8003D5A01 /* Attach.h */,
+				93BEB50C1715F9F9003D5A01 /* Attach.m */,
 				930BBC1017036EA700B664C2 /* MFDatabase.h */,
 				930BBC1117036EA700B664C2 /* MFDatabase.m */,
 			);
@@ -268,6 +290,30 @@
 			isa = PBXGroup;
 			children = (
 				9390E70B16FCD1A800D68182 /* R */,
+				93BEB5BC17160694003D5A01 /* Version.h */,
+				93BEB5BD17160694003D5A01 /* Version.m */,
+				93BEB5B917160694003D5A01 /* Project.h */,
+				93BEB5BA17160694003D5A01 /* Project.m */,
+				93BEB5B617160693003D5A01 /* Priority.h */,
+				93BEB5B717160694003D5A01 /* Priority.m */,
+				93BEB5B317160693003D5A01 /* Issue.h */,
+				93BEB5B417160693003D5A01 /* Issue.m */,
+				93BEB5B017160693003D5A01 /* Detail.h */,
+				93BEB5B117160693003D5A01 /* Detail.m */,
+				93BEB5AD17160693003D5A01 /* Status.h */,
+				93BEB5AE17160693003D5A01 /* Status.m */,
+				93BEB5AA17160693003D5A01 /* TimeEntry.h */,
+				93BEB5AB17160693003D5A01 /* TimeEntry.m */,
+				93BEB5A717160692003D5A01 /* Activity.h */,
+				93BEB5A817160692003D5A01 /* Activity.m */,
+				93BEB5A417160692003D5A01 /* Attach.h */,
+				93BEB5A517160692003D5A01 /* Attach.m */,
+				93BEB5A117160692003D5A01 /* User.h */,
+				93BEB5A217160692003D5A01 /* User.m */,
+				93BEB59E17160691003D5A01 /* Journal.h */,
+				93BEB59F17160691003D5A01 /* Journal.m */,
+				93BEB59B17160691003D5A01 /* Tracker.h */,
+				93BEB59C17160691003D5A01 /* Tracker.m */,
 				9390E73016FCD1A900D68182 /* RImporter */,
 				9390E70416FCD1A800D68182 /* Frameworks */,
 				9390E70316FCD1A800D68182 /* Products */,
@@ -372,32 +418,6 @@
 			);
 			name = Hpple;
 			path = Dependencies/Hpple;
-			sourceTree = "<group>";
-		};
-		9390E74F16FCF90D00D68182 /* RedmineKit */ = {
-			isa = PBXGroup;
-			children = (
-				9390E75016FCF90D00D68182 /* RedmineKit.h */,
-				9390E75116FCF90D00D68182 /* RKIssue.h */,
-				9390E75216FCF90D00D68182 /* RKIssue.m */,
-				9390E75316FCF90D00D68182 /* RKIssueOptions.h */,
-				9390E75416FCF90D00D68182 /* RKIssueOptions.m */,
-				9390E75516FCF90D00D68182 /* RKJournal.h */,
-				9390E75616FCF90D00D68182 /* RKJournal.m */,
-				9390E75716FCF90D00D68182 /* RKJournalDetail.h */,
-				9390E75816FCF90D00D68182 /* RKJournalDetail.m */,
-				9390E75916FCF90D00D68182 /* RKParseHelper.h */,
-				9390E75A16FCF90D00D68182 /* RKParseHelper.m */,
-				9390E75B16FCF90D00D68182 /* RKProject.h */,
-				9390E75C16FCF90D00D68182 /* RKProject.m */,
-				9390E75D16FCF90D00D68182 /* RKRedmine.h */,
-				9390E75E16FCF90D00D68182 /* RKRedmine.m */,
-				9390E75F16FCF90D00D68182 /* RKTimeEntry.h */,
-				9390E76016FCF90D00D68182 /* RKTimeEntry.m */,
-				9390E76116FCF90D00D68182 /* RKValue.h */,
-				9390E76216FCF90D00D68182 /* RKValue.m */,
-			);
-			path = RedmineKit;
 			sourceTree = "<group>";
 		};
 		93F477211701F4290069B255 /* Images */ = {
@@ -552,15 +572,6 @@
 				9390E77D16FCF90D00D68182 /* TFHpple.m in Sources */,
 				9390E77E16FCF90D00D68182 /* TFHppleElement.m in Sources */,
 				9390E77F16FCF90D00D68182 /* XPathQuery.m in Sources */,
-				9390E78016FCF90D00D68182 /* RKIssue.m in Sources */,
-				9390E78116FCF90D00D68182 /* RKIssueOptions.m in Sources */,
-				9390E78216FCF90D00D68182 /* RKJournal.m in Sources */,
-				9390E78316FCF90D00D68182 /* RKJournalDetail.m in Sources */,
-				9390E78416FCF90D00D68182 /* RKParseHelper.m in Sources */,
-				9390E78516FCF90D00D68182 /* RKProject.m in Sources */,
-				9390E78616FCF90D00D68182 /* RKRedmine.m in Sources */,
-				9390E78716FCF90D00D68182 /* RKTimeEntry.m in Sources */,
-				9390E78816FCF90D00D68182 /* RKValue.m in Sources */,
 				9390E79916FCFF9500D68182 /* MFPreferencesPanel.m in Sources */,
 				9390E79D16FD0BD200D68182 /* MFConnector.m in Sources */,
 				930BBBF91702D32100B664C2 /* MFFiltersControl.m in Sources */,
@@ -571,15 +582,30 @@
 				93C94493170C40B500843955 /* MFAuthorization.m in Sources */,
 				93C9449A170DE39E00843955 /* MFDatabaseUpdator.m in Sources */,
 				93BEB3DF17116F0C003D5A01 /* MFIssueView.m in Sources */,
-				93BEB4651714943E003D5A01 /* Status.m in Sources */,
-				93BEB4681714943F003D5A01 /* Tracker.m in Sources */,
-				93BEB46B1714943F003D5A01 /* User.m in Sources */,
-				93BEB46E17149440003D5A01 /* Issue.m in Sources */,
-				93BEB47117149440003D5A01 /* Version.m in Sources */,
-				93BEB47417149441003D5A01 /* Activity.m in Sources */,
-				93BEB47717149441003D5A01 /* TimeEntry.m in Sources */,
-				93BEB47A17149441003D5A01 /* Priority.m in Sources */,
-				93BEB47D17149442003D5A01 /* Project.m in Sources */,
+				93BEB50D1715F9F9003D5A01 /* Attach.m in Sources */,
+				93BEB5101715F9FA003D5A01 /* Issue.m in Sources */,
+				93BEB5131715F9FC003D5A01 /* Status.m in Sources */,
+				93BEB5161715FA02003D5A01 /* Activity.m in Sources */,
+				93BEB5191715FA03003D5A01 /* User.m in Sources */,
+				93BEB51C1715FA04003D5A01 /* Version.m in Sources */,
+				93BEB51F1715FA05003D5A01 /* Journal.m in Sources */,
+				93BEB5221715FA06003D5A01 /* Tracker.m in Sources */,
+				93BEB5251715FA07003D5A01 /* TimeEntry.m in Sources */,
+				93BEB5281715FA08003D5A01 /* Project.m in Sources */,
+				93BEB52B1715FA0B003D5A01 /* Detail.m in Sources */,
+				93BEB52E1715FA0B003D5A01 /* Priority.m in Sources */,
+				93BEB59D17160691003D5A01 /* Tracker.m in Sources */,
+				93BEB5A017160691003D5A01 /* Journal.m in Sources */,
+				93BEB5A317160692003D5A01 /* User.m in Sources */,
+				93BEB5A617160692003D5A01 /* Attach.m in Sources */,
+				93BEB5A917160692003D5A01 /* Activity.m in Sources */,
+				93BEB5AC17160693003D5A01 /* TimeEntry.m in Sources */,
+				93BEB5AF17160693003D5A01 /* Status.m in Sources */,
+				93BEB5B217160693003D5A01 /* Detail.m in Sources */,
+				93BEB5B517160693003D5A01 /* Issue.m in Sources */,
+				93BEB5B817160694003D5A01 /* Priority.m in Sources */,
+				93BEB5BB17160694003D5A01 /* Project.m in Sources */,
+				93BEB5BE17160694003D5A01 /* Version.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 #import "MFDatabaseUpdator.h"
 
-#define NUM_OF_TASKS 6.0
+#define NUM_OF_TASKS 7.0
 
 @implementation MFDatabaseUpdator
 {
@@ -21,7 +21,7 @@
     int _projectsTotal;
     BOOL _projectsError;
     
-    int _issuesTotal;
+    NSInteger _issuesTotal;
     BOOL _issuesError;
     
     int _timeEntriesTotal;
@@ -419,7 +419,7 @@
                     
                     if (i + 100 > _issuesTotal)
                     {
-                        [self loadTimeEntries];
+                        [self loadIssuesDetail];
                     }
                 }]];
             }
@@ -436,7 +436,7 @@
             }
             else
             {
-                [self loadTimeEntries];
+                [self loadIssuesDetail];
             }
         }
     }
@@ -600,12 +600,9 @@
     
     // Author
     object = [dictionary objectForKey:@"author"];
-    if (object)
+    if (issue.creator == nil)
     {
-        if (issue.creator == nil)
-        {
-            issue.creator = [_database userById:[object objectForKey:@"id"]];
-        }
+        issue.creator = [_database userById:[object objectForKey:@"id"]];
         
         NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
         if (n.count == 2)
@@ -617,11 +614,6 @@
         
         needSave = YES;
     }
-    else if (issue.creator != nil)
-    {
-        issue.creator = nil;
-        needSave = YES;
-    }
     
     // Assigned to
     object = [dictionary objectForKey:@"assigned_to"];
@@ -630,17 +622,17 @@
         if (issue.assigner == nil)
         {
             issue.assigner = [_database userById:[object objectForKey:@"id"]];
+            
+            NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+            if (n.count == 2)
+            {
+                [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+            }
+            
+            issue.assigner.name = [n componentsJoinedByString:@" "];
+            
+            needSave = YES;
         }
-        
-        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
-        if (n.count == 2)
-        {
-            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
-        }
-        
-        issue.assigner.name = [n componentsJoinedByString:@" "];
-        
-        needSave = YES;
     }
     else if (issue.assigner != nil)
     {
@@ -688,6 +680,228 @@
         {
             _issuesError = YES;
         }
+    }
+}
+
+- (void) loadIssuesDetail
+{
+    if (_stop)
+    {
+        return;
+    }
+    
+    _issuesTotal = _database.issues.count;
+    if (_issuesTotal)
+    {
+        [self setDeltaProgressWithNumSteps:_issuesTotal];
+        
+        if (_stop)
+        {
+            return;
+        }
+        
+        NSMutableArray *operationsArray = [NSMutableArray array];
+        
+        int i = 0;
+        for (Issue *issue in _database.issues)
+        {
+            i ++;
+            
+            [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
+            {
+                if (_stop)
+                {
+                    return;
+                }
+                
+                [self loadIssueDetailWithIssue:issue];
+                
+                if (i == _issuesTotal)
+                {
+                    [self loadTimeEntries];
+                }
+            }]];
+        }
+        
+        NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+        [operationQueue setMaxConcurrentOperationCount:1];
+        [operationQueue addOperations:operationsArray waitUntilFinished:YES];
+    }
+    else
+    {
+        [self loadTimeEntries];
+    }
+}
+
+- (BOOL) loadIssueDetailWithIssue:(Issue *)issue
+{
+    @autoreleasepool
+    {
+        // Грузим юзеров рекурсивно
+        NSError *error = nil;
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues/%@.json?include=children,attachments,relations,changesets,journals,watchers&key=%@", [MFSettings sharedInstance].server, issue.nid, _settings.apiToken]];
+        NSData *jsonData = [NSData dataWithContentsOfURL:url
+                                                 options:NSDataReadingUncached
+                                                   error:&error];
+        
+        if (error)
+        {
+            _usersError = YES;
+            return NO;
+        }
+        
+        error = nil;
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&error];
+        if (error)
+        {
+            _usersError = YES;
+            return NO;
+        }
+        
+        // Наполняем базу
+        [self refreshIssue:issue withDictionaryIssueDetail:result];
+        
+        if (_usersError)
+        {
+            return NO;
+        }
+        
+        [self sendNotificationProgress];
+        
+        return YES;
+    }
+}
+
+- (void) refreshIssue:(Issue *)issue withDictionaryIssueDetail:(NSDictionary *)dictionary
+{
+    NSNumber *spent = [dictionary objectForKey:@"spent_hours"];
+    if (spent) issue.spent = spent;
+    
+    BOOL needSave = NO;
+    
+    // Attachments
+    NSArray *attachments = [dictionary objectForKey:@"attachments"];
+    if (attachments.count)
+    {
+        for (NSDictionary *attach in attachments)
+        {
+            [self newAttachByDictionary:attach andIssue:issue];
+        }
+        needSave = YES;
+    }
+    
+    // Journals
+    NSArray *journals = [dictionary objectForKey:@"journals"];
+    if (journals.count)
+    {
+        for (NSDictionary *journal in journals)
+        {
+            [self newJournalByDictionary:journal andIssue:issue];
+        }
+        needSave = YES;
+    }
+    
+    if (needSave == YES)
+    {
+        if(![_database save])
+        {
+            _issuesError = YES;
+        }
+    }
+}
+
+- (void) newAttachByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+{
+    Attach *attach = _database.attach;
+    attach.nid    = [dictionary objectForKey:@"id"];
+    attach.name   = [dictionary objectForKey:@"filename"];
+    attach.size   = [dictionary objectForKey:@"filesize"];
+    attach.type   = [dictionary objectForKey:@"content_type"];
+    attach.text   = [dictionary objectForKey:@"description"];
+    attach.url    = [dictionary objectForKey:@"content_url"];
+    attach.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    
+    // Author
+    NSDictionary *object = [dictionary objectForKey:@"author"];
+    if (attach.creator == nil)
+    {
+        attach.creator = [_database userById:[object objectForKey:@"id"]];
+        
+        NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
+        if (n.count == 2)
+        {
+            [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }
+        
+        attach.creator.name = [n componentsJoinedByString:@" "];
+    }
+    
+    attach.issue = issue;
+}
+
+- (void) newJournalByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+{
+    Journal *journal = _database.journal;
+    journal.nid    = [dictionary objectForKey:@"id"];
+    journal.text   = [dictionary objectForKey:@"notes"];
+    journal.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    
+    // Details
+    NSArray *details = [dictionary objectForKey:@"details"];
+    for (NSDictionary *detail in details)
+    {
+        Detail *newDetail = _database.detail;
+        newDetail.property = [detail objectForKey:@"property"];
+        if ([newDetail.property isEqualToString:@"attr"])
+        {
+            NSString *name = [detail objectForKey:@"name"];
+            if ([name isEqualToString:@"tracker_id"])
+            {
+                newDetail.name = [detail objectForKey:@"tracker"];
+            }
+            else if ([name isEqualToString:@"subject"])
+            {
+                newDetail.name = [detail objectForKey:@"text"];
+            }
+            else if ([name isEqualToString:@"due_date"])
+            {
+                newDetail.name = [detail objectForKey:@"finish"];
+            }
+            else if ([name isEqualToString:@"status_id"])
+            {
+                newDetail.name = [detail objectForKey:@"status"];
+            }
+            else if ([name isEqualToString:@"assigned_to_id"])
+            {
+                newDetail.name = [detail objectForKey:@"assigner"];
+            }
+            else if ([name isEqualToString:@"priority_id"])
+            {
+                newDetail.name = [detail objectForKey:@"priority"];
+            }
+            else if ([name isEqualToString:@"fixed_version_id"])
+            {
+                newDetail.name = [detail objectForKey:@"version"];
+            }
+            else if ([name isEqualToString:@"start_date"])
+            {
+                newDetail.name = [detail objectForKey:@"start"];
+            }
+            else if ([name isEqualToString:@"done_ratio"])
+            {
+                newDetail.name = [detail objectForKey:@"done"];
+            }
+            else if ([name isEqualToString:@"estimated_hours"])
+            {
+                newDetail.name = [detail objectForKey:@"estimated"];
+            }
+        }
+        newDetail.newValue = [detail objectForKey:@"new_value"];
+        newDetail.oldValue = [detail objectForKey:@"old_value"];
+        
+        [journal addDetailsObject:newDetail];
     }
 }
 
@@ -876,12 +1090,9 @@
     
     // User
     object = [dictionary objectForKey:@"user"];
-    if (object)
+    if (timeEntry.creator == nil)
     {
-        if (timeEntry.user == nil)
-        {
-            timeEntry.user = [_database userById:[object objectForKey:@"id"]];
-        }
+        timeEntry.creator = [_database userById:[object objectForKey:@"id"]];
         
         NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
         if (n.count == 2)
@@ -889,13 +1100,8 @@
             [n exchangeObjectAtIndex:0 withObjectAtIndex:1];
         }
         
-        timeEntry.user.name = [n componentsJoinedByString:@" "];
+        timeEntry.creator.name = [n componentsJoinedByString:@" "];
         
-        needSave = YES;
-    }
-    else if (timeEntry.user != nil)
-    {
-        timeEntry.user = nil;
         needSave = YES;
     }
     

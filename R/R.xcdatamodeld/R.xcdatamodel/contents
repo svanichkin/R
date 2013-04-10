@@ -3,6 +3,26 @@
     <entity name="Activity" representedClassName="Activity" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="activity" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="timeEntry" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="activity" inverseEntity="TimeEntry" syncable="YES"/>
+    </entity>
+    <entity name="Attach" representedClassName="Attach" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="attachCreator" inverseEntity="User" syncable="YES"/>
+        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="attachments" inverseEntity="Issue" syncable="YES"/>
+    </entity>
+    <entity name="Detail" representedClassName="Detail" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="newValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oldValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="property" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="journal" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="details" inverseEntity="Journal" syncable="YES"/>
     </entity>
     <entity name="Issue" representedClassName="Issue" syncable="YES">
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
@@ -11,23 +31,36 @@
         <attribute name="finish" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="spent" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="start" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" syncable="YES"/>
-        <relationship name="assigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="issues" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="assigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="issuesAssigner" inverseEntity="User" syncable="YES"/>
+        <relationship name="attachments" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="issue" inverseEntity="Attach" syncable="YES"/>
         <relationship name="children" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="parent" inverseEntity="Issue" syncable="YES"/>
-        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="issuesCreator" inverseEntity="User" syncable="YES"/>
+        <relationship name="journals" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="issue" inverseEntity="Journal" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
-        <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" syncable="YES"/>
-        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
-        <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" syncable="YES"/>
-        <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" syncable="YES"/>
-        <relationship name="version" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Version" syncable="YES"/>
+        <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" inverseName="issues" inverseEntity="Priority" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="issue" inverseEntity="Attach" syncable="YES"/>
+        <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" inverseName="issues" inverseEntity="Status" syncable="YES"/>
+        <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="issue" inverseEntity="TimeEntry" syncable="YES"/>
+        <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" inverseName="issue" inverseEntity="Tracker" syncable="YES"/>
+        <relationship name="version" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Version" inverseName="issue" inverseEntity="Version" syncable="YES"/>
+    </entity>
+    <entity name="Journal" representedClassName="Journal" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="journalsCreator" inverseEntity="User" syncable="YES"/>
+        <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Detail" inverseName="journal" inverseEntity="Detail" syncable="YES"/>
+        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="journals" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="Priority" representedClassName="Priority" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="priority" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="Project" representedClassName="Project" syncable="YES">
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
@@ -36,11 +69,15 @@
         <attribute name="sid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
+        <relationship name="child" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="parent" inverseEntity="Project" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="child" inverseEntity="Project" syncable="YES"/>
+        <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="project" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
     <entity name="Status" representedClassName="Status" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="status" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="TimeEntry" representedClassName="TimeEntry" syncable="YES">
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
@@ -49,14 +86,15 @@
         <attribute name="spent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" syncable="YES"/>
-        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" syncable="YES"/>
-        <relationship name="project" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" syncable="YES"/>
-        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="timeEntry" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="timeEntriesCreator" inverseEntity="User" syncable="YES"/>
+        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="timeEntries" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="project" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="timeEntries" inverseEntity="Project" syncable="YES"/>
     </entity>
     <entity name="Tracker" representedClassName="Tracker" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="issue" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="tracker" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
@@ -68,20 +106,29 @@
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skype" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attachCreator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="creator" inverseEntity="Attach" syncable="YES"/>
+        <relationship name="issuesAssigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="assigner" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="issuesCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="creator" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="journalsCreator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="creator" inverseEntity="Journal" syncable="YES"/>
+        <relationship name="timeEntriesCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="creator" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
     <entity name="Version" representedClassName="Version" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="issue" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="version" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Activity" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="Issue" positionX="385" positionY="153" width="128" height="330"/>
-        <element name="Priority" positionX="43" positionY="294" width="128" height="73"/>
-        <element name="Project" positionX="583" positionY="258" width="128" height="148"/>
-        <element name="Status" positionX="43" positionY="375" width="128" height="73"/>
-        <element name="Tracker" positionX="43" positionY="456" width="128" height="73"/>
-        <element name="User" positionX="180" positionY="249" width="128" height="180"/>
-        <element name="Version" positionX="180" positionY="492" width="128" height="73"/>
-        <element name="TimeEntry" positionX="160" positionY="192" width="128" height="195"/>
+        <element name="Activity" positionX="250" positionY="222" width="128" height="103"/>
+        <element name="Issue" positionX="385" positionY="153" width="128" height="388"/>
+        <element name="Priority" positionX="511" positionY="602" width="128" height="88"/>
+        <element name="Project" positionX="475" positionY="-72" width="128" height="193"/>
+        <element name="Status" positionX="52" positionY="602" width="128" height="88"/>
+        <element name="Tracker" positionX="187" positionY="602" width="128" height="88"/>
+        <element name="User" positionX="54" positionY="243" width="128" height="253"/>
+        <element name="Version" positionX="322" positionY="602" width="128" height="88"/>
+        <element name="TimeEntry" positionX="277" positionY="-63" width="128" height="193"/>
+        <element name="Journal" positionX="61" positionY="72" width="128" height="133"/>
+        <element name="Detail" positionX="63" positionY="-63" width="128" height="118"/>
+        <element name="Attach" positionX="160" positionY="192" width="128" height="180"/>
     </elements>
 </model>

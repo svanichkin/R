@@ -11,6 +11,9 @@
 
 #define PROJECT_ENTITY      @"Project"
 #define ISSUE_ENTITY        @"Issue"
+#define ATTACH_ENTITY       @"Attach"
+#define JOURNAL_ENTITY      @"Journal"
+#define DETAIL_ENTITY       @"Detail"
 #define TIME_ENTRY_ENTITY   @"TimeEntry"
 #define VERSION_ENTITY      @"Version"
 #define USER_ENTITY         @"User"
@@ -317,6 +320,61 @@
 - (NSArray *) issues
 {
     return [self objectsByName:ISSUE_ENTITY sortingField:@"name"];
+}
+
+#pragma mark - Attachments
+
+- (Attach *) attach
+{
+    return [self newObjectByName:ATTACH_ENTITY];
+}
+
+- (void) deleteAttachmentsByIssueId:(NSNumber *)nid
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *attach = [NSEntityDescription entityForName:@"Attach"
+                                              inManagedObjectContext:[self managedObjectContext]];
+    
+    [fetchRequest setEntity:attach];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"issue.nid == %@", nid];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    
+    [self deleteObjects:result];
+}
+
+#pragma mark - Journals
+
+- (Journal *) journal
+{
+    return [self newObjectByName:JOURNAL_ENTITY];
+}
+
+- (void) deleteJournalsByIssueId:(NSNumber *)nid
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *attach = [NSEntityDescription entityForName:JOURNAL_ENTITY
+                                              inManagedObjectContext:[self managedObjectContext]];
+    
+    [fetchRequest setEntity:attach];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"issue.nid == %@", nid];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    id result = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    
+    [self deleteObjects:result];
+}
+
+#pragma mark - Journals
+
+- (Detail *) detail
+{
+    return [self newObjectByName:DETAIL_ENTITY];
 }
 
 #pragma mark - Time Entry

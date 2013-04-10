@@ -14,6 +14,9 @@
 #import "TimeEntry.h"
 #import "Version.h"
 #import "User.h"
+#import "Attach.h"
+#import "Journal.h"
+#import "Detail.h"
 
 #import "Tracker.h"
 #import "Status.h"
@@ -38,11 +41,15 @@
 - (Issue *) issue;
 - (NSArray *) issues;
 - (NSArray *) issuesByProjectId:(NSNumber *)nid;
+- (Attach *) attach;
+- (void) deleteAttachmentsByIssueId:(NSNumber *)nid;
+- (Journal *) journal;
+- (void) deleteJournalsByIssueId:(NSNumber *)nid;
+- (Detail *) detail;
 
 - (TimeEntry *) timeEntryById:(NSNumber *)nid;
 - (TimeEntry *) timeEntry;
 - (NSArray *) timeEntries;
-- (NSArray *) timeEntriesByProjectId:(NSNumber *)nid;
 
 - (Version *) versionById:(NSNumber *)nid;
 - (NSArray *) versions;

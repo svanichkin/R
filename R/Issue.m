@@ -2,16 +2,18 @@
 //  Issue.m
 //  R
 //
-//  Created by Сергей Ваничкин on 09.04.13.
+//  Created by Сергей Ваничкин on 11.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
 #import "Issue.h"
 #import "Activity.h"
+#import "Attach.h"
 #import "Issue.h"
+#import "Journal.h"
 #import "Priority.h"
-#import "Project.h"
 #import "Status.h"
+#import "TimeEntry.h"
 #import "Tracker.h"
 #import "User.h"
 #import "Version.h"
@@ -28,6 +30,7 @@
 @dynamic start;
 @dynamic text;
 @dynamic update;
+@dynamic spent;
 @dynamic activity;
 @dynamic assigner;
 @dynamic children;
@@ -38,5 +41,8 @@
 @dynamic status;
 @dynamic tracker;
 @dynamic version;
+@dynamic timeEntries;
+@dynamic journals;
+@dynamic attachments;
 
 @end

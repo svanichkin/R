@@ -1,5 +1,5 @@
 //
-//  TimeEntry.h
+//  Attach.h
 //  R
 //
 //  Created by Сергей Ваничкин on 11.04.13.
@@ -9,19 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Activity, Issue, Project, User;
+@class Issue, User;
 
-@interface TimeEntry : NSManagedObject
+@interface Attach : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * nid;
-@property (nonatomic, retain) NSNumber * hours;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * size;
+@property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * spent;
+@property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSDate * create;
-@property (nonatomic, retain) NSDate * update;
 @property (nonatomic, retain) User *creator;
-@property (nonatomic, retain) Project *project;
 @property (nonatomic, retain) Issue *issue;
-@property (nonatomic, retain) Activity *activity;
 
 @end
