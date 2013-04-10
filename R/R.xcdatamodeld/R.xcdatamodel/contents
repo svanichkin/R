@@ -44,6 +44,7 @@
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
         <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" inverseName="issues" inverseEntity="Priority" syncable="YES"/>
         <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="issues" inverseEntity="Project" syncable="YES"/>
+        <relationship name="relations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Relation" inverseName="issue" inverseEntity="Relation" syncable="YES"/>
         <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" inverseName="issues" inverseEntity="Status" syncable="YES"/>
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="issue" inverseEntity="TimeEntry" syncable="YES"/>
         <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" inverseName="issue" inverseEntity="Tracker" syncable="YES"/>
@@ -73,6 +74,14 @@
         <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="project" inverseEntity="Issue" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="child" inverseEntity="Project" syncable="YES"/>
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="project" inverseEntity="TimeEntry" syncable="YES"/>
+    </entity>
+    <entity name="Relation" representedClassName="Relation" syncable="YES">
+        <attribute name="delay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="issueId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="issueToId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="relations" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="Status" representedClassName="Status" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -118,17 +127,18 @@
         <relationship name="issue" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="version" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Activity" positionX="250" positionY="222" width="128" height="103"/>
-        <element name="Issue" positionX="385" positionY="153" width="128" height="388"/>
-        <element name="Priority" positionX="511" positionY="602" width="128" height="88"/>
-        <element name="Project" positionX="475" positionY="-72" width="128" height="193"/>
-        <element name="Status" positionX="52" positionY="602" width="128" height="88"/>
-        <element name="Tracker" positionX="187" positionY="602" width="128" height="88"/>
-        <element name="User" positionX="54" positionY="243" width="128" height="253"/>
-        <element name="Version" positionX="322" positionY="602" width="128" height="88"/>
-        <element name="TimeEntry" positionX="277" positionY="-63" width="128" height="193"/>
-        <element name="Journal" positionX="61" positionY="72" width="128" height="133"/>
-        <element name="Detail" positionX="63" positionY="-63" width="128" height="118"/>
-        <element name="Attach" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Activity" positionX="313" positionY="86" width="128" height="103"/>
+        <element name="Issue" positionX="502" positionY="90" width="128" height="403"/>
+        <element name="Priority" positionX="-198" positionY="533" width="128" height="88"/>
+        <element name="Project" positionX="592" positionY="-153" width="128" height="193"/>
+        <element name="Status" positionX="-63" positionY="623" width="128" height="88"/>
+        <element name="Tracker" positionX="61" positionY="720" width="128" height="88"/>
+        <element name="User" positionX="-281" positionY="123" width="128" height="253"/>
+        <element name="Version" positionX="189" positionY="819" width="128" height="88"/>
+        <element name="TimeEntry" positionX="349" positionY="-171" width="128" height="193"/>
+        <element name="Journal" positionX="-74" positionY="-63" width="128" height="133"/>
+        <element name="Detail" positionX="97" positionY="-153" width="128" height="118"/>
+        <element name="Attach" positionX="132" positionY="114" width="128" height="180"/>
+        <element name="Relation" positionX="783" positionY="396" width="128" height="133"/>
     </elements>
 </model>

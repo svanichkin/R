@@ -45,5 +45,6 @@
 @dynamic timeEntries;
 @dynamic journals;
 @dynamic attachments;
+@dynamic relations;
 
 @end

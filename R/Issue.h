@@ -36,6 +36,7 @@
 @property (nonatomic, retain) NSSet *timeEntries;
 @property (nonatomic, retain) Journal *journals;
 @property (nonatomic, retain) Attach *attachments;
+@property (nonatomic, retain) NSSet *relations;
 @end
 
 @interface Issue (CoreDataGeneratedAccessors)
@@ -44,5 +45,10 @@
 - (void)removeTimeEntriesObject:(TimeEntry *)value;
 - (void)addTimeEntries:(NSSet *)values;
 - (void)removeTimeEntries:(NSSet *)values;
+
+- (void)addRelationsObject:(NSManagedObject *)value;
+- (void)removeRelationsObject:(NSManagedObject *)value;
+- (void)addRelations:(NSSet *)values;
+- (void)removeRelations:(NSSet *)values;
 
 @end
