@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Activity, Attach, Issue, Journal, Priority, Status, TimeEntry, Tracker, User, Version;
+@class Activity, Attach, Issue, Journal, Priority, Project, Status, TimeEntry, Tracker, User, Version;
 
 @interface Issue : NSManagedObject
 
@@ -29,7 +29,7 @@
 @property (nonatomic, retain) User *creator;
 @property (nonatomic, retain) Issue *parent;
 @property (nonatomic, retain) Priority *priority;
-@property (nonatomic, retain) Attach *project;
+@property (nonatomic, retain) Project *project;
 @property (nonatomic, retain) Status *status;
 @property (nonatomic, retain) Tracker *tracker;
 @property (nonatomic, retain) Version *version;

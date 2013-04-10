@@ -12,6 +12,7 @@
 #import "Issue.h"
 #import "Journal.h"
 #import "Priority.h"
+#import "Project.h"
 #import "Status.h"
 #import "TimeEntry.h"
 #import "Tracker.h"

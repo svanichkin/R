@@ -43,7 +43,7 @@
         <relationship name="journals" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="issue" inverseEntity="Journal" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
         <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" inverseName="issues" inverseEntity="Priority" syncable="YES"/>
-        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="issue" inverseEntity="Attach" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="issues" inverseEntity="Project" syncable="YES"/>
         <relationship name="status" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Status" inverseName="issues" inverseEntity="Status" syncable="YES"/>
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="issue" inverseEntity="TimeEntry" syncable="YES"/>
         <relationship name="tracker" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Tracker" inverseName="issue" inverseEntity="Tracker" syncable="YES"/>
@@ -70,7 +70,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="child" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="parent" inverseEntity="Project" syncable="YES"/>
-        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" syncable="YES"/>
+        <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="project" inverseEntity="Issue" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="child" inverseEntity="Project" syncable="YES"/>
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="project" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
