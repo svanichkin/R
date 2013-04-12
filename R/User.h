@@ -2,7 +2,7 @@
 //  User.h
 //  R
 //
-//  Created by Сергей Ваничкин on 11.04.13.
+//  Created by Сергей Ваничкин on 12.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -23,10 +23,10 @@
 @property (nonatomic, retain) NSString * skype;
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) NSSet *timeEntriesCreator;
-@property (nonatomic, retain) Journal *journalsCreator;
+@property (nonatomic, retain) NSSet *journalsCreator;
 @property (nonatomic, retain) NSSet *issuesCreator;
-@property (nonatomic, retain) Issue *issuesAssigner;
-@property (nonatomic, retain) Attach *attachCreator;
+@property (nonatomic, retain) NSSet *issuesAssigner;
+@property (nonatomic, retain) NSSet *attachmentsCreator;
 @end
 
 @interface User (CoreDataGeneratedAccessors)
@@ -36,9 +36,24 @@
 - (void)addTimeEntriesCreator:(NSSet *)values;
 - (void)removeTimeEntriesCreator:(NSSet *)values;
 
+- (void)addJournalsCreatorObject:(Journal *)value;
+- (void)removeJournalsCreatorObject:(Journal *)value;
+- (void)addJournalsCreator:(NSSet *)values;
+- (void)removeJournalsCreator:(NSSet *)values;
+
 - (void)addIssuesCreatorObject:(Issue *)value;
 - (void)removeIssuesCreatorObject:(Issue *)value;
 - (void)addIssuesCreator:(NSSet *)values;
 - (void)removeIssuesCreator:(NSSet *)values;
+
+- (void)addIssuesAssignerObject:(Issue *)value;
+- (void)removeIssuesAssignerObject:(Issue *)value;
+- (void)addIssuesAssigner:(NSSet *)values;
+- (void)removeIssuesAssigner:(NSSet *)values;
+
+- (void)addAttachmentsCreatorObject:(Attach *)value;
+- (void)removeAttachmentsCreatorObject:(Attach *)value;
+- (void)addAttachmentsCreator:(NSSet *)values;
+- (void)removeAttachmentsCreator:(NSSet *)values;
 
 @end

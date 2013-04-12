@@ -2,14 +2,14 @@
 //  Issue.h
 //  R
 //
-//  Created by Сергей Ваничкин on 11.04.13.
+//  Created by Сергей Ваничкин on 12.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Activity, Attach, Issue, Journal, Priority, Project, Status, TimeEntry, Tracker, User, Version;
+@class Activity, Attach, Issue, Journal, Priority, Project, Relation, Status, TimeEntry, Tracker, User, Version;
 
 @interface Issue : NSManagedObject
 
@@ -46,8 +46,8 @@
 - (void)addTimeEntries:(NSSet *)values;
 - (void)removeTimeEntries:(NSSet *)values;
 
-- (void)addRelationsObject:(NSManagedObject *)value;
-- (void)removeRelationsObject:(NSManagedObject *)value;
+- (void)addRelationsObject:(Relation *)value;
+- (void)removeRelationsObject:(Relation *)value;
 - (void)addRelations:(NSSet *)values;
 - (void)removeRelations:(NSSet *)values;
 

@@ -2,7 +2,7 @@
 //  TimeEntry.h
 //  R
 //
-//  Created by Сергей Ваничкин on 11.04.13.
+//  Created by Сергей Ваничкин on 12.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 

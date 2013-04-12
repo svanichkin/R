@@ -8,8 +8,6 @@
 
 #import "MFDatabaseUpdator.h"
 
-#define NUM_OF_TASKS 7.0
-
 @implementation MFDatabaseUpdator
 {
     float _deltaProgress;
@@ -18,7 +16,7 @@
     BOOL _stop;
     BOOL _finished;
     
-    int _projectsTotal;
+    NSInteger _projectsTotal;
     BOOL _projectsError;
     
     NSInteger _issuesTotal;
@@ -29,6 +27,9 @@
     
     NSInteger _usersTotal;
     BOOL _usersError;
+    
+    NSArray *_tasks;
+    int _indexOfTask;
         
     MFDatabase *_database;
     MFSettings *_settings;
@@ -60,7 +61,14 @@
                                                         object:nil];
     
     
-    [self loadFilters];
+    _tasks = @[@"loadFilters",
+               @"loadProjects",
+               @"loadIssues",
+               @"loadIssuesDetail",
+               @"loadTimeEntries",
+               @"loadUsers"];
+    
+    [self next];
 }
 
 - (void) resetData
@@ -102,12 +110,29 @@
     return [dateFormat dateFromString:dateString];
 }
 
+- (void) next
+{
+    if (!_stop)
+    {
+        if (_indexOfTask < _tasks.count)
+        {
+            _indexOfTask ++;
+            [self performSelector:NSSelectorFromString([_tasks objectAtIndex:_indexOfTask - 1])];
+        }
+        else
+        {
+            _settings.dataLastUpdate = [NSDate date];
+            [self sendNotificationComplete:YES];
+        }
+    }
+}
+
 // Подсчитывает необходимый шаг в процентах для прогресс бара
 - (void) setDeltaProgressWithNumSteps:(float)numSteps
 {
     if (numSteps < 1) numSteps = 1;
     
-    _deltaProgress = (100.0/numSteps)/NUM_OF_TASKS;
+    _deltaProgress = (100.0/numSteps)/_tasks.count;
 }
 
 - (void) sendNotificationProgress
@@ -200,7 +225,7 @@
  
     [self sendNotificationProgress];
     
-    [self loadProjects];
+    [self next];
 }
 
 - (NSDictionary *) loadFilterByPath:(NSString *)path
@@ -261,7 +286,7 @@
                     
                     if (i + 100 > _projectsTotal)
                     {
-                        [self loadIssues];
+                        [self next];
                     }
                 }]];
             }
@@ -278,7 +303,7 @@
             }
             else
             {
-                [self loadIssues];
+                [self next];
             }
         }
     }
@@ -419,7 +444,7 @@
                     
                     if (i + 100 > _issuesTotal)
                     {
-                        [self loadIssuesDetail];
+                        [self next];
                     }
                 }]];
             }
@@ -436,7 +461,7 @@
             }
             else
             {
-                [self loadIssuesDetail];
+                [self next];
             }
         }
     }
@@ -718,7 +743,7 @@
                 
                 if (i == _issuesTotal)
                 {
-                    [self loadTimeEntries];
+                    [self next];
                 }
             }]];
         }
@@ -729,7 +754,7 @@
     }
     else
     {
-        [self loadTimeEntries];
+        [self next];
     }
 }
 
@@ -746,7 +771,7 @@
         
         if (error)
         {
-            _usersError = YES;
+            _issuesError = YES;
             return NO;
         }
         
@@ -756,14 +781,14 @@
                                                                  error:&error];
         if (error)
         {
-            _usersError = YES;
+            _issuesError = YES;
             return NO;
         }
         
         // Наполняем базу
         [self refreshIssue:issue withDictionaryIssueDetail:result];
         
-        if (_usersError)
+        if (_issuesError)
         {
             return NO;
         }
@@ -905,6 +930,73 @@
     }
 }
 
+- (void) newRelationByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+{
+    Relation *relation = _database.journal;
+    relation.nid     = [dictionary objectForKey:@"id"];
+    relation.type    = [dictionary objectForKey:@"relation_type"];
+    relation.delay   = [dictionary objectForKey:@"delay"];
+    relation.issue   = [dictionary objectForKey:@"issue_id"];
+    relation.text    = [dictionary objectForKey:@"notes"];
+    relation.create  = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    
+    // Details
+    NSArray *details = [dictionary objectForKey:@"details"];
+    for (NSDictionary *detail in details)
+    {
+        Detail *newDetail = _database.detail;
+        newDetail.property = [detail objectForKey:@"property"];
+        if ([newDetail.property isEqualToString:@"attr"])
+        {
+            NSString *name = [detail objectForKey:@"name"];
+            if ([name isEqualToString:@"tracker_id"])
+            {
+                newDetail.name = [detail objectForKey:@"tracker"];
+            }
+            else if ([name isEqualToString:@"subject"])
+            {
+                newDetail.name = [detail objectForKey:@"text"];
+            }
+            else if ([name isEqualToString:@"due_date"])
+            {
+                newDetail.name = [detail objectForKey:@"finish"];
+            }
+            else if ([name isEqualToString:@"status_id"])
+            {
+                newDetail.name = [detail objectForKey:@"status"];
+            }
+            else if ([name isEqualToString:@"assigned_to_id"])
+            {
+                newDetail.name = [detail objectForKey:@"assigner"];
+            }
+            else if ([name isEqualToString:@"priority_id"])
+            {
+                newDetail.name = [detail objectForKey:@"priority"];
+            }
+            else if ([name isEqualToString:@"fixed_version_id"])
+            {
+                newDetail.name = [detail objectForKey:@"version"];
+            }
+            else if ([name isEqualToString:@"start_date"])
+            {
+                newDetail.name = [detail objectForKey:@"start"];
+            }
+            else if ([name isEqualToString:@"done_ratio"])
+            {
+                newDetail.name = [detail objectForKey:@"done"];
+            }
+            else if ([name isEqualToString:@"estimated_hours"])
+            {
+                newDetail.name = [detail objectForKey:@"estimated"];
+            }
+        }
+        newDetail.newValue = [detail objectForKey:@"new_value"];
+        newDetail.oldValue = [detail objectForKey:@"old_value"];
+        
+        [journal addDetailsObject:newDetail];
+    }
+}
+
 #pragma mark - Load Time Entries
 
 - (void) loadTimeEntries
@@ -939,7 +1031,7 @@
                     
                     if (i + 100 > _timeEntriesTotal)
                     {
-                        [self loadUsers];
+                        [self next];
                     }
                 }]];
             }
@@ -956,7 +1048,7 @@
             }
             else
             {
-                [self loadUsers];
+                [self next];
             }
         }
     }
@@ -1151,8 +1243,7 @@
                 
                 if (i == _usersTotal)
                 {
-                    _settings.dataLastUpdate = [NSDate date];
-                    [self sendNotificationComplete:YES];
+                    [self next];
                 }
             }]];
         }
@@ -1163,8 +1254,7 @@
     }
     else
     {
-        _settings.dataLastUpdate = [NSDate date];
-        [self sendNotificationComplete:YES];
+        [self next];
     }
 }
 
