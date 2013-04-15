@@ -13,7 +13,7 @@
 {
     MFSettings *_settings;
     NSMutableArray *_issues;
-    id _oldSelectedCell;
+    NSInteger _selectedRow;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -44,6 +44,8 @@
         _settings = [MFSettings sharedInstance];
         self.delegate = self;
         self.dataSource = self;
+        
+        _selectedRow = -1;
     }
     return self;
 }
@@ -60,8 +62,7 @@
     [self selectionReset];
     
     NSTableCellView *selectedCell = [self viewAtColumn:0 row:row makeIfNecessary:NO];
-    
-    _oldSelectedCell = selectedCell;
+    _selectedRow = row;
     
     [[selectedCell viewWithTag:1] setHidden:YES];
     [[selectedCell viewWithTag:2] setHidden:NO];
@@ -71,11 +72,13 @@
 
 - (void) selectionReset
 {
-    // Скрываем нажатую ячейку
-    if (_oldSelectedCell)
+    if (_selectedRow > -1)
     {
-        [[_oldSelectedCell viewWithTag:1] setHidden:NO];
-        [[_oldSelectedCell viewWithTag:2] setHidden:YES];
+        NSTableCellView *selectedCell = [self viewAtColumn:0 row:_selectedRow makeIfNecessary:NO];
+    
+        // Скрываем нажатую ячейку
+        [[selectedCell viewWithTag:1] setHidden:NO];
+        [[selectedCell viewWithTag:2] setHidden:YES];
     }
 }
 
@@ -106,17 +109,21 @@
 {
     NSTableCellView *cell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
     
-    if (row == 0)
+    [[cell viewWithTag:1] setHidden:NO];
+    [[cell viewWithTag:2] setHidden:YES];
+    
+    if (_selectedRow == -1)
     {
-        _oldSelectedCell = cell;
-        
+        if (row == 0)
+        {
+            _selectedRow = row;
+        }
+    }
+    
+    if (row == _selectedRow)
+    {
         [[cell viewWithTag:1] setHidden:YES];
         [[cell viewWithTag:2] setHidden:NO];
-    }
-    else
-    {
-        [[cell viewWithTag:1] setHidden:NO];
-        [[cell viewWithTag:2] setHidden:YES];
     }
     
     return cell;    
