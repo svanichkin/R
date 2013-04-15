@@ -62,7 +62,7 @@
                @"loadIssuesDetail",
                @"loadTimeEntries",
                @"loadRoles",
-               @"loadUsers" ];
+               @"loadUsers"];
     
     [self next];
 }
@@ -819,13 +819,15 @@
     
     BOOL needSave = NO;
     
+    Issue *i = [_database issueById:issue.nid];
+    
     // Journals
     NSArray *journals = [dictionary objectForKey:@"journals"];
     if (journals.count)
     {
         for (NSDictionary *journal in journals)
         {
-            [issue addJournalsObject:[self newJournalByDictionary:journal]];
+            [i addJournalsObject:[self newJournalByDictionary:journal]];
         }
         needSave = YES;
     }
@@ -836,7 +838,7 @@
     {
         for (NSDictionary *attach in attachments)
         {
-            [issue addAttachmentsObject:[self newAttachByDictionary:attach]];
+            [i addAttachmentsObject:[self newAttachByDictionary:attach]];
         }
         needSave = YES;
     }
@@ -847,7 +849,7 @@
     {
         for (NSDictionary *relation in relations)
         {
-            [issue addRelationsObject:[self newRelationByDictionary:relation]];
+            [i addRelationsObject:[self newRelationByDictionary:relation]];
         }
         needSave = YES;
     }
@@ -961,8 +963,11 @@
     Relation *relation = _database.relation;
     relation.nid     = [dictionary objectForKey:@"id"];
     relation.type    = [dictionary objectForKey:@"relation_type"];
-    relation.delay   = [dictionary objectForKey:@"delay"];
-    relation.issue   = [dictionary objectForKey:@"issue_id"];
+    if ([dictionary objectForKey:@"delay"] != [NSNull null])
+    {
+        relation.delay = [dictionary objectForKey:@"delay"];
+    }
+    relation.issueId = [dictionary objectForKey:@"issue_id"];
     relation.text    = [dictionary objectForKey:@"notes"];
     relation.create  = [self dateFromString:[dictionary objectForKey:@"created_on"]];
     
@@ -1369,6 +1374,8 @@
         [self checkErrorOrStop];
         return;
     }
+    
+    [self sendNotificationProgress];
     
     if (roles)
     {
