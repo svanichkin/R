@@ -113,8 +113,13 @@
         [[cell viewWithTag:1] setHidden:YES];
         [[cell viewWithTag:2] setHidden:NO];
     }
+    else
+    {
+        [[cell viewWithTag:1] setHidden:NO];
+        [[cell viewWithTag:2] setHidden:YES];
+    }
     
-    return cell;
+    return cell;    
 }
 
 // Генерим данные
