@@ -18,6 +18,8 @@
 #import "Relation.h"
 #import "Journal.h"
 #import "Detail.h"
+#import "Role.h"
+#import "Membership.h"
 
 #import "Tracker.h"
 #import "Status.h"
@@ -48,6 +50,9 @@
 - (void) deleteJournalsByIssueId:(NSNumber *)nid;
 - (Detail *) detail;
 - (Relation *) relation;
+- (Role *) role;
+- (Role *) roleById:(NSNumber *)nid;
+- (Membership *) membership;
 
 - (TimeEntry *) timeEntryById:(NSNumber *)nid;
 - (TimeEntry *) timeEntry;

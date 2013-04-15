@@ -10,6 +10,8 @@
 #import "Attach.h"
 #import "Issue.h"
 #import "Journal.h"
+#import "Membership.h"
+#import "Project.h"
 #import "TimeEntry.h"
 
 
@@ -24,10 +26,12 @@
 @dynamic nid;
 @dynamic phone;
 @dynamic skype;
-@dynamic attachCreator;
+@dynamic attachmentsCreator;
 @dynamic issuesAssigner;
 @dynamic issuesCreator;
 @dynamic journalsCreator;
 @dynamic timeEntriesCreator;
+@dynamic projectsAssigner;
+@dynamic memberships;
 
 @end

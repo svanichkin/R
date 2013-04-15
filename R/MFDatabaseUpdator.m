@@ -16,18 +16,14 @@
     BOOL _stop;
     BOOL _finished;
     
+    BOOL _error;
+    
     NSInteger _projectsTotal;
-    BOOL _projectsError;
-    
     NSInteger _issuesTotal;
-    BOOL _issuesError;
-    
     int _timeEntriesTotal;
-    BOOL _timeEntriesError;
-    
     NSInteger _usersTotal;
-    BOOL _usersError;
-    
+    NSInteger _rolesTotal;
+
     NSArray *_tasks;
     int _indexOfTask;
         
@@ -65,7 +61,8 @@
                @"loadIssues",
                @"loadIssuesDetail",
                @"loadTimeEntries",
-               @"loadUsers"];
+               @"loadRoles",
+               @"loadUsers" ];
     
     [self next];
 }
@@ -111,7 +108,7 @@
 
 - (void) next
 {
-    if (!_stop)
+    if (![self checkErrorOrStop])
     {
         if (_indexOfTask < _tasks.count)
         {
@@ -124,6 +121,22 @@
             [self sendNotificationComplete:YES];
         }
     }
+}
+
+- (BOOL) checkErrorOrStop
+{
+    if (_stop)
+    {
+        return YES;
+    }
+    
+    if (_error)
+    {
+        [self sendNotificationComplete:NO];
+        return YES;
+    }
+    
+    return NO;
 }
 
 // Подсчитывает необходимый шаг в процентах для прогресс бара
@@ -167,6 +180,10 @@
     [self setDeltaProgressWithNumSteps:4];
     
     NSArray *newStatuses   = [[self loadFilterByPath:@"issue_statuses.json"] objectForKey:@"issue_statuses"];
+    if ([self checkErrorOrStop])
+    {
+        return;
+    }
     [self sendNotificationProgress];
     if (_stop)
     {
@@ -174,6 +191,10 @@
     }
     
     NSArray *newTrackers   = [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
+    if ([self checkErrorOrStop])
+    {
+        return;
+    }
     [self sendNotificationProgress];
     if (_stop)
     {
@@ -181,6 +202,11 @@
     }
     
     NSArray *newPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
+    //if ([self checkErrorOrStop])
+    if (_error)
+    {
+        _error = NO;
+    }
     [self sendNotificationProgress];
     if (_stop)
     {
@@ -236,6 +262,7 @@
                                                error:&error];
     if (error)
     {
+        _error = YES;
         return nil;
     }
     
@@ -245,6 +272,7 @@
                                                              error:&error];
     if (error)
     {
+        _error = YES;
         return nil;
     }
     
@@ -255,7 +283,7 @@
 
 - (void) loadProjects
 {
-    if (_stop)
+    if ([self checkErrorOrStop])
     {
         return;
     }
@@ -263,7 +291,7 @@
     // Начинаем загрузку и получаем сколько всего проектов
     if ([self loadProjectsWithOffset:0])
     {
-        if (_stop)
+        if ([self checkErrorOrStop])
         {
             return;
         }
@@ -276,7 +304,7 @@
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
-                    if (_stop)
+                    if ([self checkErrorOrStop])
                     {
                         return;
                     }
@@ -296,14 +324,7 @@
         }
         else
         {
-            if (_projectsError)
-            {
-                [self sendNotificationComplete:NO];
-            }
-            else
-            {
-                [self next];
-            }
+            [self next];
         }
     }
 }
@@ -320,7 +341,7 @@
         
         if (error)
         {
-            _projectsError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -330,7 +351,7 @@
                                                                  error:&error];
         if (error)
         {
-            _projectsError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -338,7 +359,7 @@
         NSArray *newProjects = [result objectForKey:@"projects"];
         for (NSDictionary *newProject in newProjects)
         {
-            if (_projectsError)
+            if (_error)
             {
                 return NO;
             }
@@ -348,7 +369,7 @@
         
         if (![_database save])
         {
-            _projectsError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -404,7 +425,7 @@
     {
         if (![_database save])
         {
-            _projectsError = YES;
+            _error = YES;
         }
     }
 }
@@ -413,7 +434,7 @@
 
 - (void) loadIssues
 {
-    if (_stop)
+    if ([self checkErrorOrStop])
     {
         return;
     }
@@ -421,7 +442,7 @@
     // Начинаем рекурсивную загрузку, если она успешна продолжим
     if ([self loadIssuesWithOffset:0])
     {
-        if (_stop)
+        if ([self checkErrorOrStop])
         {
             return;
         }
@@ -434,7 +455,7 @@
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
-                    if (_stop)
+                    if ([self checkErrorOrStop])
                     {
                         return;
                     }
@@ -454,14 +475,7 @@
         }
         else
         {
-            if (_issuesError)
-            {
-                [self sendNotificationComplete:NO];
-            }
-            else
-            {
-                [self next];
-            }
+            [self next];
         }
     }
 }
@@ -479,7 +493,7 @@
         
         if (error)
         {
-            _issuesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -489,7 +503,7 @@
                                                                  error:&error];
         if (error)
         {
-            _issuesError = YES;
+            _error = YES;
             return NO;
         }
                 
@@ -497,7 +511,7 @@
         NSArray *newArray = [result objectForKey:@"issues"];
         for (NSDictionary *newIssue in newArray)
         {
-            if (_issuesError)
+            if (_error)
             {
                 return NO;
             }
@@ -507,7 +521,7 @@
         
         if (![_database save])
         {
-            _issuesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -702,14 +716,14 @@
     {
         if(![_database save])
         {
-            _issuesError = YES;
+            _error = YES;
         }
     }
 }
 
 - (void) loadIssuesDetail
 {
-    if (_stop)
+    if ([self checkErrorOrStop])
     {
         return;
     }
@@ -719,7 +733,7 @@
     {
         [self setDeltaProgressWithNumSteps:_issuesTotal];
         
-        if (_stop)
+        if ([self checkErrorOrStop])
         {
             return;
         }
@@ -733,7 +747,7 @@
             
             [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
             {
-                if (_stop)
+                if ([self checkErrorOrStop])
                 {
                     return;
                 }
@@ -770,7 +784,7 @@
         
         if (error)
         {
-            _issuesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -780,14 +794,14 @@
                                                                  error:&error];
         if (error)
         {
-            _issuesError = YES;
+            _error = YES;
             return NO;
         }
         
         // Наполняем базу
         [self refreshIssue:issue withDictionaryIssueDetail:result];
         
-        if (_issuesError)
+        if (_error)
         {
             return NO;
         }
@@ -842,7 +856,7 @@
     {
         if(![_database save])
         {
-            _issuesError = YES;
+            _error = YES;
         }
     }
 }
@@ -958,7 +972,7 @@
 
 - (void) loadTimeEntries
 {
-    if (_stop)
+    if ([self checkErrorOrStop])
     {
         return;
     }
@@ -966,11 +980,11 @@
     // Начинаем рекурсивную загрузку, если она успешна продолжим
     if ([self loadTimeEntryWithOffset:0])
     {
-        if (_stop)
+        if ([self checkErrorOrStop])
         {
             return;
         }
-        
+            
         if (_timeEntriesTotal > 100)
         {
             NSMutableArray *operationsArray = [NSMutableArray array];
@@ -999,14 +1013,7 @@
         }
         else
         {
-            if (_timeEntriesError)
-            {
-                [self sendNotificationComplete:NO];
-            }
-            else
-            {
-                [self next];
-            }
+            [self next];
         }
     }
 }
@@ -1024,7 +1031,7 @@
         
         if (error)
         {
-            _timeEntriesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -1034,7 +1041,7 @@
                                                                  error:&error];
         if (error)
         {
-            _timeEntriesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -1042,7 +1049,7 @@
         NSArray *newArray = [result objectForKey:@"time_entries"];
         for (NSDictionary *newTimeEntry in newArray)
         {
-            if (_timeEntriesError)
+            if (_error)
             {
                 return NO;
             }
@@ -1052,7 +1059,7 @@
         
         if (![_database save])
         {
-            _timeEntriesError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -1158,7 +1165,7 @@
     {
         if(![_database save])
         {
-            _issuesError = YES;
+            _error = YES;
         }
     }
 }
@@ -1167,7 +1174,7 @@
 
 - (void) loadUsers
 {
-    if (_stop)
+    if ([self checkErrorOrStop])
     {
         return;
     }
@@ -1177,7 +1184,7 @@
     {
         [self setDeltaProgressWithNumSteps:_usersTotal];
         
-        if (_stop)
+        if ([self checkErrorOrStop])
         {
             return;
         }
@@ -1191,7 +1198,7 @@
             
             [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
             {
-                if (_stop)
+                if ([self checkErrorOrStop])
                 {
                     return;
                 }
@@ -1228,7 +1235,7 @@
         
         if (error)
         {
-            _usersError = YES;
+            _error = YES;
             return NO;
         }
         
@@ -1238,14 +1245,14 @@
                                                                  error:&error];
         if (error)
         {
-            _usersError = YES;
+            _error = YES;
             return NO;
         }
         
         // Наполняем базу
         [self refreshUser:user withDictionaryUser:result];
         
-        if (_usersError)
+        if (_error)
         {
             return NO;
         }
@@ -1296,6 +1303,24 @@
         }
     }
     
+    // Memberships
+    NSArray *memberships = [dictionary objectForKey:@"memberships"];
+    for (NSDictionary *object in memberships)
+    {
+        Membership *membership = _database.membership;
+        membership.nid = [object objectForKey:@"id"];
+
+        membership.project = [_database projectById:[[object objectForKey:@"project"]objectForKey:@"id"]];
+        
+        NSArray *roles = [object objectForKey:@"roles"];
+        for (NSDictionary *nr in roles)
+        {
+            Role *role = [_database roleById:[nr objectForKey:@"id"]];
+            role.name = [nr objectForKey:@"name"];
+            [membership addRolesObject:role];
+        }
+    }
+    
     if (!skypeField)
     {
         user.skype = nil;
@@ -1308,8 +1333,62 @@
     
     if(![_database save])
     {
-        _issuesError = YES;
+        _error = YES;
     }
+}
+
+#pragma mark - Load Roles
+
+- (void) loadRoles
+{
+    // Всего 4 шага, ставим вручную
+    [self setDeltaProgressWithNumSteps:2];
+    
+    NSError *error = nil;
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/roles.json?key=%@", [MFSettings sharedInstance].server, _settings.apiToken]];
+    NSData *jsonData = [NSData dataWithContentsOfURL:url
+                                             options:NSDataReadingUncached
+                                               error:&error];
+    if (error)
+    {
+        _error = YES;
+        [self checkErrorOrStop];
+        return;
+    }
+    
+    error = nil;
+    NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                           options:NSJSONReadingMutableContainers
+                                                             error:&error];
+    NSArray *roles = [result objectForKey:@"roles"];
+    
+    if (error)
+    {
+        _error = YES;
+        [self checkErrorOrStop];
+        return;
+    }
+    
+    if (roles)
+    {
+        for (NSDictionary *nr in roles)
+        {
+            Role *role = _database.role;
+            role.name = [nr objectForKey:@"name"];
+            role.nid  = [nr objectForKey:@"id"];
+        }
+        
+        if(![_database save])
+        {
+            _error = YES;
+            [self checkErrorOrStop];
+            return;
+        }
+    }
+    
+    [self sendNotificationProgress];
+    
+    [self next];
 }
 
 #pragma mark - Memory Management

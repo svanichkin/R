@@ -8,8 +8,10 @@
 
 #import "Project.h"
 #import "Issue.h"
+#import "Membership.h"
 #import "Project.h"
 #import "TimeEntry.h"
+#import "User.h"
 
 
 @implementation Project
@@ -24,5 +26,7 @@
 @dynamic issues;
 @dynamic parent;
 @dynamic timeEntries;
+@dynamic assigners;
+@dynamic memberships;
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Attach, Issue, Journal, TimeEntry;
+@class Attach, Issue, Journal, Membership, Project, TimeEntry;
 
 @interface User : NSManagedObject
 
@@ -22,23 +22,50 @@
 @property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) NSString * skype;
-@property (nonatomic, retain) Attach *attachCreator;
-@property (nonatomic, retain) Issue *issuesAssigner;
+@property (nonatomic, retain) NSSet *attachmentsCreator;
+@property (nonatomic, retain) NSSet *issuesAssigner;
 @property (nonatomic, retain) NSSet *issuesCreator;
-@property (nonatomic, retain) Journal *journalsCreator;
+@property (nonatomic, retain) NSSet *journalsCreator;
 @property (nonatomic, retain) NSSet *timeEntriesCreator;
+@property (nonatomic, retain) NSSet *projectsAssigner;
+@property (nonatomic, retain) NSSet *memberships;
 @end
 
 @interface User (CoreDataGeneratedAccessors)
+
+- (void)addAttachmentsCreatorObject:(Attach *)value;
+- (void)removeAttachmentsCreatorObject:(Attach *)value;
+- (void)addAttachmentsCreator:(NSSet *)values;
+- (void)removeAttachmentsCreator:(NSSet *)values;
+
+- (void)addIssuesAssignerObject:(Issue *)value;
+- (void)removeIssuesAssignerObject:(Issue *)value;
+- (void)addIssuesAssigner:(NSSet *)values;
+- (void)removeIssuesAssigner:(NSSet *)values;
 
 - (void)addIssuesCreatorObject:(Issue *)value;
 - (void)removeIssuesCreatorObject:(Issue *)value;
 - (void)addIssuesCreator:(NSSet *)values;
 - (void)removeIssuesCreator:(NSSet *)values;
 
+- (void)addJournalsCreatorObject:(Journal *)value;
+- (void)removeJournalsCreatorObject:(Journal *)value;
+- (void)addJournalsCreator:(NSSet *)values;
+- (void)removeJournalsCreator:(NSSet *)values;
+
 - (void)addTimeEntriesCreatorObject:(TimeEntry *)value;
 - (void)removeTimeEntriesCreatorObject:(TimeEntry *)value;
 - (void)addTimeEntriesCreator:(NSSet *)values;
 - (void)removeTimeEntriesCreator:(NSSet *)values;
+
+- (void)addProjectsAssignerObject:(Project *)value;
+- (void)removeProjectsAssignerObject:(Project *)value;
+- (void)addProjectsAssigner:(NSSet *)values;
+- (void)removeProjectsAssigner:(NSSet *)values;
+
+- (void)addMembershipsObject:(Membership *)value;
+- (void)removeMembershipsObject:(Membership *)value;
+- (void)addMemberships:(NSSet *)values;
+- (void)removeMemberships:(NSSet *)values;
 
 @end

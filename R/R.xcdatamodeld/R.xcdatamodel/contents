@@ -14,7 +14,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="attachCreator" inverseEntity="User" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="attachmentsCreator" inverseEntity="User" syncable="YES"/>
         <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="attachments" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="Detail" representedClassName="Detail" syncable="YES">
@@ -58,6 +58,12 @@
         <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Detail" inverseName="journal" inverseEntity="Detail" syncable="YES"/>
         <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="journals" inverseEntity="Issue" syncable="YES"/>
     </entity>
+    <entity name="Membership" representedClassName="Membership" syncable="YES">
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="project" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="memberships" inverseEntity="Project" syncable="YES"/>
+        <relationship name="roles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Role" inverseName="memberships" inverseEntity="Role" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="memberships" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="Priority" representedClassName="Priority" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -70,8 +76,10 @@
         <attribute name="sid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="assigners" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="projectsAssigner" inverseEntity="User" syncable="YES"/>
         <relationship name="child" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="parent" inverseEntity="Project" syncable="YES"/>
         <relationship name="issues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="project" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="memberships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Membership" inverseName="project" inverseEntity="Membership" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="child" inverseEntity="Project" syncable="YES"/>
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="project" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
@@ -84,6 +92,11 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="relations" inverseEntity="Issue" syncable="YES"/>
+    </entity>
+    <entity name="Role" representedClassName="Role" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="memberships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Membership" inverseName="roles" inverseEntity="Membership" syncable="YES"/>
     </entity>
     <entity name="Status" representedClassName="Status" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -117,10 +130,12 @@
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skype" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="attachCreator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="creator" inverseEntity="Attach" syncable="YES"/>
-        <relationship name="issuesAssigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="assigner" inverseEntity="Issue" syncable="YES"/>
+        <relationship name="attachmentsCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attach" inverseName="creator" inverseEntity="Attach" syncable="YES"/>
+        <relationship name="issuesAssigner" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="assigner" inverseEntity="Issue" syncable="YES"/>
         <relationship name="issuesCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="creator" inverseEntity="Issue" syncable="YES"/>
-        <relationship name="journalsCreator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="creator" inverseEntity="Journal" syncable="YES"/>
+        <relationship name="journalsCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Journal" inverseName="creator" inverseEntity="Journal" syncable="YES"/>
+        <relationship name="memberships" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Membership" inverseName="user" inverseEntity="Membership" syncable="YES"/>
+        <relationship name="projectsAssigner" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Project" inverseName="assigners" inverseEntity="Project" syncable="YES"/>
         <relationship name="timeEntriesCreator" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="creator" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
     <entity name="Version" representedClassName="Version" syncable="YES">
@@ -135,12 +150,14 @@
         <element name="Issue" positionX="502" positionY="90" width="128" height="405"/>
         <element name="Journal" positionX="-74" positionY="-63" width="128" height="133"/>
         <element name="Priority" positionX="-198" positionY="533" width="128" height="88"/>
-        <element name="Project" positionX="592" positionY="-153" width="128" height="193"/>
+        <element name="Project" positionX="592" positionY="-153" width="128" height="225"/>
         <element name="Relation" positionX="783" positionY="396" width="128" height="165"/>
         <element name="Status" positionX="-63" positionY="623" width="128" height="88"/>
         <element name="TimeEntry" positionX="349" positionY="-171" width="128" height="193"/>
         <element name="Tracker" positionX="61" positionY="720" width="128" height="88"/>
-        <element name="User" positionX="-281" positionY="123" width="128" height="253"/>
+        <element name="User" positionX="-281" positionY="123" width="128" height="285"/>
         <element name="Version" positionX="189" positionY="819" width="128" height="88"/>
+        <element name="Role" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="Membership" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>

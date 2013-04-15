@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Issue, Project, TimeEntry;
+@class Issue, Membership, Project, TimeEntry, User;
 
 @interface Project : NSManagedObject
 
@@ -23,6 +23,8 @@
 @property (nonatomic, retain) NSSet *issues;
 @property (nonatomic, retain) Project *parent;
 @property (nonatomic, retain) NSSet *timeEntries;
+@property (nonatomic, retain) User *assigners;
+@property (nonatomic, retain) NSSet *memberships;
 @end
 
 @interface Project (CoreDataGeneratedAccessors)
@@ -36,5 +38,10 @@
 - (void)removeTimeEntriesObject:(TimeEntry *)value;
 - (void)addTimeEntries:(NSSet *)values;
 - (void)removeTimeEntries:(NSSet *)values;
+
+- (void)addMembershipsObject:(Membership *)value;
+- (void)removeMembershipsObject:(Membership *)value;
+- (void)addMemberships:(NSSet *)values;
+- (void)removeMemberships:(NSSet *)values;
 
 @end

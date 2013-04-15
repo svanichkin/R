@@ -15,6 +15,8 @@
 #define JOURNAL_ENTITY      @"Journal"
 #define DETAIL_ENTITY       @"Detail"
 #define RELATION_ENTITY     @"Relation"
+#define ROLE_ENTITY         @"Role"
+#define MEMBERSHIP_ENTITY   @"Membership"
 #define TIME_ENTRY_ENTITY   @"TimeEntry"
 #define VERSION_ENTITY      @"Version"
 #define USER_ENTITY         @"User"
@@ -383,6 +385,35 @@
 - (Relation *) relation
 {
     return [self newObjectByName:RELATION_ENTITY];
+}
+
+#pragma mark - Roles
+
+- (Role *) role
+{
+    return [self newObjectByName:ROLE_ENTITY];
+}
+
+- (Role *) roleById:(NSNumber *)nid
+{
+    NSArray *objects = [self objectsByName:ROLE_ENTITY andId:nid];
+    if (objects.count)
+    {
+        return [objects objectAtIndex:0];
+    }
+    else
+    {
+        Role *object = [self newObjectByName:ROLE_ENTITY];
+        object.nid = nid;
+        return object;
+    }
+}
+
+#pragma mark - Memberships
+
+- (Membership *) memberships
+{
+    return [self newObjectByName:MEMBERSHIP_ENTITY];
 }
 
 #pragma mark - Time Entry
