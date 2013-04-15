@@ -799,7 +799,7 @@
         }
         
         // Наполняем базу
-        [self refreshIssue:issue withDictionaryIssueDetail:result];
+        [self refreshIssue:issue withDictionaryIssueDetail:[result objectForKey:@"issue"]];
         
         if (_error)
         {
@@ -819,24 +819,24 @@
     
     BOOL needSave = NO;
     
-    // Attachments
-    NSArray *attachments = [dictionary objectForKey:@"attachments"];
-    if (attachments.count)
-    {
-        for (NSDictionary *attach in attachments)
-        {
-            [self newAttachByDictionary:attach andIssue:issue];
-        }
-        needSave = YES;
-    }
-    
     // Journals
     NSArray *journals = [dictionary objectForKey:@"journals"];
     if (journals.count)
     {
         for (NSDictionary *journal in journals)
         {
-            [self newJournalByDictionary:journal andIssue:issue];
+            [issue addJournalsObject:[self newJournalByDictionary:journal]];
+        }
+        needSave = YES;
+    }
+    
+    // Attachments
+    NSArray *attachments = [dictionary objectForKey:@"attachments"];
+    if (attachments.count)
+    {
+        for (NSDictionary *attach in attachments)
+        {
+            [issue addAttachmentsObject:[self newAttachByDictionary:attach]];
         }
         needSave = YES;
     }
@@ -847,7 +847,7 @@
     {
         for (NSDictionary *relation in relations)
         {
-            [self newRelationByDictionary:relation andIssue:issue];
+            [issue addRelationsObject:[self newRelationByDictionary:relation]];
         }
         needSave = YES;
     }
@@ -861,7 +861,7 @@
     }
 }
 
-- (void) newAttachByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+- (Attach *) newAttachByDictionary:(NSDictionary *)dictionary
 {
     Attach *attach = _database.attach;
     attach.nid    = [dictionary objectForKey:@"id"];
@@ -871,7 +871,6 @@
     attach.text   = [dictionary objectForKey:@"description"];
     attach.url    = [dictionary objectForKey:@"content_url"];
     attach.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
-    attach.issue = issue;
     
     // Author
     NSDictionary *object = [dictionary objectForKey:@"author"];
@@ -887,15 +886,16 @@
         
         attach.creator.name = [n componentsJoinedByString:@" "];
     }
+    
+    return attach;
 }
 
-- (void) newJournalByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+- (Journal *) newJournalByDictionary:(NSDictionary *)dictionary
 {
     Journal *journal = _database.journal;
     journal.nid    = [dictionary objectForKey:@"id"];
     journal.text   = [dictionary objectForKey:@"notes"];
     journal.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
-    journal.issue  = issue;
     
     // Details
     NSArray *details = [dictionary objectForKey:@"details"];
@@ -952,9 +952,11 @@
         
         [journal addDetailsObject:newDetail];
     }
+    
+    return journal;
 }
 
-- (void) newRelationByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
+- (Relation *) newRelationByDictionary:(NSDictionary *)dictionary
 {
     Relation *relation = _database.relation;
     relation.nid     = [dictionary objectForKey:@"id"];
@@ -963,9 +965,8 @@
     relation.issue   = [dictionary objectForKey:@"issue_id"];
     relation.text    = [dictionary objectForKey:@"notes"];
     relation.create  = [self dateFromString:[dictionary objectForKey:@"created_on"]];
-    relation.issue   = issue;
     
-    [issue addRelationsObject:relation];
+    return relation;
 }
 
 #pragma mark - Load Time Entries
@@ -1250,7 +1251,7 @@
         }
         
         // Наполняем базу
-        [self refreshUser:user withDictionaryUser:result];
+        [self refreshUser:user withDictionaryUser:[result objectForKey:@"user"]];
         
         if (_error)
         {

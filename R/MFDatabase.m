@@ -411,7 +411,7 @@
 
 #pragma mark - Memberships
 
-- (Membership *) memberships
+- (Membership *) membership
 {
     return [self newObjectByName:MEMBERSHIP_ENTITY];
 }
