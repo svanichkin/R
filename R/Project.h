@@ -2,7 +2,7 @@
 //  Project.h
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -19,9 +19,9 @@
 @property (nonatomic, retain) NSString * sid;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * update;
-@property (nonatomic, retain) Project *parent;
-@property (nonatomic, retain) NSSet *issues;
 @property (nonatomic, retain) Project *child;
+@property (nonatomic, retain) NSSet *issues;
+@property (nonatomic, retain) Project *parent;
 @property (nonatomic, retain) NSSet *timeEntries;
 @end
 

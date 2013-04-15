@@ -2,7 +2,7 @@
 //  Activity.h
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -15,8 +15,8 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * nid;
-@property (nonatomic, retain) TimeEntry *timeEntry;
 @property (nonatomic, retain) NSSet *issues;
+@property (nonatomic, retain) TimeEntry *timeEntry;
 @end
 
 @interface Activity (CoreDataGeneratedAccessors)

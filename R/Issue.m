@@ -2,7 +2,7 @@
 //  Issue.m
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -29,23 +29,23 @@
 @dynamic finish;
 @dynamic name;
 @dynamic nid;
+@dynamic spent;
 @dynamic start;
 @dynamic text;
 @dynamic update;
-@dynamic spent;
 @dynamic activity;
 @dynamic assigner;
+@dynamic attachments;
 @dynamic children;
 @dynamic creator;
+@dynamic journals;
 @dynamic parent;
 @dynamic priority;
 @dynamic project;
+@dynamic relations;
 @dynamic status;
+@dynamic timeEntries;
 @dynamic tracker;
 @dynamic version;
-@dynamic timeEntries;
-@dynamic journals;
-@dynamic attachments;
-@dynamic relations;
 
 @end

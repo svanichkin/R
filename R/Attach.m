@@ -2,7 +2,7 @@
 //  Attach.m
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -13,13 +13,13 @@
 
 @implementation Attach
 
-@dynamic nid;
-@dynamic name;
-@dynamic size;
-@dynamic type;
-@dynamic text;
-@dynamic url;
 @dynamic create;
+@dynamic name;
+@dynamic nid;
+@dynamic size;
+@dynamic text;
+@dynamic type;
+@dynamic url;
 @dynamic creator;
 @dynamic issue;
 

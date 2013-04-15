@@ -15,6 +15,7 @@
 #import "Version.h"
 #import "User.h"
 #import "Attach.h"
+#import "Relation.h"
 #import "Journal.h"
 #import "Detail.h"
 
@@ -46,6 +47,7 @@
 - (Journal *) journal;
 - (void) deleteJournalsByIssueId:(NSNumber *)nid;
 - (Detail *) detail;
+- (Relation *) relation;
 
 - (TimeEntry *) timeEntryById:(NSNumber *)nid;
 - (TimeEntry *) timeEntry;

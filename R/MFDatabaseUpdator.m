@@ -60,7 +60,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:DATABASE_UPDATING_START
                                                         object:nil];
     
-    
     _tasks = @[@"loadFilters",
                @"loadProjects",
                @"loadIssues",
@@ -828,6 +827,17 @@
         needSave = YES;
     }
     
+    // Relations
+    NSArray *relations = [dictionary objectForKey:@"relations"];
+    if (relations.count)
+    {
+        for (NSDictionary *relation in relations)
+        {
+            [self newRelationByDictionary:relation andIssue:issue];
+        }
+        needSave = YES;
+    }
+    
     if (needSave == YES)
     {
         if(![_database save])
@@ -847,6 +857,7 @@
     attach.text   = [dictionary objectForKey:@"description"];
     attach.url    = [dictionary objectForKey:@"content_url"];
     attach.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    attach.issue = issue;
     
     // Author
     NSDictionary *object = [dictionary objectForKey:@"author"];
@@ -862,8 +873,6 @@
         
         attach.creator.name = [n componentsJoinedByString:@" "];
     }
-    
-    attach.issue = issue;
 }
 
 - (void) newJournalByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
@@ -872,6 +881,7 @@
     journal.nid    = [dictionary objectForKey:@"id"];
     journal.text   = [dictionary objectForKey:@"notes"];
     journal.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    journal.issue  = issue;
     
     // Details
     NSArray *details = [dictionary objectForKey:@"details"];
@@ -932,69 +942,16 @@
 
 - (void) newRelationByDictionary:(NSDictionary *)dictionary andIssue:(Issue *)issue
 {
-    Relation *relation = _database.journal;
+    Relation *relation = _database.relation;
     relation.nid     = [dictionary objectForKey:@"id"];
     relation.type    = [dictionary objectForKey:@"relation_type"];
     relation.delay   = [dictionary objectForKey:@"delay"];
     relation.issue   = [dictionary objectForKey:@"issue_id"];
     relation.text    = [dictionary objectForKey:@"notes"];
     relation.create  = [self dateFromString:[dictionary objectForKey:@"created_on"]];
+    relation.issue   = issue;
     
-    // Details
-    NSArray *details = [dictionary objectForKey:@"details"];
-    for (NSDictionary *detail in details)
-    {
-        Detail *newDetail = _database.detail;
-        newDetail.property = [detail objectForKey:@"property"];
-        if ([newDetail.property isEqualToString:@"attr"])
-        {
-            NSString *name = [detail objectForKey:@"name"];
-            if ([name isEqualToString:@"tracker_id"])
-            {
-                newDetail.name = [detail objectForKey:@"tracker"];
-            }
-            else if ([name isEqualToString:@"subject"])
-            {
-                newDetail.name = [detail objectForKey:@"text"];
-            }
-            else if ([name isEqualToString:@"due_date"])
-            {
-                newDetail.name = [detail objectForKey:@"finish"];
-            }
-            else if ([name isEqualToString:@"status_id"])
-            {
-                newDetail.name = [detail objectForKey:@"status"];
-            }
-            else if ([name isEqualToString:@"assigned_to_id"])
-            {
-                newDetail.name = [detail objectForKey:@"assigner"];
-            }
-            else if ([name isEqualToString:@"priority_id"])
-            {
-                newDetail.name = [detail objectForKey:@"priority"];
-            }
-            else if ([name isEqualToString:@"fixed_version_id"])
-            {
-                newDetail.name = [detail objectForKey:@"version"];
-            }
-            else if ([name isEqualToString:@"start_date"])
-            {
-                newDetail.name = [detail objectForKey:@"start"];
-            }
-            else if ([name isEqualToString:@"done_ratio"])
-            {
-                newDetail.name = [detail objectForKey:@"done"];
-            }
-            else if ([name isEqualToString:@"estimated_hours"])
-            {
-                newDetail.name = [detail objectForKey:@"estimated"];
-            }
-        }
-        newDetail.newValue = [detail objectForKey:@"new_value"];
-        newDetail.oldValue = [detail objectForKey:@"old_value"];
-        
-        [journal addDetailsObject:newDetail];
-    }
+    [issue addRelationsObject:relation];
 }
 
 #pragma mark - Load Time Entries

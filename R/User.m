@@ -2,7 +2,7 @@
 //  User.m
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -15,19 +15,19 @@
 
 @implementation User
 
-@dynamic name;
-@dynamic nid;
+@dynamic create;
 @dynamic firstname;
+@dynamic lastLogin;
 @dynamic lastname;
 @dynamic mail;
-@dynamic create;
-@dynamic lastLogin;
-@dynamic skype;
+@dynamic name;
+@dynamic nid;
 @dynamic phone;
-@dynamic timeEntriesCreator;
-@dynamic journalsCreator;
-@dynamic issuesCreator;
+@dynamic skype;
+@dynamic attachCreator;
 @dynamic issuesAssigner;
-@dynamic attachmentsCreator;
+@dynamic issuesCreator;
+@dynamic journalsCreator;
+@dynamic timeEntriesCreator;
 
 @end

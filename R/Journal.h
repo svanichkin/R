@@ -2,7 +2,7 @@
 //  Journal.h
 //  R
 //
-//  Created by Сергей Ваничкин on 12.04.13.
+//  Created by Сергей Ваничкин on 15.04.13.
 //  Copyright (c) 2013 MacFlash. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @interface Journal : NSManagedObject
 
+@property (nonatomic, retain) NSDate * create;
 @property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSDate * create;
 @property (nonatomic, retain) User *creator;
 @property (nonatomic, retain) NSSet *details;
 @property (nonatomic, retain) Issue *issue;

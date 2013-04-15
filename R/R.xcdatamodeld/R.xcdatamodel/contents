@@ -37,10 +37,10 @@
         <attribute name="update" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="issues" inverseEntity="Activity" syncable="YES"/>
         <relationship name="assigner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="issuesAssigner" inverseEntity="User" syncable="YES"/>
-        <relationship name="attachments" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Attach" inverseName="issue" inverseEntity="Attach" syncable="YES"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attach" inverseName="issue" inverseEntity="Attach" syncable="YES"/>
         <relationship name="children" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="parent" inverseEntity="Issue" syncable="YES"/>
         <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="issuesCreator" inverseEntity="User" syncable="YES"/>
-        <relationship name="journals" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Journal" inverseName="issue" inverseEntity="Journal" syncable="YES"/>
+        <relationship name="journals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Journal" inverseName="issue" inverseEntity="Journal" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="children" inverseEntity="Issue" syncable="YES"/>
         <relationship name="priority" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Priority" inverseName="issues" inverseEntity="Priority" syncable="YES"/>
         <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="issues" inverseEntity="Project" syncable="YES"/>
@@ -76,10 +76,12 @@
         <relationship name="timeEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeEntry" inverseName="project" inverseEntity="TimeEntry" syncable="YES"/>
     </entity>
     <entity name="Relation" representedClassName="Relation" syncable="YES">
+        <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="issueId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="issueToId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="issue" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Issue" inverseName="relations" inverseEntity="Issue" syncable="YES"/>
     </entity>
@@ -128,17 +130,17 @@
     </entity>
     <elements>
         <element name="Activity" positionX="313" positionY="86" width="128" height="103"/>
-        <element name="Issue" positionX="502" positionY="90" width="128" height="403"/>
+        <element name="Attach" positionX="132" positionY="114" width="128" height="180"/>
+        <element name="Detail" positionX="97" positionY="-153" width="128" height="118"/>
+        <element name="Issue" positionX="502" positionY="90" width="128" height="405"/>
+        <element name="Journal" positionX="-74" positionY="-63" width="128" height="133"/>
         <element name="Priority" positionX="-198" positionY="533" width="128" height="88"/>
         <element name="Project" positionX="592" positionY="-153" width="128" height="193"/>
+        <element name="Relation" positionX="783" positionY="396" width="128" height="165"/>
         <element name="Status" positionX="-63" positionY="623" width="128" height="88"/>
+        <element name="TimeEntry" positionX="349" positionY="-171" width="128" height="193"/>
         <element name="Tracker" positionX="61" positionY="720" width="128" height="88"/>
         <element name="User" positionX="-281" positionY="123" width="128" height="253"/>
         <element name="Version" positionX="189" positionY="819" width="128" height="88"/>
-        <element name="TimeEntry" positionX="349" positionY="-171" width="128" height="193"/>
-        <element name="Journal" positionX="-74" positionY="-63" width="128" height="133"/>
-        <element name="Detail" positionX="97" positionY="-153" width="128" height="118"/>
-        <element name="Attach" positionX="132" positionY="114" width="128" height="180"/>
-        <element name="Relation" positionX="783" positionY="396" width="128" height="133"/>
     </elements>
 </model>

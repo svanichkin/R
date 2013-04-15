@@ -14,6 +14,7 @@
 #define ATTACH_ENTITY       @"Attach"
 #define JOURNAL_ENTITY      @"Journal"
 #define DETAIL_ENTITY       @"Detail"
+#define RELATION_ENTITY     @"Relation"
 #define TIME_ENTRY_ENTITY   @"TimeEntry"
 #define VERSION_ENTITY      @"Version"
 #define USER_ENTITY         @"User"
@@ -370,11 +371,18 @@
     [self deleteObjects:result];
 }
 
-#pragma mark - Journals
+#pragma mark - Details
 
 - (Detail *) detail
 {
     return [self newObjectByName:DETAIL_ENTITY];
+}
+
+#pragma mark - Relations
+
+- (Relation *) relation
+{
+    return [self newObjectByName:RELATION_ENTITY];
 }
 
 #pragma mark - Time Entry
