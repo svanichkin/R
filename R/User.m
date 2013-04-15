@@ -26,6 +26,7 @@
 @dynamic nid;
 @dynamic phone;
 @dynamic skype;
+@dynamic color;
 @dynamic attachmentsCreator;
 @dynamic issuesAssigner;
 @dynamic issuesCreator;

@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * nid;
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) NSString * skype;
+@property (nonatomic, retain) NSNumber * color;
 @property (nonatomic, retain) NSSet *attachmentsCreator;
 @property (nonatomic, retain) NSSet *issuesAssigner;
 @property (nonatomic, retain) NSSet *issuesCreator;

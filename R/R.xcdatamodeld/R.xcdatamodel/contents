@@ -121,6 +121,7 @@
         <relationship name="issue" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Issue" inverseName="tracker" inverseEntity="Issue" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="create" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastLogin" optional="YES" attributeType="Date" syncable="YES"/>
@@ -155,7 +156,7 @@
         <element name="Status" positionX="-63" positionY="623" width="128" height="88"/>
         <element name="TimeEntry" positionX="349" positionY="-171" width="128" height="193"/>
         <element name="Tracker" positionX="61" positionY="720" width="128" height="88"/>
-        <element name="User" positionX="-281" positionY="123" width="128" height="285"/>
+        <element name="User" positionX="-281" positionY="123" width="128" height="300"/>
         <element name="Version" positionX="189" positionY="819" width="128" height="88"/>
         <element name="Role" positionX="160" positionY="192" width="128" height="90"/>
         <element name="Membership" positionX="160" positionY="192" width="128" height="105"/>
