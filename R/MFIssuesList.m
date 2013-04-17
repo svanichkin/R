@@ -46,6 +46,8 @@
         self.dataSource = self;
         
         _selectedRow = -1;
+        
+        self.backgroundColor = [NSColor clearColor];
     }
     return self;
 }
