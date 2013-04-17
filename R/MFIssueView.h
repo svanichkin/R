@@ -14,8 +14,6 @@
 @property (assign) IBOutlet NSTextField *bigHeader;
 @property (assign) IBOutlet NSTextField *infoHeader;
 
-@property (assign) IBOutlet NSTextField *descriptionField;
-
-@property (assign) IBOutlet NSScrollView *parentScrollView;
+@property (assign) IBOutlet NSScrollView *scrollView;
 
 @end

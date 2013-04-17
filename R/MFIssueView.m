@@ -7,7 +7,7 @@
 //
 
 #import "MFIssueView.h"
-
+#import <WebKit/WebKit.h>
 
 @implementation MFIssueView
 {
@@ -43,14 +43,16 @@
 
 - (void) resetData
 {
-    _parentScrollView.hidden = YES;
+    self.hidden = YES;
     _issue = nil;
 }
 
 // Если выбрали задачу в левом окне
 - (void) issueSelected:(NSNotification *)notification
 {
-    _parentScrollView.hidden = NO;
+    self.hidden = NO;
+        
+    _scrollView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"linen.tiff"]];
     
     _issue = [_database issueById:_settings.selectedIssueId];
     
@@ -74,7 +76,7 @@
         smallHeader = [NSString stringWithFormat:@"%@.", smallHeader];
     }
     
-/*!!!    if ([_issue.spent intValue] > 0)
+    if ([_issue.spent intValue] > 0)
     {
         NSNumber *t = _issue.spent;
         
@@ -92,7 +94,7 @@
         {
             smallHeader = [NSString stringWithFormat:@"%@ Spent time %i minutes.", smallHeader, min];
         }
-    }*/
+    }
     _smallHeader.stringValue = smallHeader;
     
     _bigHeader.stringValue = _issue.name;
@@ -137,8 +139,6 @@
     }
     
     _infoHeader.stringValue = infoHeader;
-    
-    _descriptionField.stringValue = _issue.text;
 }
 
 @end
