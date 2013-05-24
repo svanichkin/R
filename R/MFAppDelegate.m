@@ -23,7 +23,7 @@
     }
 }
 
-// Returns the directory the application uses to store the Core Data store file. This code uses a directory named "ru.macflash.R" in the user's Application Support directory.
+// Возвращает директорию которую использует приложение для хранения Core Data файла.
 - (NSURL *)applicationFilesDirectory
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -38,7 +38,7 @@
     [self createNewManagerContext];
 }
 
-// Creates if necessary and returns the managed object model for the application.
+// Создает модель баы данных приложения.
 - (void) createNewManagedObjectModel
 {
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"R" withExtension:@"momd"];
@@ -56,11 +56,12 @@
     return _managedObjectModel;
 }
 
-// Returns the persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.)
+// Возвращает persistent stor координатор приложения.
 - (void) createNewPersistentStoreCoordinator
 {
     NSManagedObjectModel *mom = [self managedObjectModel];
-    if (!mom) {
+    if (!mom)
+    {
         NSLog(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
         _persistentStoreCoordinator = nil;
     }
@@ -71,17 +72,23 @@
     
     NSDictionary *properties = [applicationFilesDirectory resourceValuesForKeys:@[NSURLIsDirectoryKey] error:&error];
     
-    if (!properties) {
+    if (!properties)
+    {
         BOOL ok = NO;
-        if ([error code] == NSFileReadNoSuchFileError) {
+        if ([error code] == NSFileReadNoSuchFileError)
+        {
             ok = [fileManager createDirectoryAtPath:[applicationFilesDirectory path] withIntermediateDirectories:YES attributes:nil error:&error];
         }
-        if (!ok) {
+        if (!ok)
+        {
             [[NSApplication sharedApplication] presentError:error];
             _persistentStoreCoordinator = nil;
         }
-    } else {
-        if (![properties[NSURLIsDirectoryKey] boolValue]) {
+    }
+    else
+    {
+        if (![properties[NSURLIsDirectoryKey] boolValue])
+        {
             // Customize and localize this error.
             NSString *failureDescription = [NSString stringWithFormat:@"Expected a folder to store application data, found a file (%@).", [applicationFilesDirectory path]];
             
@@ -96,7 +103,8 @@
     
     NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"R.storedata"];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    if (![coordinator addPersistentStoreWithType:NSBinaryStoreType configuration:nil URL:url options:nil error:&error]) {
+    if (![coordinator addPersistentStoreWithType:NSBinaryStoreType configuration:nil URL:url options:nil error:&error])
+    {
         [[NSApplication sharedApplication] presentError:error];
         _persistentStoreCoordinator = nil;
     }
@@ -114,7 +122,7 @@
     return _persistentStoreCoordinator;
 }
 
-// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) 
+// Возвращает managed object context приложения (который уже привязан к persistent store coordinator приложения) 
 - (void) createNewManagerContext
 {
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
@@ -142,7 +150,7 @@
     return _managedObjectContext;
 }
 
-// Returns the NSUndoManager for the application. In this case, the manager returned is that of the managed object context for the application.
+// Возвращает NSUndoManager приложения. In this case, the manager returned is that of the managed object context for the application.
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
 {
     return [[self managedObjectContext] undoManager];
@@ -150,27 +158,31 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    // Save changes in the application's managed object context before the application terminates.
-    
-    if (!_managedObjectContext) {
+    /*
+    // Сохраняются изменения приложения в managed object context перед выходом из приложения.
+
+    if (!_managedObjectContext)
+    {
         return NSTerminateNow;
     }
     
-    if (![[self managedObjectContext] commitEditing]) {
+    if (![[self managedObjectContext] commitEditing])
+    {
         NSLog(@"%@:%@ unable to commit editing to terminate", [self class], NSStringFromSelector(_cmd));
         return NSTerminateCancel;
     }
     
-    if (![[self managedObjectContext] hasChanges]) {
+    if (![[self managedObjectContext] hasChanges])
+    {
         return NSTerminateNow;
     }
     
     NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-
-        // Customize this code block to include application-specific recovery steps.              
+    if (![[self managedObjectContext] save:&error])
+    {
         BOOL result = [sender presentError:error];
-        if (result) {
+        if (result)
+        {
             return NSTerminateCancel;
         }
 
@@ -186,10 +198,11 @@
 
         NSInteger answer = [alert runModal];
         
-        if (answer == NSAlertAlternateReturn) {
+        if (answer == NSAlertAlternateReturn) 
+        {
             return NSTerminateCancel;
         }
-    }
+    }*/
 
     return NSTerminateNow;
 }
