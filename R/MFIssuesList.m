@@ -81,6 +81,8 @@
         // Скрываем нажатую ячейку
         [[selectedCell viewWithTag:1] setHidden:NO];
         [[selectedCell viewWithTag:2] setHidden:YES];
+        
+        _selectedRow = -1;
     }
 }
 

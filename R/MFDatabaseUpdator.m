@@ -108,7 +108,7 @@
 
 - (void) next
 {
-    if (![self checkErrorOrStop])
+    if (![self checkForCancel])
     {
         if (_indexOfTask < _tasks.count)
         {
@@ -123,7 +123,7 @@
     }
 }
 
-- (BOOL) checkErrorOrStop
+- (BOOL) checkForCancel
 {
     if (_stop)
     {
@@ -180,7 +180,7 @@
     [self setDeltaProgressWithNumSteps:4];
     
     NSArray *newStatuses   = [[self loadFilterByPath:@"issue_statuses.json"] objectForKey:@"issue_statuses"];
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -191,7 +191,7 @@
     }
     
     NSArray *newTrackers   = [[self loadFilterByPath:@"trackers.json"] objectForKey:@"trackers"];
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -202,7 +202,6 @@
     }
     
     NSArray *newPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
-    //if ([self checkErrorOrStop])
     if (_error)
     {
         _error = NO;
@@ -283,7 +282,7 @@
 
 - (void) loadProjects
 {
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -291,7 +290,7 @@
     // Начинаем загрузку и получаем сколько всего проектов
     if ([self loadProjectsWithOffset:0])
     {
-        if ([self checkErrorOrStop])
+        if ([self checkForCancel])
         {
             return;
         }
@@ -304,7 +303,7 @@
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
-                    if ([self checkErrorOrStop])
+                    if ([self checkForCancel])
                     {
                         return;
                     }
@@ -434,7 +433,7 @@
 
 - (void) loadIssues
 {
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -442,7 +441,7 @@
     // Начинаем рекурсивную загрузку, если она успешна продолжим
     if ([self loadIssuesWithOffset:0])
     {
-        if ([self checkErrorOrStop])
+        if ([self checkForCancel])
         {
             return;
         }
@@ -455,7 +454,7 @@
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
-                    if ([self checkErrorOrStop])
+                    if ([self checkForCancel])
                     {
                         return;
                     }
@@ -723,7 +722,7 @@
 
 - (void) loadIssuesDetail
 {
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -733,7 +732,7 @@
     {
         [self setDeltaProgressWithNumSteps:_issuesTotal];
         
-        if ([self checkErrorOrStop])
+        if ([self checkForCancel])
         {
             return;
         }
@@ -747,7 +746,7 @@
             
             [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
             {
-                if ([self checkErrorOrStop])
+                if ([self checkForCancel])
                 {
                     return;
                 }
@@ -978,7 +977,7 @@
 
 - (void) loadTimeEntries
 {
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -986,7 +985,7 @@
     // Начинаем рекурсивную загрузку, если она успешна продолжим
     if ([self loadTimeEntryWithOffset:0])
     {
-        if ([self checkErrorOrStop])
+        if ([self checkForCancel])
         {
             return;
         }
@@ -1180,7 +1179,7 @@
 
 - (void) loadUsers
 {
-    if ([self checkErrorOrStop])
+    if ([self checkForCancel])
     {
         return;
     }
@@ -1190,7 +1189,7 @@
     {
         [self setDeltaProgressWithNumSteps:_usersTotal];
         
-        if ([self checkErrorOrStop])
+        if ([self checkForCancel])
         {
             return;
         }
@@ -1204,7 +1203,7 @@
             
             [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
             {
-                if ([self checkErrorOrStop])
+                if ([self checkForCancel])
                 {
                     return;
                 }
@@ -1358,7 +1357,7 @@
     if (error)
     {
         _error = YES;
-        [self checkErrorOrStop];
+        [self checkForCancel];
         return;
     }
     
@@ -1371,7 +1370,7 @@
     if (error)
     {
         _error = YES;
-        [self checkErrorOrStop];
+        [self checkForCancel];
         return;
     }
     
@@ -1389,7 +1388,7 @@
         if(![_database save])
         {
             _error = YES;
-            [self checkErrorOrStop];
+            [self checkForCancel];
             return;
         }
     }
