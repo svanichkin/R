@@ -8,6 +8,7 @@
 
 #import "MFIssuesList.h"
 #import "MFFiltersControl.h"
+#import "MFIssueCellView.h"
 
 @interface MFIssuesList ()
 
@@ -66,24 +67,26 @@
 {
     [self selectionReset];
     
-    NSTableCellView *selectedCell = [self viewAtColumn:0 row:row makeIfNecessary:NO];
+    MFIssueCellView *selectedCell = [self viewAtColumn:0
+                                                   row:row
+                                       makeIfNecessary:NO];
     self.selectedRow = row;
     
-    [[selectedCell viewWithTag:1] setHidden:YES];
-    [[selectedCell viewWithTag:2] setHidden:NO];
+    [selectedCell setSelected:YES];
     
-    [self issueSelected:[selectedCell.objectValue objectForKey:@"nid"]];
+    [self issueSelected:selectedCell.nid];
 }
 
 - (void) selectionReset
 {
     if (self.selectedRow > -1)
     {
-        NSTableCellView *selectedCell = [self viewAtColumn:0 row:self.selectedRow makeIfNecessary:NO];
+        MFIssueCellView *selectedCell = [self viewAtColumn:0
+                                                       row:self.selectedRow
+                                           makeIfNecessary:NO];
     
         // Скрываем нажатую ячейку
-        [[selectedCell viewWithTag:1] setHidden:NO];
-        [[selectedCell viewWithTag:2] setHidden:YES];
+        [selectedCell setSelected:NO];
         
         self.selectedRow = -1;
     }
@@ -111,57 +114,58 @@
     [self reloadData];
 }
 
-// Создаем массив ячеек
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    NSTableCellView *cell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-    
-    [[cell viewWithTag:1] setHidden:NO];
-    [[cell viewWithTag:2] setHidden:YES];
-    
-    if (self.selectedRow == -1)
-    {
-        if (row == 0)
-        {
-            self.selectedRow = row;
-        }
-    }
-    
-    if (row == self.selectedRow)
-    {
-        [[cell viewWithTag:1] setHidden:YES];
-        [[cell viewWithTag:2] setHidden:NO];
-    }
-    
-    return cell;    
-}
+#pragma mark - Table View Data Source Delegate
 
-// Генерим данные
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
     return self.issues.count;
 }
 
-// Сетим данные
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+    MFIssueCellView *cell = [tableView makeViewWithIdentifier:NSStringFromClass([MFIssueCellView class])
+                                                        owner:self];
+    
+    [cell setSelected:NO];
+    
+    if (self.selectedRow == -1)
+        if (row == 0)
+            self.selectedRow = row;
+    
+    if (row == self.selectedRow)
+        [cell setSelected:YES];
+    
     Issue *issue = [self.issues objectAtIndex:row];
     
-    NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [issue.status.name lowercaseString], [issue.priority.name  lowercaseString], [issue.tracker.name lowercaseString]];
+    NSString *type = [NSString stringWithFormat:@"%@ %@ %@",
+                      [issue.status.name lowercaseString],
+                      [issue.priority.name  lowercaseString],
+                      [issue.tracker.name lowercaseString]];
+    
+    cell.taskType.stringValue = type;
     
     NSString *number = [NSString stringWithFormat:@"#%@", issue.nid];
     
-    if (row == 0)
-    {
-        [self issueSelected:issue.nid];
-    }
+    cell.taskNumber.stringValue = number;
     
-    return @{@"type":type, @"text":issue.name, @"number":number, @"nid":issue.nid};
+    if (row == 0)
+        [self issueSelected:issue.nid];
+    
+    cell.nid = issue.nid;
+    
+    cell.issueText.stringValue = issue.name;
+    
+    return cell;    
 }
+
+#pragma mark - Actions
 
 - (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
 {
-    [self selectIssueByRow:self.selectedRow];
+    MFIssuesList *m = aNotification.object;
+    NSIndexSet *s = m.selectedRowIndexes;
+
+    [self selectIssueByRow:s.firstIndex];
 }
 
 - (void) issueSelected:(NSNumber *)nid
