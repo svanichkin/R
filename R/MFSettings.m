@@ -18,11 +18,13 @@
 
 #define KEY_DATA_LAST_UPD   @"dataLastUpdate"
 
+@interface MFSettings()
+
+@property (nonatomic, strong) NSUserDefaults *defaults;
+
+@end
 
 @implementation MFSettings
-{
-    NSUserDefaults *_defaults;
-}
 
 + (MFSettings *)sharedInstance
 {
@@ -40,7 +42,7 @@
 {
     if ((self = [super init]) != nil)
     {
-        _defaults = [NSUserDefaults standardUserDefaults];
+        self.defaults = [NSUserDefaults standardUserDefaults];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(resetData)
@@ -89,54 +91,54 @@
 {
     if (server)
     {
-        [_defaults setObject:server forKey:KEY_SERVER];
+        [self.defaults setObject:server forKey:KEY_SERVER];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_SERVER];
+        [self.defaults removeObjectForKey:KEY_SERVER];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 -(NSString *)server
 {
-    return [_defaults objectForKey:KEY_SERVER];
+    return [self.defaults objectForKey:KEY_SERVER];
 }
 
 - (void) setLogin:(NSString *)login
 {
     if (login)
     {
-        [_defaults setObject:login forKey:KEY_LOGIN];
+        [self.defaults setObject:login forKey:KEY_LOGIN];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_LOGIN];
+        [self.defaults removeObjectForKey:KEY_LOGIN];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSString *)login
 {
-    return [_defaults objectForKey:KEY_LOGIN];
+    return [self.defaults objectForKey:KEY_LOGIN];
 }
 
 - (void) setPassword:(NSString *)password
 {
     if (password)
     {
-        [_defaults setObject:password forKey:KEY_PASSWORD];
+        [self.defaults setObject:password forKey:KEY_PASSWORD];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_LOGIN];
+        [self.defaults removeObjectForKey:KEY_LOGIN];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSString *)password
 {
-    return [_defaults objectForKey:KEY_PASSWORD];
+    return [self.defaults objectForKey:KEY_PASSWORD];
 }
 
 - (BOOL) credentials
@@ -148,18 +150,18 @@
 {
     if (token)
     {
-        [_defaults setObject:token forKey:KEY_API_TOKEN];
+        [self.defaults setObject:token forKey:KEY_API_TOKEN];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_API_TOKEN];
+        [self.defaults removeObjectForKey:KEY_API_TOKEN];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSString *)apiToken
 {
-    return [_defaults objectForKey:KEY_API_TOKEN];
+    return [self.defaults objectForKey:KEY_API_TOKEN];
 }
 #pragma mark - Filters
 
@@ -167,18 +169,18 @@
 {
     if (filtersStates)
     {
-        [_defaults setObject:filtersStates forKey:KEY_STATES];
+        [self.defaults setObject:filtersStates forKey:KEY_STATES];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_STATES];
+        [self.defaults removeObjectForKey:KEY_STATES];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSArray *) filtersStates
 {
-    return [_defaults objectForKey:KEY_STATES];
+    return [self.defaults objectForKey:KEY_STATES];
 }
 
 #pragma mark - Projects
@@ -187,18 +189,18 @@
 {
     if (selectedProjectId)
     {
-        [_defaults setObject:selectedProjectId forKey:KEY_SEL_PROJ_ID];
+        [self.defaults setObject:selectedProjectId forKey:KEY_SEL_PROJ_ID];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_SEL_PROJ_ID];
+        [self.defaults removeObjectForKey:KEY_SEL_PROJ_ID];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSNumber *) selectedProjectId
 {
-    return [_defaults objectForKey:KEY_SEL_PROJ_ID];
+    return [self.defaults objectForKey:KEY_SEL_PROJ_ID];
 }
 
 #pragma mark - Issues
@@ -207,18 +209,18 @@
 {
     if (selectedIssueId)
     {
-        [_defaults setObject:selectedIssueId forKey:KEY_SEL_ISSUE_ID];
+        [self.defaults setObject:selectedIssueId forKey:KEY_SEL_ISSUE_ID];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_SEL_ISSUE_ID];
+        [self.defaults removeObjectForKey:KEY_SEL_ISSUE_ID];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSNumber *) selectedIssueId
 {
-    return [_defaults objectForKey:KEY_SEL_ISSUE_ID];
+    return [self.defaults objectForKey:KEY_SEL_ISSUE_ID];
 }
 
 
@@ -227,18 +229,18 @@
 {
     if (lastUpdate)
     {
-        [_defaults setObject:lastUpdate forKey:KEY_DATA_LAST_UPD];
+        [self.defaults setObject:lastUpdate forKey:KEY_DATA_LAST_UPD];
     }
     else
     {
-        [_defaults removeObjectForKey:KEY_DATA_LAST_UPD];
+        [self.defaults removeObjectForKey:KEY_DATA_LAST_UPD];
     }
-    [_defaults synchronize];
+    [self.defaults synchronize];
 }
 
 - (NSDate *) dataLastUpdate
 {
-    return [_defaults objectForKey:KEY_DATA_LAST_UPD];
+    return [self.defaults objectForKey:KEY_DATA_LAST_UPD];
 }
 
 - (void) dealloc

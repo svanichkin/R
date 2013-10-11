@@ -8,10 +8,13 @@
 
 #import "MFProjectSelector.h"
 
+@interface MFProjectSelector ()
+
+@property (nonatomic, strong) MFSettings *settings;
+
+@end
+
 @implementation MFProjectSelector
-{
-    MFSettings *_settings;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -33,7 +36,7 @@
                                                      name:FILTERS_INITED
                                                    object:nil];
         
-        _settings = [MFSettings sharedInstance];
+        self.settings = [MFSettings sharedInstance];
     }
     return self;
 }
@@ -70,7 +73,7 @@
         }
         
         // Сетим выбранный проект
-        [self selectItemWithTag:[_settings.selectedProjectId intValue]];
+        [self selectItemWithTag:[self.settings.selectedProjectId intValue]];
         [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
     }
 
@@ -79,10 +82,10 @@
 
 - (void) projectSelected:(NSMenuItem *)sender
 {
-    if ([_settings.selectedProjectId intValue] != sender.tag)
+    if ([self.settings.selectedProjectId intValue] != sender.tag)
     {
         // Сохраним значения сегментов, что бы восстановить при следующем входе
-        _settings.selectedProjectId = @(sender.tag);
+        self.settings.selectedProjectId = [NSNumber numberWithInt:sender.tag];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:PROJECT_SELECTED object:nil];
     }

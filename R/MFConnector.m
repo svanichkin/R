@@ -14,13 +14,16 @@
 #import "MFAuthorization.h"
 #import "MFDatabaseUpdator.h"
 
+@interface MFConnector ()
+
+@property (nonatomic, strong) MFSettings *settings;
+@property (nonatomic, strong) MFDatabase *database;
+
+@property (nonatomic, strong) MFAuthorization *token;
+
+@end
+
 @implementation MFConnector
-{
-    MFSettings *_settings;
-    MFDatabase *_database;
-    
-    MFAuthorization *token;
-}
 
 + (MFConnector *)sharedInstance
 {
@@ -36,8 +39,8 @@
 {
     if ((self = [super init]) != nil)
     {
-        _settings = [MFSettings sharedInstance];
-        _database = [MFDatabase sharedInstance];
+        self.settings = [MFSettings sharedInstance];
+        self.database = [MFDatabase sharedInstance];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(resetData)
@@ -75,22 +78,24 @@
 
 - (void) resetData
 {
-    _connectionProgress = NO;
-    _databaseUpdatingProgress = NO;
+    self.connectionProgress = NO;
+    self.databaseUpdatingProgress = NO;
 }
 
 #pragma mark - Authorization
 
 - (void)connect
 {
-    [self connectWithLogin:_settings.login password:_settings.password andServer:_settings.server];
+    [self connectWithLogin:self.settings.login
+                  password:self.settings.password
+                 andServer:self.settings.server];
 }
 
 - (void) connectWithLogin:(NSString *)login password:(NSString *)password andServer:(NSString *)server
 {
-    if (_connectionProgress == NO)
+    if (self.connectionProgress == NO)
     {
-        _connectionProgress = YES;
+        self.connectionProgress = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(connectionComplete:)
@@ -107,16 +112,16 @@
 
 - (void) connectionComplete:(NSNumber *)success
 {
-    _connectionProgress = NO;
+    self.connectionProgress = NO;
 }
 
 #pragma mark - Database Updating
 
 - (void) databaseUpdate
 {
-    if (_databaseUpdatingProgress == NO)
+    if (self.databaseUpdatingProgress == NO)
     {
-        _databaseUpdatingProgress = YES;
+        self.databaseUpdatingProgress = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(databaseUpdatingComplete:)
@@ -133,7 +138,7 @@
 
 - (void) databaseUpdatingComplete:(NSNumber *)success
 {
-    _databaseUpdatingProgress = NO;
+    self.databaseUpdatingProgress = NO;
 }
 
 - (void) dealloc

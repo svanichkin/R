@@ -26,10 +26,13 @@
 #define PRIORITY_ENTITY     @"Priority"
 #define ACTIVITY_ENTITY     @"Activity"
 
+@interface MFDatabase ()
+
+@property (nonatomic, strong) NSMutableDictionary *managedObjectContexts;
+
+@end
+
 @implementation MFDatabase
-{
-    NSMutableDictionary *_managedObjectContexts;
-}
 
 + (MFDatabase *)sharedInstance
 {
@@ -45,7 +48,7 @@
 {
     if ((self = [super init]) != nil)
     {
-        _managedObjectContexts = [NSMutableDictionary dictionary];
+        self.managedObjectContexts = [NSMutableDictionary dictionary];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(threadExit)
@@ -76,7 +79,7 @@
 {
     NSString *threadKey = [NSString stringWithFormat:@"%p", [NSThread currentThread]];
     
-    [_managedObjectContexts removeObjectForKey:threadKey];
+    [self.managedObjectContexts removeObjectForKey:threadKey];
 }
 
 - (NSManagedObjectContext *) managedObjectContext
@@ -95,7 +98,7 @@
     // a key to cache the context for the given thread
     NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
     
-    if ([_managedObjectContexts objectForKey:threadKey] == nil)
+    if ([self.managedObjectContexts objectForKey:threadKey] == nil)
     {
         // create a context for this thread
         NSManagedObjectContext *threadContext = [[NSManagedObjectContext alloc] init];
@@ -103,10 +106,10 @@
         [threadContext setUndoManager:nil];
         
         // cache the context for this thread
-        [_managedObjectContexts setObject:threadContext forKey:threadKey];
+        [self.managedObjectContexts setObject:threadContext forKey:threadKey];
     }
     
-    return [_managedObjectContexts objectForKey:threadKey];
+    return [self.managedObjectContexts objectForKey:threadKey];
 }
 
 - (void) contextDidSave:(NSNotification*)saveNotification
@@ -134,7 +137,7 @@
         [[NSFileManager defaultManager] removeItemAtPath:store.URL.path error:nil];
     }
     
-    _managedObjectContexts = [NSMutableDictionary dictionary];
+    self.managedObjectContexts = [NSMutableDictionary dictionary];
     [appController createNewCoreData];
 }
 

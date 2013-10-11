@@ -9,12 +9,15 @@
 #import "MFIssueView.h"
 #import <WebKit/WebKit.h>
 
+@interface MFIssueView ()
+
+@property (nonatomic, strong) MFSettings *settings;
+@property (nonatomic, strong) MFDatabase *database;
+@property (nonatomic, strong) Issue *issue;
+
+@end
+
 @implementation MFIssueView
-{
-    MFSettings *_settings;
-    MFDatabase *_database;
-    Issue *_issue;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -35,8 +38,8 @@
                                                  selector:@selector(issueSelected:)
                                                      name:ISSUE_SELECTED
                                                    object:nil];
-        _settings = [MFSettings sharedInstance];
-        _database = [MFDatabase sharedInstance];
+        self.settings = [MFSettings sharedInstance];
+        self.database = [MFDatabase sharedInstance];
     }
     return self;
 }
@@ -44,7 +47,7 @@
 - (void) resetData
 {
     self.hidden = YES;
-    _issue = nil;
+    self.issue = nil;
 }
 
 // Если выбрали задачу в левом окне
@@ -52,33 +55,33 @@
 {
     self.hidden = NO;
         
-    _scrollView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"linen.tiff"]];
+    self.scrollView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"linen.tiff"]];
     
-    _issue = [_database issueById:_settings.selectedIssueId];
+    self.issue = [self.database issueById:self.settings.selectedIssueId];
     
-    NSString *smallHeader = [NSString stringWithFormat:@"#%@ – %@ %@", _issue.nid, [_issue.priority.name lowercaseString], [_issue.tracker.name lowercaseString]];
+    NSString *smallHeader = [NSString stringWithFormat:@"#%@ – %@ %@", self.issue.nid, [self.issue.priority.name lowercaseString], [self.issue.tracker.name lowercaseString]];
     
-    if (_issue.version.name)
+    if (self.issue.version.name)
     {
-        smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@", smallHeader, _issue.version.name, [_issue.status.name lowercaseString]];
+        smallHeader = [NSString stringWithFormat:@"%@ for version %@, %@", smallHeader, self.issue.version.name, [self.issue.status.name lowercaseString]];
     }
     else
     {
-        smallHeader = [NSString stringWithFormat:@"%@, %@", smallHeader, [_issue.status.name lowercaseString]];
+        smallHeader = [NSString stringWithFormat:@"%@, %@", smallHeader, [self.issue.status.name lowercaseString]];
     }
     
-    if ([_issue.done intValue] > 0)
+    if ([self.issue.done intValue] > 0)
     {
-        smallHeader = [NSString stringWithFormat:@"%@ %@%%.", smallHeader, _issue.done];
+        smallHeader = [NSString stringWithFormat:@"%@ %@%%.", smallHeader, self.issue.done];
     }
     else
     {
         smallHeader = [NSString stringWithFormat:@"%@.", smallHeader];
     }
     
-    if ([_issue.spent intValue] > 0)
+    if ([self.issue.spent intValue] > 0)
     {
-        NSNumber *t = _issue.spent;
+        NSNumber *t = self.issue.spent;
         
         int hour = [t intValue]%10;
         int min = 60*([t floatValue] - hour);
@@ -95,24 +98,24 @@
             smallHeader = [NSString stringWithFormat:@"%@ Spent time %i minutes.", smallHeader, min];
         }
     }
-    _smallHeader.stringValue = smallHeader;
+    self.smallHeader.stringValue = smallHeader;
     
-    _bigHeader.stringValue = _issue.name;
+    self.bigHeader.stringValue = self.issue.name;
     
     
-    NSString *infoHeader = [NSString stringWithFormat:@"From %@", _issue.creator.name];
+    NSString *infoHeader = [NSString stringWithFormat:@"From %@", self.issue.creator.name];
     
-    if (_issue.create)
+    if (self.issue.create)
     {
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] initWithDateFormat:@"%0d %B %Y" allowNaturalLanguage:NO];
-        NSString *dateString = [dateFormat stringFromDate:_issue.create];
+        NSString *dateString = [dateFormat stringFromDate:self.issue.create];
         
         infoHeader = [NSString stringWithFormat:@"%@, %@.", infoHeader, dateString];
     }
     
-    if ([_issue.estimated floatValue] > 0)
+    if ([self.issue.estimated floatValue] > 0)
     {
-        NSNumber *t = _issue.estimated;
+        NSNumber *t = self.issue.estimated;
         
         int hour = [t intValue]%10;
         int min = 60*([t floatValue] - hour);
@@ -130,15 +133,15 @@
         }
     }
     
-    if (_issue.finish)
+    if (self.issue.finish)
     {
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] initWithDateFormat:@"%0d %B %Y" allowNaturalLanguage:NO];
-        NSString *dateString = [dateFormat stringFromDate:_issue.finish];
+        NSString *dateString = [dateFormat stringFromDate:self.issue.finish];
         
         infoHeader = [NSString stringWithFormat:@"%@ Due date %@.", infoHeader, dateString];
     }
     
-    _infoHeader.stringValue = infoHeader;
+    self.infoHeader.stringValue = infoHeader;
 }
 
 @end

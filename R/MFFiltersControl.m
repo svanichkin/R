@@ -8,14 +8,19 @@
 
 #import "MFFiltersControl.h"
 
+@interface MFFiltersControl ()
+
+@property (nonatomic, strong) MFSettings *settings;
+
+@property (nonatomic, assign) SEL mainAction;
+@property (nonatomic, strong) id mainTarget;
+
+@property (nonatomic, assign) NSInteger statusesCount;
+@property (nonatomic, assign) NSInteger trackersCount;
+
+@end
+
 @implementation MFFiltersControl
-{
-    MFSettings *_settings;
-    SEL _mainAction;
-    id _mainTarget;
-    NSInteger _statusesCount;
-    NSInteger _trackersCount;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -37,7 +42,7 @@
                                                      name:DATABASE_UPDATING_COMPLETE
                                                    object:nil];
         
-        _settings = [MFSettings sharedInstance];
+        self.settings = [MFSettings sharedInstance];
     }
     return self;
 }
@@ -51,7 +56,7 @@
 {
     if ([notification.object boolValue])
     {
-        if (_settings.dataLastUpdate)
+        if (self.settings.dataLastUpdate)
         {
             self.hidden = NO;
             self.target = self;
@@ -64,8 +69,8 @@
             NSArray *trackers   = database.trackers;
             NSArray *priorities = database.priorities;
             
-            _statusesCount = statuses.count;
-            _trackersCount = trackers.count;
+            self.statusesCount = statuses.count;
+            self.trackersCount = trackers.count;
             
             NSInteger segmentsCount = statuses.count + trackers.count + priorities.count;
             [self setSegmentCount:segmentsCount];
@@ -87,7 +92,7 @@
             }
 
             // Загрузка сохраненных значений, если имеются и подходят
-            NSArray *states = _settings.filtersStates;
+            NSArray *states = self.settings.filtersStates;
             if (states.count > 0 && states.count == segmentsCount)
             {
                 for (int i = 0; i < segmentsCount; i ++)
@@ -176,7 +181,7 @@
     {
         [states addObject:@([self isSelectedForSegment:i])];
     }
-    _settings.filtersStates = states;
+    self.settings.filtersStates = states;
 }
 
 - (void) segmentChanged:(id)sender

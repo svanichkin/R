@@ -9,30 +9,40 @@
 #import "MFAuthorization.h"
 #import "TFHpple.h"
 
-@implementation MFAuthorization
-{
-    NSArray *_trustedHosts;
-    NSMutableData *_receivedData;
+@interface MFAuthorization ()
 
-    MFSettings *_settings;
-    
-    NSURLConnection *_loginTokenConnection, *_authorizationConnection, *_apiTokenConnection;
-    NSString *_login, *_password, *_server, *_authenticityToken, *_apiToken;
-    
-    BOOL _finished;
-    BOOL _stop;
-}
+@property (nonatomic, strong) NSArray *trustedHosts;
+@property (nonatomic, strong) NSMutableData *receivedData;
+
+@property (nonatomic, strong) MFSettings *settings;
+
+@property (nonatomic, strong) NSURLConnection *loginTokenConnection;
+@property (nonatomic, strong) NSURLConnection *authorizationConnection;
+@property (nonatomic, strong) NSURLConnection *apiTokenConnection;
+
+@property (nonatomic, strong) NSString *loginString;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *server;
+@property (nonatomic, strong) NSString *authenticityToken;
+@property (nonatomic, strong) NSString *apiToken;
+
+@property (nonatomic, assign) BOOL finished;
+@property (nonatomic, assign) BOOL stop;
+
+@end
+
+@implementation MFAuthorization
 
 - (void) authorizationWithLogin:(NSString *)login password:(NSString *)password andServer:(NSString *)server
 {
-    _settings = [MFSettings sharedInstance];
+    self.settings = [MFSettings sharedInstance];
     
-    _server   = server;
-    _login    = login;
-    _password = password;
+    self.server         = server;
+    self.loginString    = login;
+    self.password       = password;
     
-    _stop = NO;
-    _finished = NO;
+    self.stop = NO;
+    self.finished = NO;
     
     [self login];
     
@@ -52,7 +62,7 @@
                                                object:nil];
     
     // Цикл позволяет не закрывать поток, пока выполняется пустой цикл
-    while(!_finished)
+    while(!self.finished)
     {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
                                  beforeDate:[NSDate distantFuture]];
@@ -61,8 +71,8 @@
 
 - (void) resetData
 {
-    _stop = YES;
-    _finished = YES;
+    self.stop = YES;
+    self.finished = YES;
 }
 
 - (void) login
@@ -70,45 +80,45 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:CONNECT_START
                                                         object:nil];
     
-    NSString *urlString          = [NSString stringWithFormat:@"%@/login", _server];
+    NSString *urlString          = [NSString stringWithFormat:@"%@/login", self.server];
     NSURL *url                   = [NSURL URLWithString:urlString];
     
-    _trustedHosts                = [NSArray arrayWithObject:url.host];
+    self.trustedHosts                = [NSArray arrayWithObject:url.host];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    _loginTokenConnection        = [NSURLConnection connectionWithRequest:request
+    self.loginTokenConnection        = [NSURLConnection connectionWithRequest:request
                                                                  delegate:self];
 }
 
 - (void) authorization
 {
-    NSString *urlString          = [NSString stringWithFormat:@"%@/login", _server];
+    NSString *urlString          = [NSString stringWithFormat:@"%@/login", self.server];
     NSURL *url                   = [NSURL URLWithString:urlString];
     
     NSMutableString *postString  = [[NSMutableString alloc] init];
-    [postString appendFormat:@"authenticity_token=%@", _authenticityToken];
-    [postString appendFormat:@"&username=%@", _login];
-    [postString appendFormat:@"&password=%@", _password];
+    [postString appendFormat:@"authenticity_token=%@", self.authenticityToken];
+    [postString appendFormat:@"&username=%@", self.loginString];
+    [postString appendFormat:@"&password=%@", self.password];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    _authorizationConnection     = [NSURLConnection connectionWithRequest:request
+    self.authorizationConnection     = [NSURLConnection connectionWithRequest:request
                                                                  delegate:self];
 }
 
 - (void) api
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@/my/account", _server];
+    NSString *urlString = [NSString stringWithFormat:@"%@/my/account", self.server];
     NSURL *url = [NSURL URLWithString:urlString];
     
-    _trustedHosts = [NSArray arrayWithObject:url.host];
+    self.trustedHosts = [NSArray arrayWithObject:url.host];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    _apiTokenConnection = [NSURLConnection connectionWithRequest:request delegate:self];    
+    self.apiTokenConnection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
 #pragma mark - Connection Events
@@ -122,7 +132,7 @@
 {
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
     {
-        if ([_trustedHosts containsObject:challenge.protectionSpace.host])
+        if ([self.trustedHosts containsObject:challenge.protectionSpace.host])
         {
             [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
         }
@@ -133,54 +143,54 @@
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    _receivedData = [[NSMutableData alloc] init];
-    [_receivedData setLength:0];
+    self.receivedData = [[NSMutableData alloc] init];
+    [self.receivedData setLength:0];
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    [_receivedData appendData:data];
+    [self.receivedData appendData:data];
 }
 
 -(void) connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if (_stop)
+    if (self.stop)
     {
         return;
     }
     
-    if ([connection isEqual:_loginTokenConnection])
+    if ([connection isEqual:self.loginTokenConnection])
     {
-        TFHpple *doc              = [[TFHpple alloc] initWithHTMLData:_receivedData];
+        TFHpple *doc              = [[TFHpple alloc] initWithHTMLData:self.receivedData];
         NSArray *elements         = [doc searchWithXPathQuery:@"//input[@name='authenticity_token']"];
         
         if (elements.count > 0)
         {
             TFHppleElement *input = [elements objectAtIndex:0];
-            _authenticityToken    = [[input objectForKey:@"value"] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+            self.authenticityToken    = [[input objectForKey:@"value"] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
         }
         
         [self authorization];
     }
-    else if ([connection isEqual:_authorizationConnection])
+    else if ([connection isEqual:self.authorizationConnection])
     {
         [self api];
     }
-    else if ([connection isEqual:_apiTokenConnection])
+    else if ([connection isEqual:self.apiTokenConnection])
     {
-        TFHpple *doc              = [[TFHpple alloc] initWithHTMLData:_receivedData];
+        TFHpple *doc              = [[TFHpple alloc] initWithHTMLData:self.receivedData];
         NSArray *elements         = [doc searchWithXPathQuery:@"//pre[@id='api-access-key']"];
         
         if (elements.count > 0)
         {
             TFHppleElement *input = [elements objectAtIndex:0];
             
-            _settings.apiToken    = [input content];
+            self.settings.apiToken    = [input content];
         }
         
-        _settings.server      = _server;
-        _settings.login       = _login;
-        _settings.password    = _password;
+        self.settings.server      = self.server;
+        self.settings.login       = self.loginString;
+        self.settings.password    = self.password;
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
@@ -188,13 +198,13 @@
                                                                 object:@(YES)];
         });
         
-        _finished = YES;
+        self.finished = YES;
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    if (_stop)
+    if (self.stop)
     {
         return;
     }
@@ -205,7 +215,7 @@
                                                            object:@(NO)];
     });
     
-    _finished = YES;
+    self.finished = YES;
 }
 
 - (void) dealloc

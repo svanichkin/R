@@ -9,12 +9,15 @@
 #import "MFIssuesList.h"
 #import "MFFiltersControl.h"
 
+@interface MFIssuesList ()
+
+@property (nonatomic, strong) MFSettings *settings;
+@property (nonatomic, strong) NSMutableArray *issues;
+@property (nonatomic, assign) NSInteger selectedRow;
+
+@end
+
 @implementation MFIssuesList
-{
-    MFSettings *_settings;
-    NSMutableArray *_issues;
-    NSInteger _selectedRow;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -41,11 +44,11 @@
                                                      name:FILTERS_CHANGED
                                                    object:nil];
         
-        _settings = [MFSettings sharedInstance];
+        self.settings = [MFSettings sharedInstance];
         self.delegate = self;
         self.dataSource = self;
         
-        _selectedRow = -1;
+        self.selectedRow = -1;
         
         self.backgroundColor = [NSColor clearColor];
     }
@@ -54,7 +57,7 @@
 
 - (void) resetData
 {
-    _issues = [NSMutableArray array];
+    self.issues = [NSMutableArray array];
 
     [self reloadData];
 }
@@ -64,7 +67,7 @@
     [self selectionReset];
     
     NSTableCellView *selectedCell = [self viewAtColumn:0 row:row makeIfNecessary:NO];
-    _selectedRow = row;
+    self.selectedRow = row;
     
     [[selectedCell viewWithTag:1] setHidden:YES];
     [[selectedCell viewWithTag:2] setHidden:NO];
@@ -74,15 +77,15 @@
 
 - (void) selectionReset
 {
-    if (_selectedRow > -1)
+    if (self.selectedRow > -1)
     {
-        NSTableCellView *selectedCell = [self viewAtColumn:0 row:_selectedRow makeIfNecessary:NO];
+        NSTableCellView *selectedCell = [self viewAtColumn:0 row:self.selectedRow makeIfNecessary:NO];
     
         // Скрываем нажатую ячейку
         [[selectedCell viewWithTag:1] setHidden:NO];
         [[selectedCell viewWithTag:2] setHidden:YES];
         
-        _selectedRow = -1;
+        self.selectedRow = -1;
     }
 }
 
@@ -90,9 +93,9 @@
 {
     [self selectionReset];
     
-    NSArray *issues = [[MFDatabase sharedInstance] issuesByProjectId:_settings.selectedProjectId];
+    NSArray *issues = [[MFDatabase sharedInstance] issuesByProjectId:self.settings.selectedProjectId];
     
-    _issues = [NSMutableArray array];
+    self.issues = [NSMutableArray array];
 
     // Фильтруем задачи
     for (Issue *i in issues)
@@ -101,7 +104,7 @@
                                           priorityIndex:[i.priority.nid intValue]
                                         andTrackerIndex:[i.tracker.nid intValue]])
         {        
-            [_issues addObject:i];
+            [self.issues addObject:i];
         }
     }
     
@@ -116,15 +119,15 @@
     [[cell viewWithTag:1] setHidden:NO];
     [[cell viewWithTag:2] setHidden:YES];
     
-    if (_selectedRow == -1)
+    if (self.selectedRow == -1)
     {
         if (row == 0)
         {
-            _selectedRow = row;
+            self.selectedRow = row;
         }
     }
     
-    if (row == _selectedRow)
+    if (row == self.selectedRow)
     {
         [[cell viewWithTag:1] setHidden:YES];
         [[cell viewWithTag:2] setHidden:NO];
@@ -136,13 +139,13 @@
 // Генерим данные
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return _issues.count;
+    return self.issues.count;
 }
 
 // Сетим данные
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    Issue *issue = [_issues objectAtIndex:row];
+    Issue *issue = [self.issues objectAtIndex:row];
     
     NSString *type = [NSString stringWithFormat:@"%@ %@ %@", [issue.status.name lowercaseString], [issue.priority.name  lowercaseString], [issue.tracker.name lowercaseString]];
     
@@ -163,7 +166,7 @@
 
 - (void) issueSelected:(NSNumber *)nid
 {
-    _settings.selectedIssueId = nid;
+    self.settings.selectedIssueId = nid;
     [[NSNotificationCenter defaultCenter] postNotificationName:ISSUE_SELECTED object:nil];
 }
 

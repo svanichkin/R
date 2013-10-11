@@ -8,13 +8,18 @@
 
 #import "MFPreferencesPanel.h"
 
+@interface MFPreferencesPanel ()
+
+// Ключ включается, при первом коннекте или коннекте с другими кредами к другому серверу
+@property (nonatomic, assign) BOOL newLoginData;
+
+@property (nonatomic, assign) NSInteger projectsProgress;
+@property (nonatomic, assign) NSInteger filtersProgress;
+@property (nonatomic, assign) NSInteger issuesProgress;
+
+@end
+
 @implementation MFPreferencesPanel
-{
-    // Ключ включается, при первом коннекте или коннекте с другими кредами к другому серверу
-    BOOL _newLoginData;
-        
-    int _projectsProgress, _filtersProgress, _issuesProgress;
-}
 
 -(void) awakeFromNib
 {
@@ -22,9 +27,9 @@
 
     if ([defaults objectForKey:@"serverAddress"])
     {
-        _serverAddress.stringValue = [defaults objectForKey:@"serverAddress"];
-        _login.stringValue         = [defaults objectForKey:@"username"];
-        _password.stringValue      = [defaults objectForKey:@"password"];
+        self.serverAddress.stringValue = [defaults objectForKey:@"serverAddress"];
+        self.login.stringValue         = [defaults objectForKey:@"username"];
+        self.password.stringValue      = [defaults objectForKey:@"password"];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -58,19 +63,19 @@
 
 - (IBAction) connectAction:(id)sender
 {
-    if (_serverAddress.stringValue.length &&
-        _login.stringValue.length &&
-        _password.stringValue.length &&
+    if (self.serverAddress.stringValue.length &&
+        self.login.stringValue.length &&
+        self.password.stringValue.length &&
         [MFConnector sharedInstance].connectionProgress == NO)
     {
         MFSettings *settings = [MFSettings sharedInstance];
         
         // Если данных по коннекту нет или данные отличаются от тех что сохранены в настройках
-        if ([_serverAddress.stringValue isEqualToString:settings.server] == NO ||
-            [_login.stringValue isEqualToString:settings.login] == NO ||
-            [_password.stringValue isEqualToString:settings.password] == NO)
+        if ([self.serverAddress.stringValue isEqualToString:settings.server] == NO ||
+            [self.login.stringValue isEqualToString:settings.login] == NO ||
+            [self.password.stringValue isEqualToString:settings.password] == NO)
         {
-            _newLoginData = YES;
+            self.newLoginData = YES;
         }
         else
         {
@@ -78,48 +83,48 @@
         }
                 
         // Начнём конект
-        [[MFConnector sharedInstance] connectWithLogin:_login.stringValue
-                                              password:_password.stringValue
-                                             andServer:_serverAddress.stringValue];
+        [[MFConnector sharedInstance] connectWithLogin:self.login.stringValue
+                                              password:self.password.stringValue
+                                             andServer:self.serverAddress.stringValue];
     }
 }
 
 - (void) connectionStart:(NSNotification *)notification
 {
     // Скрываем текст
-    _progressText.hidden = YES;
+    self.progressText.hidden = YES;
     
     // Покажем прогресс индикатор
-    _progressLogin.hidden = NO;
-    [_progressLogin startAnimation:nil];
+    self.progressLogin.hidden = NO;
+    [self.progressLogin startAnimation:nil];
     
     // Скрываем обновление данных
-    _progressDatabaseUpdate.hidden = YES;
+    self.progressDatabaseUpdate.hidden = YES;
 }
 
 - (void) connectionComplete:(NSNotification *)notification
 {
     // Скрываем прогресс бар логина
-    _progressLogin.hidden = NO;
-    [_progressLogin stopAnimation:nil];
+    self.progressLogin.hidden = NO;
+    [self.progressLogin stopAnimation:nil];
     
     if ([notification.object boolValue])
     {        
-        if ([MFSettings sharedInstance].dataLastUpdate == nil || _newLoginData == YES)
+        if ([MFSettings sharedInstance].dataLastUpdate == nil || self.newLoginData == YES)
         {
-            _newLoginData = NO;
+            self.newLoginData = NO;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:RESET_DATABASE object:nil];
             
-            _progressDatabaseUpdate.hidden = NO;
+            self.progressDatabaseUpdate.hidden = NO;
          
             // Загрузка значений с сервера для генерации количества и названий сегментов
             [[MFConnector sharedInstance] databaseUpdate];
         }
         else
         {
-            _progressText.hidden = NO;
-            _progressText.stringValue = @"Connected";
+            self.progressText.hidden = NO;
+            self.progressText.stringValue = @"Connected";
             [[NSNotificationCenter defaultCenter] postNotificationName:DATABASE_UPDATING_COMPLETE object:(@YES)];
         }
     }
@@ -135,29 +140,29 @@
 - (void) databaseUpdatingStart:(NSNotification *)notification
 {
     // Скрываем текст
-    _progressText.hidden = YES;
+    self.progressText.hidden = YES;
     
     // Скрываем прогресс бар логина
-    _progressLogin.hidden = NO;
-    [_progressLogin stopAnimation:nil];
+    self.progressLogin.hidden = NO;
+    [self.progressLogin stopAnimation:nil];
     
     // Показываем обновление данных
-    _progressDatabaseUpdate.hidden = NO;
+    self.progressDatabaseUpdate.hidden = NO;
 }
 
 - (void) databaseUpdatingProgress:(NSNotification *)notification
 {
-    [_progressDatabaseUpdate setDoubleValue:[notification.object floatValue]];
+    [self.progressDatabaseUpdate setDoubleValue:[notification.object floatValue]];
 }
 
 - (void) databaseUpdatingComplete:(NSNotification *)notification
 {
     if ([notification.object boolValue])
     {
-        _progressText.hidden = NO;
-        _progressText.stringValue = @"Connected";
+        self.progressText.hidden = NO;
+        self.progressText.stringValue = @"Connected";
         
-        _progressDatabaseUpdate.hidden = YES;
+        self.progressDatabaseUpdate.hidden = YES;
     }
     else
     {
@@ -168,10 +173,10 @@
 
 - (void) loadingError
 {
-    _progressText.hidden = NO;
-    _progressText.stringValue = @"Error";
+    self.progressText.hidden = NO;
+    self.progressText.stringValue = @"Error";
     
-    _progressDatabaseUpdate.hidden = YES;
+    self.progressDatabaseUpdate.hidden = YES;
 }
 
 - (void) dealloc

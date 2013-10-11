@@ -8,33 +8,36 @@
 
 #import "MFDatabaseUpdator.h"
 
-@implementation MFDatabaseUpdator
-{
-    float _deltaProgress;
-    float _globalProgress;
-    
-    BOOL _stop;
-    BOOL _finished;
-    
-    BOOL _error;
-    
-    NSInteger _projectsTotal;
-    NSInteger _issuesTotal;
-    int _timeEntriesTotal;
-    NSInteger _usersTotal;
-    NSInteger _rolesTotal;
+@interface MFDatabaseUpdator ()
 
-    NSArray *_tasks;
-    int _indexOfTask;
-        
-    MFDatabase *_database;
-    MFSettings *_settings;
-}
+@property (assign, nonatomic) CGFloat deltaProgress;
+@property (assign, nonatomic) CGFloat globalProgress;
+
+@property (assign, nonatomic) BOOL stop;
+@property (assign, nonatomic) BOOL finished;
+
+@property (assign, nonatomic) BOOL error;
+
+@property (assign, nonatomic) NSInteger projectsTotal;
+@property (assign, nonatomic) NSInteger issuesTotal;
+@property (assign, nonatomic) NSInteger timeEntriesTotal;
+@property (assign, nonatomic) NSInteger usersTotal;
+@property (assign, nonatomic) NSInteger rolesTotal;
+
+@property (strong, nonatomic) NSArray *tasks;
+@property (assign, nonatomic) NSInteger indexOfTask;
+
+@property (assign, nonatomic) MFDatabase *database;
+@property (assign, nonatomic) MFSettings *settings;
+
+@end
+
+@implementation MFDatabaseUpdator
 
 - (void) update
 {
-    _database = [MFDatabase sharedInstance];
-    _settings = [MFSettings sharedInstance];
+    self.database = [MFDatabase sharedInstance];
+    self.settings = [MFSettings sharedInstance];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetData)
@@ -51,26 +54,26 @@
                                                  name:RESET_AUTHORIZATION
                                                object:nil];
     
-    _stop = NO;
+    self.stop = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DATABASE_UPDATING_START
                                                         object:nil];
     
-    _tasks = @[@"loadFilters",
-               @"loadProjects",
-               @"loadIssues",
-               @"loadIssuesDetail",
-               @"loadTimeEntries",
-               @"loadRoles",
-               @"loadUsers"];
+    self.tasks = @[@"loadFilters",
+                   @"loadProjects",
+                   @"loadIssues",
+                   @"loadIssuesDetail",
+                   @"loadTimeEntries",
+                   @"loadRoles",
+                   @"loadUsers"];
     
     [self next];
 }
 
 - (void) resetData
 {
-    _stop = YES;
-    _finished = YES;
+    self.stop = YES;
+    self.finished = YES;
 }
 
 - (NSDate *) dateFromString:(NSString *)dateString
@@ -110,14 +113,14 @@
 {
     if (![self checkForCancel])
     {
-        if (_indexOfTask < _tasks.count)
+        if (self.indexOfTask < self.tasks.count)
         {
-            _indexOfTask ++;
-            [self performSelector:NSSelectorFromString([_tasks objectAtIndex:_indexOfTask - 1])];
+            self.indexOfTask ++;
+            [self performSelector:NSSelectorFromString([self.tasks objectAtIndex:self.indexOfTask - 1])];
         }
         else
         {
-            _settings.dataLastUpdate = [NSDate date];
+            self.settings.dataLastUpdate = [NSDate date];
             [self sendNotificationComplete:YES];
         }
     }
@@ -125,12 +128,12 @@
 
 - (BOOL) checkForCancel
 {
-    if (_stop)
+    if (self.stop)
     {
         return YES;
     }
     
-    if (_error)
+    if (self.error)
     {
         [self sendNotificationComplete:NO];
         return YES;
@@ -144,22 +147,22 @@
 {
     if (numSteps < 1) numSteps = 1;
     
-    _deltaProgress = (100.0/numSteps)/_tasks.count;
+    self.deltaProgress = (100.0/numSteps)/self.tasks.count;
 }
 
 - (void) sendNotificationProgress
 {
-    _globalProgress += _deltaProgress;
+    self.globalProgress += self.deltaProgress;
     
-    if (_globalProgress > 100)
+    if (self.globalProgress > 100)
     {
-        _globalProgress = 100;
+        self.globalProgress = 100;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:DATABASE_UPDATING_PROGRESS
-                                                            object:@(_globalProgress)];
+                                                            object:@(self.globalProgress)];
     });
 }
 
@@ -185,7 +188,7 @@
         return;
     }
     [self sendNotificationProgress];
-    if (_stop)
+    if (self.stop)
     {
         return;
     }
@@ -196,18 +199,18 @@
         return;
     }
     [self sendNotificationProgress];
-    if (_stop)
+    if (self.stop)
     {
         return;
     }
     
     NSArray *newPriorities = [[self loadFilterByPath:@"enumerations/issue_priorities.json"] objectForKey:@"issue_priorities"];
-    if (_error)
+    if (self.error)
     {
-        _error = NO;
+        self.error = NO;
     }
     [self sendNotificationProgress];
-    if (_stop)
+    if (self.stop)
     {
         return;
     }
@@ -216,7 +219,7 @@
     {
         for (NSDictionary *ns in newStatuses)
         {
-            Status *status = _database.status;
+            Status *status = self.database.status;
             status.name = [ns objectForKey:@"name"];
             status.nid  = [ns objectForKey:@"id"];
         }
@@ -226,7 +229,7 @@
     {
         for (NSDictionary *t in newTrackers)
         {
-            Tracker *tracker = _database.tracker;
+            Tracker *tracker = self.database.tracker;
             tracker.name = [t objectForKey:@"name"];
             tracker.nid  = [t objectForKey:@"id"];
         }
@@ -236,7 +239,7 @@
     {
         for (NSDictionary *p in newPriorities)
         {
-            Priority *priority = _database.priority;
+            Priority *priority = self.database.priority;
             priority.name = [p objectForKey:@"name"];
             priority.nid  = [p objectForKey:@"id"];
         }
@@ -244,7 +247,7 @@
     
     if (newStatuses || newTrackers || newPriorities)
     {
-        [_database save];
+        [self.database save];
     }
  
     [self sendNotificationProgress];
@@ -255,13 +258,13 @@
 - (NSDictionary *) loadFilterByPath:(NSString *)path
 {
     NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@?key=%@", [MFSettings sharedInstance].server, path, _settings.apiToken]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@?key=%@", [MFSettings sharedInstance].server, path, self.settings.apiToken]];
     NSData *jsonData = [NSData dataWithContentsOfURL:url
                                              options:NSDataReadingUncached
                                                error:&error];
     if (error)
     {
-        _error = YES;
+        self.error = YES;
         return nil;
     }
     
@@ -271,7 +274,7 @@
                                                              error:&error];
     if (error)
     {
-        _error = YES;
+        self.error = YES;
         return nil;
     }
     
@@ -295,11 +298,11 @@
             return;
         }
         
-        if (_projectsTotal > 100)
+        if (self.projectsTotal > 100)
         {
             NSMutableArray *operationsArray = [NSMutableArray array];
             
-            for (int i = 100; i < _projectsTotal; i += 100)
+            for (int i = 100; i < self.projectsTotal; i += 100)
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
@@ -310,7 +313,7 @@
                     
                     [self loadProjectsWithOffset:i];
                     
-                    if (i + 100 > _projectsTotal)
+                    if (i + 100 > self.projectsTotal)
                     {
                         [self next];
                     }
@@ -333,14 +336,14 @@
     @autoreleasepool
     {
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/projects.json?limit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
         
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -350,7 +353,7 @@
                                                                  error:&error];
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -358,24 +361,24 @@
         NSArray *newProjects = [result objectForKey:@"projects"];
         for (NSDictionary *newProject in newProjects)
         {
-            if (_error)
+            if (self.error)
             {
                 return NO;
             }
-            Project *oldProject = [_database projectById:[newProject objectForKey:@"id"]];
+            Project *oldProject = [self.database projectById:[newProject objectForKey:@"id"]];
             [self refreshProject:oldProject withDictionaryProject:newProject];
         }
         
-        if (![_database save])
+        if (![self.database save])
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
-        if (!_projectsTotal)
+        if (!self.projectsTotal)
         {
-            _projectsTotal = [[result objectForKey:@"total_count"] intValue];
-            [self setDeltaProgressWithNumSteps:_projectsTotal/100];
+            self.projectsTotal = [[result objectForKey:@"total_count"] intValue];
+            [self setDeltaProgressWithNumSteps:self.projectsTotal/100];
         }
         
         [self sendNotificationProgress];
@@ -409,7 +412,7 @@
     {
         if (project.parent == nil)
         {
-            project.parent = [_database projectById:[object objectForKey:@"id"]];
+            project.parent = [self.database projectById:[object objectForKey:@"id"]];
         }
         project.parent.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -422,9 +425,9 @@
     
     if (needSave == YES)
     {
-        if (![_database save])
+        if (![self.database save])
         {
-            _error = YES;
+            self.error = YES;
         }
     }
 }
@@ -446,11 +449,11 @@
             return;
         }
         
-        if (_issuesTotal > 100)
+        if (self.issuesTotal > 100)
         {
             NSMutableArray *operationsArray = [NSMutableArray array];
             
-            for (int i = 100; i < _issuesTotal; i += 100)
+            for (int i = 100; i < self.issuesTotal; i += 100)
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
@@ -461,7 +464,7 @@
                     
                     [self loadIssuesWithOffset:i];
                     
-                    if (i + 100 > _issuesTotal)
+                    if (i + 100 > self.issuesTotal)
                     {
                         [self next];
                     }
@@ -485,14 +488,14 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?status_id=*&ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues.json?status_id=*&ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
         
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -502,7 +505,7 @@
                                                                  error:&error];
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
                 
@@ -510,26 +513,26 @@
         NSArray *newArray = [result objectForKey:@"issues"];
         for (NSDictionary *newIssue in newArray)
         {
-            if (_error)
+            if (self.error)
             {
                 return NO;
             }
-            Issue *oldIssue = [_database issueById:[newIssue objectForKey:@"id"]];
+            Issue *oldIssue = [self.database issueById:[newIssue objectForKey:@"id"]];
             [self refreshIssue:oldIssue withDictionaryIssue:newIssue];
         }
         
-        if (![_database save])
+        if (![self.database save])
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
-        _issuesTotal = [[result objectForKey:@"total_count"] intValue];
+        self.issuesTotal = [[result objectForKey:@"total_count"] intValue];
         
-        if (!_issuesTotal)
+        if (!self.issuesTotal)
         {
-            _issuesTotal = [[result objectForKey:@"total_count"] intValue];
-            [self setDeltaProgressWithNumSteps:_issuesTotal/100];
+            self.issuesTotal = [[result objectForKey:@"total_count"] intValue];
+            [self setDeltaProgressWithNumSteps:self.issuesTotal/100];
         }
         
         [self sendNotificationProgress];
@@ -573,7 +576,7 @@
     {
         if (issue.version == nil)
         {
-            issue.version = [_database versionById:[object objectForKey:@"id"]];
+            issue.version = [self.database versionById:[object objectForKey:@"id"]];
         }
         issue.version.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -590,7 +593,7 @@
     {
         if (issue.tracker == nil)
         {
-            issue.tracker = [_database trackerById:[object objectForKey:@"id"]];
+            issue.tracker = [self.database trackerById:[object objectForKey:@"id"]];
         }
         issue.tracker.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -607,7 +610,7 @@
     {
         if (issue.status == nil)
         {
-            issue.status = [_database statusById:[object objectForKey:@"id"]];
+            issue.status = [self.database statusById:[object objectForKey:@"id"]];
         }
         issue.status.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -624,7 +627,7 @@
     {
         if (issue.priority == nil)
         {
-            issue.priority = [_database priorityById:[object objectForKey:@"id"]];
+            issue.priority = [self.database priorityById:[object objectForKey:@"id"]];
         }
         issue.priority.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -639,7 +642,7 @@
     object = [dictionary objectForKey:@"author"];
     if (issue.creator == nil)
     {
-        issue.creator = [_database userById:[object objectForKey:@"id"]];
+        issue.creator = [self.database userById:[object objectForKey:@"id"]];
         
         NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
         if (n.count == 2)
@@ -658,7 +661,7 @@
     {
         if (issue.assigner == nil)
         {
-            issue.assigner = [_database userById:[object objectForKey:@"id"]];
+            issue.assigner = [self.database userById:[object objectForKey:@"id"]];
             
             NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
             if (n.count == 2)
@@ -683,7 +686,7 @@
     {
         if (issue.parent == nil)
         {
-            issue.parent = [_database issueById:[object objectForKey:@"id"]];
+            issue.parent = [self.database issueById:[object objectForKey:@"id"]];
         }
         issue.parent.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -700,7 +703,7 @@
     {
         if (issue.project == nil)
         {
-            issue.project = [_database projectById:[object objectForKey:@"id"]];
+            issue.project = [self.database projectById:[object objectForKey:@"id"]];
         }
         issue.project.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -713,9 +716,9 @@
     
     if (needSave == YES)
     {
-        if(![_database save])
+        if(![self.database save])
         {
-            _error = YES;
+            self.error = YES;
         }
     }
 }
@@ -727,10 +730,10 @@
         return;
     }
     
-    _issuesTotal = _database.issues.count;
+    self.issuesTotal = self.database.issues.count;
     if (_issuesTotal)
     {
-        [self setDeltaProgressWithNumSteps:_issuesTotal];
+        [self setDeltaProgressWithNumSteps:self.issuesTotal];
         
         if ([self checkForCancel])
         {
@@ -740,7 +743,7 @@
         NSMutableArray *operationsArray = [NSMutableArray array];
         
         int i = 0;
-        for (Issue *issue in _database.issues)
+        for (Issue *issue in self.database.issues)
         {
             i ++;
             
@@ -753,7 +756,7 @@
                 
                 [self loadIssueDetailWithIssue:issue];
                 
-                if (i == _issuesTotal)
+                if (i == self.issuesTotal)
                 {
                     [self next];
                 }
@@ -776,14 +779,14 @@
     {
         // Грузим юзеров рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues/%@.json?include=children,attachments,relations,changesets,journals,watchers&key=%@", [MFSettings sharedInstance].server, issue.nid, _settings.apiToken]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/issues/%@.json?include=children,attachments,relations,changesets,journals,watchers&key=%@", [MFSettings sharedInstance].server, issue.nid, self.settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
         
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -793,14 +796,14 @@
                                                                  error:&error];
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
         // Наполняем базу
         [self refreshIssue:issue withDictionaryIssueDetail:[result objectForKey:@"issue"]];
         
-        if (_error)
+        if (self.error)
         {
             return NO;
         }
@@ -818,7 +821,7 @@
     
     BOOL needSave = NO;
     
-    Issue *i = [_database issueById:issue.nid];
+    Issue *i = [self.database issueById:issue.nid];
     
     // Journals
     NSArray *journals = [dictionary objectForKey:@"journals"];
@@ -857,7 +860,7 @@
     {
         if(![_database save])
         {
-            _error = YES;
+            self.error = YES;
         }
     }
 }
@@ -877,7 +880,7 @@
     NSDictionary *object = [dictionary objectForKey:@"author"];
     if (attach.creator == nil)
     {
-        attach.creator = [_database userById:[object objectForKey:@"id"]];
+        attach.creator = [self.database userById:[object objectForKey:@"id"]];
         
         NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
         if (n.count == 2)
@@ -893,7 +896,7 @@
 
 - (Journal *) newJournalByDictionary:(NSDictionary *)dictionary
 {
-    Journal *journal = _database.journal;
+    Journal *journal = self.database.journal;
     journal.nid    = [dictionary objectForKey:@"id"];
     journal.text   = [dictionary objectForKey:@"notes"];
     journal.create = [self dateFromString:[dictionary objectForKey:@"created_on"]];
@@ -902,7 +905,7 @@
     NSArray *details = [dictionary objectForKey:@"details"];
     for (NSDictionary *detail in details)
     {
-        Detail *newDetail = _database.detail;
+        Detail *newDetail = self.database.detail;
         newDetail.property = [detail objectForKey:@"property"];
         if ([newDetail.property isEqualToString:@"attr"])
         {
@@ -959,7 +962,7 @@
 
 - (Relation *) newRelationByDictionary:(NSDictionary *)dictionary
 {
-    Relation *relation = _database.relation;
+    Relation *relation = self.database.relation;
     relation.nid     = [dictionary objectForKey:@"id"];
     relation.type    = [dictionary objectForKey:@"relation_type"];
     if ([dictionary objectForKey:@"delay"] != [NSNull null])
@@ -990,22 +993,22 @@
             return;
         }
             
-        if (_timeEntriesTotal > 100)
+        if (self.timeEntriesTotal > 100)
         {
             NSMutableArray *operationsArray = [NSMutableArray array];
             
-            for (int i = 100; i < _timeEntriesTotal; i += 100)
+            for (int i = 100; i < self.timeEntriesTotal; i += 100)
             {
                 [operationsArray addObject:[NSBlockOperation blockOperationWithBlock: ^
                 {
-                    if (_stop)
+                    if (self.stop)
                     {
                         return;
                     }
                     
                     [self loadTimeEntryWithOffset:i];
                     
-                    if (i + 100 > _timeEntriesTotal)
+                    if (i + 100 > self.timeEntriesTotal)
                     {
                         [self next];
                     }
@@ -1029,14 +1032,14 @@
     {
         // Грузим задачи рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/time_entries.json?ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, _settings.apiToken]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/time_entries.json?ilimit=100&offset=%i&key=%@", [MFSettings sharedInstance].server, offset, self.settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
         
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -1046,7 +1049,7 @@
                                                                  error:&error];
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -1054,26 +1057,26 @@
         NSArray *newArray = [result objectForKey:@"time_entries"];
         for (NSDictionary *newTimeEntry in newArray)
         {
-            if (_error)
+            if (self.error)
             {
                 return NO;
             }
-            TimeEntry *oldTimeEntry = [_database timeEntryById:[newTimeEntry objectForKey:@"id"]];
+            TimeEntry *oldTimeEntry = [self.database timeEntryById:[newTimeEntry objectForKey:@"id"]];
             [self refreshTimeEntry:oldTimeEntry withDictionaryTimeEntry:newTimeEntry];
         }
         
-        if (![_database save])
+        if (![self.database save])
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
-        _timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
+        self.timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
         
-        if (!_timeEntriesTotal)
+        if (!self.timeEntriesTotal)
         {
-            _timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
-            [self setDeltaProgressWithNumSteps:_timeEntriesTotal/100];
+            self.timeEntriesTotal = [[result objectForKey:@"total_count"] intValue];
+            [self setDeltaProgressWithNumSteps:self.timeEntriesTotal/100];
         }
         
         [self sendNotificationProgress];
@@ -1105,7 +1108,7 @@
     {
         if (timeEntry.project == nil)
         {
-            timeEntry.project = [_database projectById:[object objectForKey:@"id"]];
+            timeEntry.project = [self.database projectById:[object objectForKey:@"id"]];
         }
         timeEntry.project.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -1122,7 +1125,7 @@
     {
         if (timeEntry.issue == nil)
         {
-            timeEntry.issue = [_database issueById:[object objectForKey:@"id"]];
+            timeEntry.issue = [self.database issueById:[object objectForKey:@"id"]];
         }
         needSave = YES;
     }
@@ -1138,7 +1141,7 @@
     {
         if (timeEntry.activity == nil)
         {
-            timeEntry.activity = [_database activityById:[object objectForKey:@"id"]];
+            timeEntry.activity = [self.database activityById:[object objectForKey:@"id"]];
         }
         timeEntry.activity.name = [object objectForKey:@"name"];
         needSave = YES;
@@ -1153,7 +1156,7 @@
     object = [dictionary objectForKey:@"user"];
     if (timeEntry.creator == nil)
     {
-        timeEntry.creator = [_database userById:[object objectForKey:@"id"]];
+        timeEntry.creator = [self.database userById:[object objectForKey:@"id"]];
         
         NSMutableArray *n = [NSMutableArray arrayWithArray:[[object objectForKey:@"name"] componentsSeparatedByString:@","]];
         if (n.count == 2)
@@ -1168,9 +1171,9 @@
     
     if (needSave == YES)
     {
-        if(![_database save])
+        if(![self.database save])
         {
-            _error = YES;
+            self.error = YES;
         }
     }
 }
@@ -1184,10 +1187,10 @@
         return;
     }
     
-    _usersTotal = _database.users.count;
-    if (_usersTotal)
+    self.usersTotal = self.database.users.count;
+    if (self.usersTotal)
     {
-        [self setDeltaProgressWithNumSteps:_usersTotal];
+        [self setDeltaProgressWithNumSteps:self.usersTotal];
         
         if ([self checkForCancel])
         {
@@ -1197,7 +1200,7 @@
         NSMutableArray *operationsArray = [NSMutableArray array];
         
         int i = 0;
-        for (User *user in _database.users)
+        for (User *user in self.database.users)
         {
             i ++;
             
@@ -1210,7 +1213,7 @@
                 
                 [self loadUserWithUserEntity:user];
                 
-                if (i == _usersTotal)
+                if (i == self.usersTotal)
                 {
                     [self next];
                 }
@@ -1233,14 +1236,14 @@
     {
         // Грузим юзеров рекурсивно
         NSError *error = nil;
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json?include=memberships,groups&key=%@", [MFSettings sharedInstance].server, user.nid, _settings.apiToken]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json?include=memberships,groups&key=%@", [MFSettings sharedInstance].server, user.nid, self.settings.apiToken]];
         NSData *jsonData = [NSData dataWithContentsOfURL:url
                                                  options:NSDataReadingUncached
                                                    error:&error];
         
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
@@ -1250,14 +1253,14 @@
                                                                  error:&error];
         if (error)
         {
-            _error = YES;
+            self.error = YES;
             return NO;
         }
         
         // Наполняем базу
         [self refreshUser:user withDictionaryUser:[result objectForKey:@"user"]];
         
-        if (_error)
+        if (self.error)
         {
             return NO;
         }
@@ -1312,15 +1315,15 @@
     NSArray *memberships = [dictionary objectForKey:@"memberships"];
     for (NSDictionary *object in memberships)
     {
-        Membership *membership = _database.membership;
+        Membership *membership = self.database.membership;
         membership.nid = [object objectForKey:@"id"];
 
-        membership.project = [_database projectById:[[object objectForKey:@"project"]objectForKey:@"id"]];
+        membership.project = [self.database projectById:[[object objectForKey:@"project"]objectForKey:@"id"]];
         
         NSArray *roles = [object objectForKey:@"roles"];
         for (NSDictionary *nr in roles)
         {
-            Role *role = [_database roleById:[nr objectForKey:@"id"]];
+            Role *role = [self.database roleById:[nr objectForKey:@"id"]];
             role.name = [nr objectForKey:@"name"];
             [membership addRolesObject:role];
         }
@@ -1336,9 +1339,9 @@
         user.phone = nil;
     }
     
-    if(![_database save])
+    if(![self.database save])
     {
-        _error = YES;
+        self.error = YES;
     }
 }
 
@@ -1350,13 +1353,13 @@
     [self setDeltaProgressWithNumSteps:2];
     
     NSError *error = nil;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/roles.json?key=%@", [MFSettings sharedInstance].server, _settings.apiToken]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/roles.json?key=%@", [MFSettings sharedInstance].server, self.settings.apiToken]];
     NSData *jsonData = [NSData dataWithContentsOfURL:url
                                              options:NSDataReadingUncached
                                                error:&error];
     if (error)
     {
-        _error = YES;
+        self.error = YES;
         [self checkForCancel];
         return;
     }
@@ -1369,7 +1372,7 @@
     
     if (error)
     {
-        _error = YES;
+        self.error = YES;
         [self checkForCancel];
         return;
     }
@@ -1380,14 +1383,14 @@
     {
         for (NSDictionary *nr in roles)
         {
-            Role *role = _database.role;
+            Role *role = self.database.role;
             role.name = [nr objectForKey:@"name"];
             role.nid  = [nr objectForKey:@"id"];
         }
         
-        if(![_database save])
+        if(![self.database save])
         {
-            _error = YES;
+            self.error = YES;
             [self checkForCancel];
             return;
         }
