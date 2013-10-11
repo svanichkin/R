@@ -10,6 +10,4 @@
 
 @interface MFIssuesList : NSTableView <NSTableViewDelegate, NSTableViewDataSource>
 
-@property (assign) IBOutlet NSArrayController *issuesArrayController;
-
 @end
