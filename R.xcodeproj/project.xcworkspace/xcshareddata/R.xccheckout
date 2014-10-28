@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C57823DA-63CB-4748-A262-5CE808859B28</string>
+	<key>IDESourceControlProjectName</key>
+	<string>R</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1731BF5A-37E2-41B3-AACE-9ABD6221DD5E</key>
+		<string>ssh://macflash.ru:10022/git/R.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>R.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1731BF5A-37E2-41B3-AACE-9ABD6221DD5E</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://macflash.ru:10022/git/R.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1731BF5A-37E2-41B3-AACE-9ABD6221DD5E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1731BF5A-37E2-41B3-AACE-9ABD6221DD5E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>R</string>
+		</dict>
+	</array>
+</dict>
+</plist>
